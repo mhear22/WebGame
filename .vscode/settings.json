@@ -6,8 +6,9 @@
 		"**/.hg": true,
 		"**/.DS_Store": true,
 		"node_modules/**/*":true,
-		"dev/**/*":true,
-		"dist/**/*":true,
-		"typings/**/*":true
+		"/dev/**/*":true,
+		"/dist/**/*":true,
+		"typings/**/*":true,
+		"/dist":true
 	}
 }

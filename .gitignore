@@ -27,7 +27,7 @@ coverage
 build/Release
 
 # Dependency directories
-node_modules
+/node_modules
 jspm_packages
 
 # Optional npm cache directory
@@ -37,7 +37,7 @@ jspm_packages
 .node_repl_history
 
 # Dev and dist build bins
-/dev/*
-/dist/*
+/dev
+/dist
 
 .awcache/
