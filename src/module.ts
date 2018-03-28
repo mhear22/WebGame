@@ -17,6 +17,6 @@ import { BrowserModule } from '@angular/platform-browser';
 		App
 	],
 	providers:[ ],
-	bootstrap:[ ]
+	bootstrap:[ App ]
 })
 export class AppModule { }
