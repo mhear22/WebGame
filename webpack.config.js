@@ -6,7 +6,7 @@ const clearWebpackPlugin = require("clean-webpack-plugin");
 module.exports = {
 	entry: {
 		vendor: './src/vendor.ts',
-		main: './src/main.ts',
+		main: ['./src/main.ts', './src/main.sass' ],
 	},
 	output: {
 		filename: './[name].js',
@@ -41,6 +41,10 @@ module.exports = {
 			{
 				test: /\.html$/,
 				use: 'html-loader'
+			},
+			{
+				test:/\.sass$/,
+				use:['style-loader','css-loader','sass-loader']
 			}
 		]
 	},
