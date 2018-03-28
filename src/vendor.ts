@@ -1,0 +1,16 @@
+import "reflect-metadata";
+import "@angular/platform-browser-dynamic";
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/toPromise';
+import 'rxjs';
+import 'rxjs/Observable';
+import '@angular/http';
+import '@angular/core';
+import '@angular/router';
+import '@angular/forms';
+import 'hammerjs';
+import "zone.js";
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/toPromise';

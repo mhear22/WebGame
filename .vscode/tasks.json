@@ -3,7 +3,7 @@
 		{
 			"label": "build",
 			"type": "shell",
-			"command": "webpack",
+			"command": "cls && webpack --progress ",
 			"problemMatcher": [],
 			"group": {
 				"kind": "build",
