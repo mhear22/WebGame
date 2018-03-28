@@ -1,3 +1,6 @@
+dist
+node_modules
+.awcache
 # Logs
 logs
 *.log
@@ -41,3 +44,5 @@ jspm_packages
 /dist
 
 .awcache/
+
+/dist/**/*
