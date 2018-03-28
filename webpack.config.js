@@ -1,13 +1,12 @@
-const webpack = require('webpack');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const clearWebpackPlugin = require("clean-webpack-plugin");
-const htmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
+const webpack = require('webpack');
+const htmlWebpackPlugin = require("html-webpack-plugin");
+const clearWebpackPlugin = require("clean-webpack-plugin");
 
 module.exports = {
 	entry: {
-		main: ['./src/main.ts', './src/main.sass'],
-		vendor: './src/vendor.ts'
+		vendor: './src/vendor.ts',
+		main: './src/main.ts',
 	},
 	output: {
 		filename: './[name].js',
@@ -40,18 +39,23 @@ module.exports = {
 				use: 'file-loader'
 			},
 			{
-				test: /\.sass$/,
-				use: ExtractTextPlugin.extract(['css-loader', 'sass-loader'])
-			},
-			{
 				test: /\.html$/,
 				use: 'html-loader'
 			}
 		]
 	},
+	//optimization:{
+	//	splitChunks:{
+	//		cacheGroups:{
+	//			commons:{
+	//				test:/[\\/]node_modules[\\/]/,
+	//				name:'vendor',
+	//				chunks:'all'
+	//			}
+	//		}
+	//	}
+	//},
 	plugins: [
-		new ExtractTextPlugin('style.css'),
-		new webpack.optimize.CommonsChunkPlugin({ name: "vendor", filename: "vendor.js" }),
 		new clearWebpackPlugin(['dist'], {
 			verbose: false
 		}),
