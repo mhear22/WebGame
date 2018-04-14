@@ -2,7 +2,7 @@ import { Asset } from "./Asset";
 import { Object3D } from "three";
 import * as three from "three";
 
-export class Cube implements Asset {
+export class Cube extends Asset {
 
 	private UpPressed: boolean;
 	private DownPressed: boolean;
@@ -10,43 +10,22 @@ export class Cube implements Asset {
 	private RightPressed: boolean;
 
 	private element: Object3D;
-	constructor() {
-		var geo = new three.BoxGeometry(1, 1, 1);
+	constructor(width:number = 1, height:number = 1,depth:number = 1) {
+		super();
+		var geo = new three.BoxGeometry(width, height, depth);
 		var mat = new three.MeshBasicMaterial({ color: 'red' });
 		this.element = new three.Mesh(geo, mat);
 	}
 
-	public KeyUp(key: KeyboardEvent) {
-		if (key.key == "w")
-			this.UpPressed = true;
-		else if (key.key == "s")
-			this.DownPressed = true;
-		else if (key.key == "a")
-			this.LeftPressed = true;
-		else if (key.key == "d")
-			this.RightPressed = true;
-	}
-
-	public KeyDown(key: KeyboardEvent) {
-		if (key.key == "w")
-			this.UpPressed = false;
-		else if (key.key == "s")
-			this.DownPressed = false;
-		else if (key.key == "a")
-			this.LeftPressed = false;
-		else if (key.key == "d")
-			this.RightPressed = false;
-	}
-
-	public Interval() {
+	public Interval(keyMap:any) {
 		var mov = 0.1;
-		if (this.UpPressed)
+		if (keyMap["w"])
 			this.element.translateY(mov);
-		if (this.DownPressed)
+		if (keyMap["s"])
 			this.element.translateY(-mov);
-		if (this.LeftPressed)
+		if (keyMap["a"])
 			this.element.translateX(-mov);
-		if(this.RightPressed)
+		if (keyMap["d"])
 			this.element.translateX(mov);
 	}
 

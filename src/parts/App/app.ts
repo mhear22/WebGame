@@ -13,25 +13,24 @@ import { Cube } from "../../objects/cube";
 export class App implements AfterViewInit {
 
 	constructor() {
-		document.onkeydown = (ev: KeyboardEvent) => {
-			this.KeyPress(ev, false);
-		}
-		
-		document.onkeyup = (ev: KeyboardEvent) => {
-			this.KeyPress(ev, true);
-		}
+		document.onkeydown = (ev: KeyboardEvent) =>this.KeyPress(ev, true);
+		document.onkeyup = (ev: KeyboardEvent) => this.KeyPress(ev, false);
+		document.onmousewheel = (ev: MouseEvent) => this.MouseEvent(ev);
+		document.onmousemove = (ev: MouseEvent) => this.MouseEvent(ev);
+		document.onclick = (ev: MouseEvent) => this.MouseEvent(ev, ev.button + 1);
 	}
 	
 	ngAfterViewInit(): void {
 		this.BeginInit();
 	}
-
+	
 	@ViewChild('splash')
 	private canvasRef: ElementRef;
 	private get canvas(): HTMLCanvasElement {
 		return this.canvasRef.nativeElement;
 	}
-
+	
+	private keyMap:any = {};
 	private scene: Scene;
 	private camera: PerspectiveCamera;
 	private renderer: WebGLRenderer;
@@ -53,20 +52,24 @@ export class App implements AfterViewInit {
 		this.renderer.autoClear = true;
 		this.camera.position.z = 5;
 
-		this.Meshes.push(new Cube());
+		this.Meshes.push(new Cube(2,2,2));
 		
 		this.Meshes.forEach(x=> {
 			this.scene.add(x.Element);
 		});
 		
 		var isDrawing = false;
+		
 		Observable.interval(16).subscribe(x=> {
 			if(!isDrawing){
-				
+				if(this.keyMap[" "]) {
+					var nuCube = new Cube();
+					this.Meshes.push(nuCube);
+					this.scene.add(nuCube.Element);
+				}
 				this.Meshes.forEach(x=> {
-					x.Interval();
+					x.Interval(this.keyMap);
 				});
-				
 				isDrawing = true;
 				this.Animate();
 				isDrawing = false;
@@ -75,12 +78,22 @@ export class App implements AfterViewInit {
 	}
 
 	private KeyPress(press: KeyboardEvent, isPressed:boolean) {
-		this.Meshes.forEach(x=> {
-			if(isPressed)
-				x.KeyDown(press);
-			else
-				x.KeyUp(press);
-		});
+		this.keyMap[press.key] = isPressed;
+	}
+	
+	
+	private mouseLocked:boolean = false;
+	private MouseEvent(mouse: MouseEvent, mouseKey:number = 0) {
+		this.mouseLocked = !(document.pointerLockElement !== this.canvas)
+		
+		if(this.mouseLocked) {
+			var sen = 1000;
+			this.camera.rotateY(mouse.movementX/sen);
+			this.camera.rotateX(mouse.movementY/sen);
+			console.log(`${this.camera.rotation.y} ${this.camera.rotation.x}`);
+		}
+		if(!this.mouseLocked && mouseKey > 0)
+			this.canvas.requestPointerLock();
 	}
 
 	private Animate() {

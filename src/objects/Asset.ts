@@ -1,8 +1,6 @@
 import { Object3D } from "three";
 
-export interface Asset {
-	KeyUp(key:KeyboardEvent):void;
-	KeyDown(key:KeyboardEvent):void;
-	Interval():void;
+export abstract class Asset {
+	abstract Interval(keyMap:any):void;
 	Element:Object3D;
 }
