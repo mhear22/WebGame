@@ -49,7 +49,7 @@ export class App implements AfterViewInit {
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
 		this.renderer.shadowMap.enabled = true;
 		this.renderer.shadowMap.type = three.PCFSoftShadowMap;
-		this.renderer.setClearColor(0xffffff, 1);
+		this.renderer.setClearColor(0x000000, 1);
 		this.renderer.autoClear = true;
 		this.camera.position.z = 5;
 
