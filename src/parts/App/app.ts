@@ -6,6 +6,8 @@ import { Observable } from "rxjs";
 import { Asset } from "../../objects/asset";
 import { Cube } from "../../objects/cube";
 import { CameraController } from "../Service/Camera";
+import { SceneBase } from "../../scenes/sceneBase";
+import { TempScene } from "../../scenes/TempScene";
 
 @Component({
 	selector: 'app',
@@ -32,16 +34,13 @@ export class App implements AfterViewInit {
 	}
 
 	private keyMap: any = {};
-	private scene: Scene;
-	private renderer: WebGLRenderer;
-	private cam: CameraController;
 	
-	private Meshes: Asset[] = [];
-
+	private renderer: WebGLRenderer;
+	private Camera: CameraController;
+	private Scene:SceneBase;
+	
 	private BeginInit() {
-		this.scene = new three.Scene();
-		this.cam = new CameraController(this.canvas);
-		
+		this.Camera = new CameraController(this.canvas);
 		this.renderer = new three.WebGLRenderer({
 			canvas: this.canvas,
 			antialias: true
@@ -53,21 +52,12 @@ export class App implements AfterViewInit {
 		this.renderer.setClearColor(0x000000, 1);
 		this.renderer.autoClear = true;
 
-		this.Meshes.push(new Cube(2, 2, 2,0,0,10));
-		this.Meshes.push(new Cube(2, 2, 2,0,0,-10));
-		this.Meshes.push(new Cube(2, 2, 2,0,10,0));
-		this.Meshes.push(new Cube(2, 2, 2,0,-10,0));
-		this.Meshes.push(new Cube(2, 2, 2,10,0,0));
-		this.Meshes.push(new Cube(2, 2, 2,-10,0,0));
-
-		this.Meshes.forEach(x => {
-			this.scene.add(x.Element);
-		});
-
+		this.Scene = new TempScene(this.Camera, this.keyMap);
+		this.Scene.LoadMeshes();
 		var isDrawing = false;
 
 		var lastFrame = new Date();
-		Observable.interval(1).subscribe(x => {
+		Observable.interval(16).subscribe(x => {
 			if (!isDrawing) {
 				var split = new Date();
 				this.Logic(this.getTimeSplit(lastFrame, split)/100);
@@ -97,22 +87,15 @@ export class App implements AfterViewInit {
 	}
 
 	private MouseEvent(mouse: MouseEvent, mouseKey: number = 0) {
-		this.cam.MouseEvent(mouse,mouseKey);
+		this.Camera.MouseEvent(mouse,mouseKey);
 	}
 	
 	private Logic(lastFrameSplit:number) {
-		if (this.keyMap[" "]) {
-			var nuCube = new Cube();
-			this.Meshes.push(nuCube);
-			this.scene.add(nuCube.Element);
-		}
-		this.Meshes.forEach(x => {
-			x.Interval(this.keyMap, lastFrameSplit);
-		});
-		this.cam.Interval(this.keyMap, lastFrameSplit);
+		this.Scene.Iterate(lastFrameSplit);
+		this.Camera.Interval(this.keyMap, lastFrameSplit);
 	}
 
 	private Animate() {
-		this.renderer.render(this.scene, this.cam.camera);
+		this.renderer.render(this.Scene.GetScene(), this.Camera.camera);
 	}
 }
