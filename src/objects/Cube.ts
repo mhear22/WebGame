@@ -8,7 +8,6 @@ export class Cube extends Asset {
 	private LeftPressed: boolean;
 	private RightPressed: boolean;
 
-	private element: Object3D;
 	constructor(width: number = 1, height: number = 1, depth: number = 1, x:number = 0, y:number = 0, z:number = 0) {
 		super();
 		var geo = new three.BoxGeometry(width, height, depth);
@@ -33,9 +32,5 @@ export class Cube extends Asset {
 			this.element.translateY(mov);
 		if (keyMap["q"])
 			this.element.translateY(-mov);
-	}
-
-	get Element():Object3D {
-		return this.element;
 	}
 }

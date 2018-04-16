@@ -33,11 +33,15 @@ export class App implements AfterViewInit {
 		return this.canvasRef.nativeElement;
 	}
 
-	private keyMap: any = {};
+	private ShowDebug:boolean = true;
+	private FPSString:string = "";
+	private MouseString:string = "";
 	
+	private keyMap: any = {};
 	private renderer: WebGLRenderer;
 	private Camera: CameraController;
 	private Scene:SceneBase;
+	private LastSplit:number;
 	
 	private BeginInit() {
 		this.Camera = new CameraController(this.canvas);
@@ -51,22 +55,42 @@ export class App implements AfterViewInit {
 		this.renderer.shadowMap.type = three.PCFSoftShadowMap;
 		this.renderer.setClearColor(0x000000, 1);
 		this.renderer.autoClear = true;
-
+		
 		this.Scene = new TempScene(this.Camera, this.keyMap);
 		this.Scene.LoadMeshes();
 		var isDrawing = false;
 
+		
 		var lastFrame = new Date();
 		Observable.interval(16).subscribe(x => {
 			if (!isDrawing) {
-				var split = new Date();
-				this.Logic(this.getTimeSplit(lastFrame, split)/100);
-				lastFrame = split;
 				isDrawing = true;
+				
+				var currentFrame = new Date();
+				
+				this.LastSplit = this.getTimeSplit(lastFrame, currentFrame);
+				
+				if(this.ShowDebug)
+					this.RenderDebug();
+				if(this.keyMap["`"])
+					this.ShowDebug = !this.ShowDebug;
+				
+				this.Logic(this.LastSplit/100);
 				this.Animate();
+				
+				lastFrame = currentFrame;
+				
 				isDrawing = false;
 			}
 		});
+	}
+	
+	private RenderDebug() {
+		this.FPSString = `${(1000/this.LastSplit).toFixed(2)}`;
+		this.MouseString = `
+			X:${this.Camera.camera.rotation.x.toFixed(2)}
+			Y:${this.Camera.camera.rotation.y.toFixed(2)}
+		`;
 	}
 	
 	private getTimeSplit(initalDate:Date, secondDate:Date):number {
@@ -94,7 +118,7 @@ export class App implements AfterViewInit {
 		this.Scene.Iterate(lastFrameSplit);
 		this.Camera.Interval(this.keyMap, lastFrameSplit);
 	}
-
+	
 	private Animate() {
 		this.renderer.render(this.Scene.GetScene(), this.Camera.camera);
 	}
