@@ -86,10 +86,13 @@ export class App implements AfterViewInit {
 	}
 	
 	private RenderDebug() {
+		var cam = this.Camera.camera;
+		
 		this.FPSString = `${(1000/this.LastSplit).toFixed(2)}`;
 		this.MouseString = `
-			X:${this.Camera.camera.rotation.x.toFixed(2)}
-			Y:${this.Camera.camera.rotation.y.toFixed(2)}
+			X:${cam.rotation.x.toFixed(2)}
+			Y:${cam.rotation.y.toFixed(2)}
+			Z:${cam.rotation.z.toFixed(2)}
 		`;
 	}
 	
