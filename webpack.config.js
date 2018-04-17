@@ -20,7 +20,8 @@ module.exports = {
 		children: false,
 		chunks: false,
 		modules: false,
-		warnings: false
+		warnings: false,
+		hash:false
 	},
 	module: {
 		rules: [

@@ -15,7 +15,7 @@
 		"target": "es6",
 		"watch": false,
 		"module": "commonjs",
-		"sourceMap": true,
+		"sourceMap": false,
 		"moduleResolution": "node",
 		"removeComments": true,
 		"emitDecoratorMetadata": true,
