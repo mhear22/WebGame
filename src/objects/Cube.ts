@@ -30,18 +30,6 @@ export class Cube extends Asset {
 	}
 
 	public Interval(keyMap: any,timeSplit:number) {
-		var mov = timeSplit;
-		//if (keyMap["w"])
-		//	this.element.translateZ(mov);
-		//if (keyMap["s"])
-		//	this.element.translateZ(-mov);
-		//if (keyMap["d"])
-		//	this.element.translateX(mov);
-		//if (keyMap["a"])
-		//	this.element.translateX(-mov);
-		//if (keyMap["e"])
-		//	this.element.translateY(mov);
-		//if (keyMap["q"])
-		//	this.element.translateY(-mov);
+		
 	}
 }
