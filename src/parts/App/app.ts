@@ -1,7 +1,6 @@
 import { Component, ViewChild, ElementRef, AfterViewInit } from "@angular/core";
 import * as three from "three";
 import { Scene, PerspectiveCamera, WebGLRenderer, Mesh, Vector3, Camera } from "three";
-import { promise } from "selenium-webdriver";
 import { Observable } from "rxjs";
 import { Asset } from "../../objects/asset";
 import { Cube } from "../../objects/cube";
