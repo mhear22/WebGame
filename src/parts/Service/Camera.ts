@@ -37,10 +37,22 @@ export class CameraController {
 			if (this.FOV > 1)
 				this.FOV -= 1;
 		}
-		if (keyMap["-"] || keyMap["+"]) {
-			console.log(this.FOV);
-		}
+		
+		if(keyMap["w"])
+			this.Move(new Vector3(0,0,-timeSplit));
+		if(keyMap["s"])
+			this.Move(new Vector3(0,0,timeSplit));
+		if(keyMap["a"])
+			this.Move(new Vector3(-timeSplit,0,0));
+		if(keyMap["d"])
+			this.Move(new Vector3(timeSplit,0,0));
+		
 		this.UpdateCamera();
+	}
+	
+	public Move(vector:Vector3) {
+		vector.applyAxisAngle(this.camera.up, this.RotY);
+		this.camera.position.add(vector);
 	}
 
 	public Rotate(x: number, y: number): void {
@@ -62,7 +74,6 @@ export class CameraController {
 		this.camera.rotation.x = 0;
 		this.camera.rotation.y = 0;
 		this.camera.rotation.z = 0;
-		
 		
 		if(this.InvertY)
 			this.camera.rotateY(-this.RotY);
