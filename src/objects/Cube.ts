@@ -11,7 +11,18 @@ export class Cube extends Asset {
 	constructor(width: number = 1, height: number = 1, depth: number = 1, x:number = 0, y:number = 0, z:number = 0) {
 		super();
 		var geo = new three.BoxGeometry(width, height, depth);
-		var mat = new three.MeshBasicMaterial({ color: 'red' });
+		
+		var colors = [
+			'red',
+			'green',
+			'blue',
+			'white',
+			'grey'
+		]
+		
+		var random = Math.floor((Math.random()*colors.length)+1);
+		
+		var mat = new three.MeshBasicMaterial({ color: colors[random] });
 		this.element = new three.Mesh(geo, mat);
 		this.element.position.x = x;
 		this.element.position.y = y;
