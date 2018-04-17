@@ -49,17 +49,17 @@ module.exports = {
 			}
 		]
 	},
-	//optimization:{
-	//	splitChunks:{
-	//		cacheGroups:{
-	//			commons:{
-	//				test:/[\\/]node_modules[\\/]/,
-	//				name:'vendor',
-	//				chunks:'all'
-	//			}
-	//		}
-	//	}
-	//},
+	optimization:{
+		splitChunks:{
+			cacheGroups:{
+				commons:{
+					test:/[\\/]node_modules[\\/]/,
+					name:'vendor',
+					chunks:'all'
+				}
+			}
+		}
+	},
 	plugins: [
 		new clearWebpackPlugin(['dist'], {
 			verbose: false

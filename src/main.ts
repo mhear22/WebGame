@@ -1,6 +1,9 @@
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './module';
 import { enableProdMode } from '@angular/core';
+import "zone.js";
+import "hammerjs";
+import "rxjs";
 
 if(location.hostname !== "localhost") {
 	enableProdMode();
