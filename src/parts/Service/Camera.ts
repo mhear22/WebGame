@@ -54,10 +54,17 @@ export class CameraController {
 		vector.applyAxisAngle(this.camera.up, this.RotY);
 		this.camera.position.add(vector);
 	}
-
+	
 	public Rotate(x: number, y: number): void {
-		this.RotX += y;
-		this.RotY += x;
+		if(this.InvertY)
+			this.RotY -= x;
+		else
+			this.RotY += x;
+		
+		if(this.InvertX)
+			this.RotX -= y;
+		else
+			this.RotX += y;
 		
 		var pi = Math.PI;
 		
@@ -75,15 +82,8 @@ export class CameraController {
 		this.camera.rotation.y = 0;
 		this.camera.rotation.z = 0;
 		
-		if(this.InvertY)
-			this.camera.rotateY(-this.RotY);
-		else
-			this.camera.rotateY(this.RotY)
-		
-		if(this.InvertX)
-			this.camera.rotateX(-this.RotX);
-		else
-			this.camera.rotateX(this.RotX);
+		this.camera.rotateY(this.RotY)
+		this.camera.rotateX(this.RotX);
 	}
 
 	public MouseEvent(mouse: MouseEvent, mouseKey: number = 0) {
