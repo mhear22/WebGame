@@ -20,11 +20,12 @@ export class Cube extends Asset {
 		var geo = new three.BoxGeometry(width, height, depth);
 		
 		var colors = [
-			'red',
-			'green',
-			'blue',
-			'white',
-			'grey'
+			//'red',
+			//'green',
+			//'blue',
+			//'white',
+			'#BBBBBB',
+			'#BBBBBB'
 		]
 		
 		var random = Math.floor((Math.random()*(colors.length-1))+1);

@@ -9,8 +9,8 @@ export class CameraController {
 	private RotX:number = 0;
 	private RotY:number = 0;
 	
-	private InvertX:boolean = false;
-	private InvertY:boolean = false;
+	private InvertX:boolean = true;
+	private InvertY:boolean = true;
 	
 	constructor(private canvas: HTMLCanvasElement) {
 		this.perspectiveCamera = new three.PerspectiveCamera(this.FOV, window.innerWidth / window.innerHeight, 0.1, 1000);
