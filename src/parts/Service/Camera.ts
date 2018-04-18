@@ -38,14 +38,18 @@ export class CameraController {
 				this.FOV -= 1;
 		}
 		
+		var speed = 1;
+		if(keyMap["shift"])
+			speed = 2;
+		
 		if(keyMap["w"])
-			this.Move(new Vector3(0,0,-timeSplit));
+			this.Move(new Vector3(0,0,-timeSplit*speed));
 		if(keyMap["s"])
-			this.Move(new Vector3(0,0,timeSplit));
+			this.Move(new Vector3(0,0,timeSplit*speed));
 		if(keyMap["a"])
-			this.Move(new Vector3(-timeSplit,0,0));
+			this.Move(new Vector3(-timeSplit*speed,0,0));
 		if(keyMap["d"])
-			this.Move(new Vector3(timeSplit,0,0));
+			this.Move(new Vector3(timeSplit*speed,0,0));
 		
 		this.UpdateCamera();
 	}

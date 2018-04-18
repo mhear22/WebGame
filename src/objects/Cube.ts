@@ -8,7 +8,14 @@ export class Cube extends Asset {
 	private LeftPressed: boolean;
 	private RightPressed: boolean;
 
-	constructor(width: number = 1, height: number = 1, depth: number = 1, x:number = 0, y:number = 0, z:number = 0) {
+	constructor(
+		public width: number = 1,
+		public height: number = 1,
+		public depth: number = 1,
+		x:number = 0,
+		y:number = 0,
+		z:number = 0
+	) {
 		super();
 		var geo = new three.BoxGeometry(width, height, depth);
 		

@@ -35,6 +35,7 @@ export class App implements AfterViewInit {
 	private ShowDebug:boolean = true;
 	private FPSString:string = "";
 	private MouseString:string = "";
+	private CamPosString:string = "";
 	
 	private keyMap: any = {};
 	private renderer: WebGLRenderer;
@@ -84,10 +85,25 @@ export class App implements AfterViewInit {
 		});
 	}
 	
+	private times:number[] = [];
 	private RenderDebug() {
 		var cam = this.Camera.camera;
 		
-		this.FPSString = `${(1000/this.LastSplit).toFixed(2)}`;
+		if(this.times.length > 10) {
+			var average = this.times.reduce((x,y) => x+y)/this.times.length;
+			this.FPSString = `${(1000/average).toFixed(2)}`;
+			this.times = [];
+		}
+		else {
+			this.times.push(this.LastSplit);
+		}
+		
+		this.CamPosString = `
+			X:${cam.position.x.toFixed(2)}
+			Y:${cam.position.y.toFixed(2)}
+			Z:${cam.position.z.toFixed(2)}
+		`
+		
 		this.MouseString = `
 			X:${cam.rotation.x.toFixed(2)}
 			Y:${cam.rotation.y.toFixed(2)}
@@ -109,7 +125,8 @@ export class App implements AfterViewInit {
 	}
 
 	private KeyPress(press: KeyboardEvent, isPressed: boolean) {
-		this.keyMap[press.key] = isPressed;
+		this.keyMap[press.key.toLowerCase()] = isPressed;
+		this.keyMap["shift"] = press.shiftKey;
 	}
 
 	private MouseEvent(mouse: MouseEvent, mouseKey: number = 0) {
