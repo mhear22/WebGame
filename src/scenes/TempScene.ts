@@ -36,7 +36,7 @@ export class TempScene extends SceneBase {
 				this.Scene.add(nuCube.Element);
 			}
 			else {
-				this.SpaceLimiter += Step*10;
+				this.SpaceLimiter += Step*100;
 			}
 			
 		}
