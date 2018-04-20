@@ -5,6 +5,7 @@ import * as three from "three";
 import { PathMapper } from "../parts/Service/PathMapper";
 import { Path } from "three";
 import { Asset } from "../objects/asset";
+import { PhysicsCube } from "../objects/PhysicsCube";
 
 export class TempScene extends SceneBase {
 	private pathMapper:PathMapper;
@@ -15,26 +16,29 @@ export class TempScene extends SceneBase {
 	}
 	
 	public LoadMeshes():void {
-		//this.Meshes.push(new Cube(2, 2, 2,0,0,10));
-		//this.Meshes.push(new Cube(2, 2, 2,0,0,-10));
-		//this.Meshes.push(new Cube(2, 2, 2,0,10,0));
 		this.Meshes.push(new Cube(10, 2, 10,0,-10,0));
-		//this.Meshes.push(new Cube(2, 2, 2,10,0,0));
-		//this.Meshes.push(new Cube(2, 2, 2,-10,0,0));
-		
 		this.Meshes.forEach(x => {
 			this.Scene.add(x.Element);
 		});
 	}
 	
-	public Iterate(Step:Number):void {
-		//if(this.KeyMap["1"])
+	private SpaceLimiter:number = 0;
+	public Iterate(Step:number):void {
 		this.pathMapper.Iterate(Step);
 		
+		
 		if (this.KeyMap[" "]) {
-			var nuCube = new Cube();
-			this.Meshes.push(nuCube);
-			this.Scene.add(nuCube.Element);
+			if(this.SpaceLimiter>100) {
+				this.SpaceLimiter = 0;
+				var pos = this.Camera.camera.position;
+				var nuCube = new PhysicsCube(2,2,2,pos.x,20,pos.z);
+				this.Meshes.push(nuCube);
+				this.Scene.add(nuCube.Element);
+			}
+			else {
+				this.SpaceLimiter += Step*10;
+			}
+			
 		}
 		this.Meshes.forEach(x => {
 			x.Interval(this.KeyMap, Step);

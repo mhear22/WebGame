@@ -3,11 +3,6 @@ import { Object3D } from "three";
 import * as three from "three";
 
 export class Cube extends Asset {
-	private UpPressed: boolean;
-	private DownPressed: boolean;
-	private LeftPressed: boolean;
-	private RightPressed: boolean;
-
 	constructor(
 		public width: number = 1,
 		public height: number = 1,
@@ -18,19 +13,13 @@ export class Cube extends Asset {
 	) {
 		super();
 		var geo = new three.BoxGeometry(width, height, depth);
-		
 		var colors = [
-			//'red',
-			//'green',
-			//'blue',
-			//'white',
 			'#BBBBBB',
-			'#BBBBBB'
-		]
+			'#BEEEEF'
+		];
 		
-		var random = Math.floor((Math.random()*(colors.length-1))+1);
-		
-		var mat = new three.MeshBasicMaterial({ color: colors[random] });
+		var random = Math.floor(Math.random()*colors.length)+1;
+		var mat = new three.MeshBasicMaterial({ color: colors[random-1] });
 		this.element = new three.Mesh(geo, mat);
 		this.element.position.x = x;
 		this.element.position.y = y;
