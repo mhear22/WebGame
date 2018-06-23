@@ -5,18 +5,30 @@ import { FormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { routes } from "./routes";
 import { BrowserModule } from '@angular/platform-browser';
+import { InventoryDialog } from "./parts/Inventory/Inventory";
+import { MatDialogModule } from "@angular/material";
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
+	declarations: [
+		App,
+		InventoryDialog,
+	],
 	imports:[
 		BrowserModule,
 		HttpModule,
 		FormsModule,
 		RouterModule.forRoot(routes),
+		BrowserAnimationsModule,
+		MatDialogModule,
 	],
-	declarations: [
-		App
+	bootstrap:[ App ],
+	entryComponents:[
+		App,
+		InventoryDialog
 	],
-	providers:[ ],
-	bootstrap:[ App ]
+	providers:[
+		
+	],
 })
 export class AppModule { }

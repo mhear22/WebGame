@@ -1,7 +1,7 @@
-import { Component, ViewChild, ElementRef, AfterViewInit } from "@angular/core";
+import { Component, ViewChild, ElementRef, AfterViewInit, inject } from "@angular/core";
 import * as three from "three";
 import { Scene, PerspectiveCamera, WebGLRenderer, Mesh, Vector3, Camera } from "three";
-import { Observable } from "rxjs";
+import { interval } from "rxjs";
 import { Asset } from "../../objects/asset";
 import { Cube } from "../../objects/cube";
 import { CameraController } from "../Service/Camera";
@@ -44,7 +44,7 @@ export class App implements AfterViewInit {
 	private LastSplit:number;
 	
 	private BeginInit() {
-		this.Camera = new CameraController(this.canvas);
+		this.Camera = new CameraController(this.canvas, null);
 		this.renderer = new three.WebGLRenderer({
 			canvas: this.canvas,
 			antialias: true
@@ -62,7 +62,7 @@ export class App implements AfterViewInit {
 
 		
 		var lastFrame = new Date();
-		Observable.interval(16).subscribe(x => {
+		interval(16).subscribe(x => {
 			if (!isDrawing) {
 				isDrawing = true;
 				
