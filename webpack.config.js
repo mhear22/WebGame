@@ -5,7 +5,7 @@ const clearWebpackPlugin = require("clean-webpack-plugin");
 module.exports = {
 	entry: {
 		vendor: './src/vendor.ts',
-		main: ['./src/main.ts', './src/main.sass' ],
+		main: ['./src/main.ts', './src/main.sass'],
 	},
 	output: {
 		filename: './[name].js',
@@ -14,13 +14,6 @@ module.exports = {
 	devtool: 'source-map',
 	resolve: {
 		extensions: ['.ts', '.js', '.sass']
-	},
-	stats: {
-		children: false,
-		chunks: false,
-		modules: false,
-		warnings: false,
-		hash:false
 	},
 	module: {
 		rules: [
@@ -43,27 +36,43 @@ module.exports = {
 				use: 'html-loader'
 			},
 			{
-				test:/\.sass$/,
-				use:['style-loader','css-loader','sass-loader']
+				test: /\.sass$/,
+				use: ['style-loader', 'css-loader', 'sass-loader']
 			}
 		]
 	},
-	optimization:{
-		splitChunks:{
-			cacheGroups:{
-				commons:{
-					test:/[\\/]node_modules[\\/]/,
-					name:'vendor',
-					chunks:'all'
+	optimization: {
+		splitChunks: {
+			cacheGroups: {
+				commons: {
+					test: /[\\/]node_modules[\\/]/,
+					name: 'vendor',
+					chunks: 'all'
 				}
 			}
 		}
 	},
-	mode:'development',
-	serve: {
-		port:8080,
-		logLevel:'info',
-		inline:true
+	mode: 'development',
+	stats: {
+		children: false,
+		chunks: false,
+		modules: false,
+		warnings: false,
+		hash: false,
+		
+		assets: false,
+		colors: true,
+		version: false,
+		timings: false,
+		chunkModules: false
+	},
+	devServer: {
+		stats: {
+			modules:false,
+			warnings:false,
+			children:false,
+			assets:false
+		}
 	},
 	plugins: [
 		new clearWebpackPlugin(['dist'], {

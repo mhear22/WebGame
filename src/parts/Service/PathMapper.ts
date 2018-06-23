@@ -33,16 +33,36 @@ export class PathMapper {
 		var cam = this.Camera.camera.position;
 		var CamX = cam.z;
 		var CamY = cam.x;
-		var positions:Vector2[] = [
-			new Vector2(CamX+10,CamY),
-			new Vector2(CamX-10,CamY),
-			new Vector2(CamX,CamY-10),
-			new Vector2(CamX,CamY+10),
-			new Vector2(CamX+10,CamY+10),
-			new Vector2(CamX-10,CamY+10),
-			new Vector2(CamX-10,CamY-10),
-			new Vector2(CamX+10,CamY-10)
-		];
+		
+		var forWidth = (width:number, position:number):Vector2[] => {
+			var offsetLeft=0;
+			var offsetRight=1;
+			
+			var result:Vector2[] = Array.apply(null, {length:width}).map(Number.call, Number)
+			.map((x:number)=> {
+				var isOdd = (x%2) == 1;
+				if(isOdd) {
+					return new Vector2(CamX+(offsetLeft++)*10, CamY+position)
+				}
+				else {
+					return new Vector2(CamX+(offsetRight--)*10, CamY+position)
+				}
+			})
+			return result;
+		}
+		
+		var grid = (height:number, width:number):Vector2[] => {
+			var baseline = Math.floor(height/2);
+			var result:Vector2[][] = Array.apply(null, {length:width}).map(Number.call, Number).map((x:number) => {
+				return forWidth(width, (x-baseline)*10);
+			});
+			var flattened = result.reduce((x:Vector2[],y:Vector2[]) => {
+				return x.concat(y);
+			});
+			return flattened;
+		}
+		
+		var positions:Vector2[] = grid(10,10);
 		
 		positions.forEach(pos=> {
 			var posHasMesh = this.ElementAt(pos.x,pos.y);
