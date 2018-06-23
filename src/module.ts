@@ -6,15 +6,15 @@ import { RouterModule } from "@angular/router";
 import { routes } from "./routes";
 import { BrowserModule } from '@angular/platform-browser';
 import { InventoryDialog } from "./parts/Inventory/Inventory";
-import { MatDialogModule } from "@angular/material";
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { MatDialogModule } from "@angular/material/dialog";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
 	declarations: [
 		App,
 		InventoryDialog,
 	],
-	imports:[
+	imports: [
 		BrowserModule,
 		HttpModule,
 		FormsModule,
@@ -22,13 +22,12 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 		BrowserAnimationsModule,
 		MatDialogModule,
 	],
-	bootstrap:[ App ],
-	entryComponents:[
+	bootstrap: [App],
+	entryComponents: [
 		App,
-		InventoryDialog
+		InventoryDialog,
 	],
-	providers:[
-		
+	providers: [
 	],
 })
 export class AppModule { }

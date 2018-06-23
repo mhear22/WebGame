@@ -1,12 +1,13 @@
-import { Component, ViewChild, ElementRef, AfterViewInit, inject } from "@angular/core";
+import { Component, ViewChild, ElementRef, AfterViewInit, inject, Inject } from "@angular/core";
 import * as three from "three";
 import { Scene, PerspectiveCamera, WebGLRenderer, Mesh, Vector3, Camera } from "three";
 import { interval } from "rxjs";
 import { Asset } from "../../objects/asset";
 import { Cube } from "../../objects/cube";
-import { CameraController } from "../Service/Camera";
+import { CameraController } from "../Service/CameraController";
 import { SceneBase } from "../../scenes/sceneBase";
 import { TempScene } from "../../scenes/TempScene";
+import { MatDialog } from "@angular/material/dialog";
 
 @Component({
 	selector: 'app',
@@ -14,7 +15,7 @@ import { TempScene } from "../../scenes/TempScene";
 })
 export class App implements AfterViewInit {
 
-	constructor() {
+	constructor(@Inject(MatDialog) private dialog:MatDialog) {
 		document.onkeydown = (ev: KeyboardEvent) => this.KeyPress(ev, true);
 		document.onkeyup = (ev: KeyboardEvent) => this.KeyPress(ev, false);
 		document.onmousewheel = (ev: MouseEvent) => this.MouseEvent(ev);
@@ -44,7 +45,7 @@ export class App implements AfterViewInit {
 	private LastSplit:number;
 	
 	private BeginInit() {
-		this.Camera = new CameraController(this.canvas, null);
+		this.Camera = new CameraController(this.canvas, this.dialog);
 		this.renderer = new three.WebGLRenderer({
 			canvas: this.canvas,
 			antialias: true

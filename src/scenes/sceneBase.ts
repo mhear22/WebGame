@@ -1,4 +1,4 @@
-import { CameraController } from "../parts/Service/Camera";
+import { CameraController } from "../parts/Service/CameraController";
 import * as three from "three";
 import { Asset } from "../objects/asset";
 

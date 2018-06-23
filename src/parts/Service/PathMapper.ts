@@ -1,4 +1,4 @@
-import { CameraController } from "./Camera";
+import { CameraController } from "./CameraController";
 import { Asset } from "../../objects/asset";
 import { Vector2 } from "three";
 import { Cube } from "../../objects/cube";

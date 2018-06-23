@@ -1,6 +1,7 @@
 import * as three from "three";
 import { Vector3, Matrix4 } from "three";
 import { MatDialog } from "@angular/material";
+import { InventoryDialog } from "../Inventory/Inventory";
 
 export class CameraController {
 	private perspectiveCamera: three.PerspectiveCamera;
@@ -53,13 +54,13 @@ export class CameraController {
 			this.Move(new Vector3(timeSplit * speed, 0, 0));
 
 		if (keyMap["e"]) {
-			//var InventoryWindow = this.dialog.open(InventoryDialog, {
-			//	
-			//});
-			//
-			//InventoryWindow.afterClosed().subscribe(x=> {
-			//	console.log("Console Closed");
-			//});
+			var InventoryWindow = this.dialog.open(InventoryDialog, {
+				
+			});
+			
+			InventoryWindow.afterClosed().subscribe(x=> {
+				console.log("Console Closed");
+			});
 		}
 
 		this.UpdateCamera();

@@ -1,5 +1,5 @@
 import { SceneBase } from "./sceneBase";
-import { CameraController } from "../parts/Service/Camera";
+import { CameraController } from "../parts/Service/CameraController";
 import { Cube } from "../objects/Cube";
 import * as three from "three";
 import { PathMapper } from "../parts/Service/PathMapper";
