@@ -1,7 +1,9 @@
 import * as three from "three";
 import { Vector3, Matrix4 } from "three";
-import { MatDialog } from "@angular/material";
+import { MatDialog, MatDialogRef } from "@angular/material";
 import { InventoryDialog } from "../Inventory/Inventory";
+import { delay } from "rxjs/operators";
+import "rxjs";
 
 export class CameraController {
 	private perspectiveCamera: three.PerspectiveCamera;
@@ -14,9 +16,20 @@ export class CameraController {
 	private InvertX: boolean = true;
 	private InvertY: boolean = true;
 
+	private IsRotationLocked:boolean = false;
+	private IsMovementLocked:boolean = false;
+	
+	private pointerId = 0;
+	private InventoryOpen:boolean = false;
+	private IsInventoryLocked:boolean= false;
+	private InventoryWindow:MatDialogRef<InventoryDialog, any>;
+	
 	constructor(private canvas: HTMLCanvasElement, private dialog:MatDialog) {
 		this.perspectiveCamera = new three.PerspectiveCamera(this.FOV, window.innerWidth / window.innerHeight, 0.1, 1000);
 		this.UpdateCamera();
+		document.onpointermove = (ev:PointerEvent) => {
+			this.pointerId = ev.pointerId;
+		}
 	}
 
 	public UpdateCamera(): void {
@@ -43,24 +56,46 @@ export class CameraController {
 		var speed = 1;
 		if (keyMap["shift"])
 			speed = 2;
+		
+		if(!this.IsMovementLocked) {
+			if (keyMap["w"])
+				this.Move(new Vector3(0, 0, -timeSplit * speed));
+			if (keyMap["s"])
+				this.Move(new Vector3(0, 0, timeSplit * speed));
+			if (keyMap["a"])
+				this.Move(new Vector3(-timeSplit * speed, 0, 0));
+			if (keyMap["d"])
+				this.Move(new Vector3(timeSplit * speed, 0, 0));
+		}
 
-		if (keyMap["w"])
-			this.Move(new Vector3(0, 0, -timeSplit * speed));
-		if (keyMap["s"])
-			this.Move(new Vector3(0, 0, timeSplit * speed));
-		if (keyMap["a"])
-			this.Move(new Vector3(-timeSplit * speed, 0, 0));
-		if (keyMap["d"])
-			this.Move(new Vector3(timeSplit * speed, 0, 0));
+		if (keyMap["e"] && !this.IsInventoryLocked) {
+			this.IsInventoryLocked = true;
+			setTimeout(() => {
+				this.IsInventoryLocked = false;
+			},100);
 
-		if (keyMap["e"]) {
-			var InventoryWindow = this.dialog.open(InventoryDialog, {
+			if(!this.InventoryOpen) {
+				this.InventoryOpen = true;
+				this.IsRotationLocked = true;
+				this.IsMovementLocked = true;
+				this.InventoryWindow = this.dialog.open(InventoryDialog, {
+					height:'80vh',
+					width:'80vh'
+				});
 				
-			});
-			
-			InventoryWindow.afterClosed().subscribe(x=> {
-				console.log("Console Closed");
-			});
+				this.canvas.releasePointerCapture(this.pointerId);
+
+				this.InventoryWindow.afterClosed().subscribe(x=> {
+					this.InventoryOpen = false;
+					this.IsMovementLocked = false;
+					this.IsRotationLocked = false;
+				});
+			}
+			else {
+				this.InventoryWindow.close(() => {
+					
+				})
+			}
 		}
 
 		this.UpdateCamera();
@@ -72,6 +107,8 @@ export class CameraController {
 	}
 
 	public Rotate(x: number, y: number): void {
+		if(this.IsRotationLocked)
+			return;
 		if (this.InvertY)
 			this.RotY -= x;
 		else

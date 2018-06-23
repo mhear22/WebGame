@@ -1,3 +1,5 @@
+@import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
+
 canvas {
 	width: 100%;
 	height: 100%;
@@ -14,4 +16,28 @@ body {
 	background: white;
 	color: black;
 	font-size: 20px;
+}
+
+.rotate {
+	animation-name: spin;
+    animation-duration: 10000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+	text-align: center;
+	span {
+		line-height: 5000%;
+	}
+}
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
 }
