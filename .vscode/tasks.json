@@ -3,18 +3,12 @@
 		{
 			"label": "build",
 			"type": "shell",
-			"command": "webpack",
+			"command": "webpack-dev-server",
 			"problemMatcher": [],
 			"group": {
 				"kind": "build",
 				"isDefault": true
 			}
-		},
-		{
-			"label": "release",
-			"type": "shell",
-			"command": "webpack ./webpack.config.release.js",
-			"problemMatcher":[]
 		}
 	]
 }

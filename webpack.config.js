@@ -1,5 +1,4 @@
 const path = require("path");
-const webpack = require('webpack');
 const htmlWebpackPlugin = require("html-webpack-plugin");
 const clearWebpackPlugin = require("clean-webpack-plugin");
 
@@ -12,7 +11,7 @@ module.exports = {
 		filename: './[name].js',
 		path: path.resolve(__dirname, 'dist')
 	},
-	devtool: 'eval',
+	devtool: 'source-map',
 	resolve: {
 		extensions: ['.ts', '.js', '.sass']
 	},
@@ -59,6 +58,12 @@ module.exports = {
 				}
 			}
 		}
+	},
+	mode:'development',
+	serve: {
+		port:8080,
+		logLevel:'info',
+		inline:true
 	},
 	plugins: [
 		new clearWebpackPlugin(['dist'], {
