@@ -19,7 +19,7 @@ export class Cube extends Asset {
 		];
 		
 		var random = Math.floor(Math.random()*colors.length)+1;
-		var mat = new three.MeshBasicMaterial({ color: colors[random-1] });
+		var mat = new three.MeshPhongMaterial({ color: colors[random-1] });
 		this.element = new three.Mesh(geo, mat);
 		this.element.position.x = x;
 		this.element.position.y = y;

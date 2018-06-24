@@ -14,19 +14,26 @@ export class TempScene extends SceneBase {
 		this.SpawnCube(pos);
 		this.drawLight();
 	}
-	private light:three.PointLight;
 	
 	private drawLight() {
-		this.light = new three.PointLight(0xffffff, 1, 1000, 0);
+		var light = new three.PointLight(0xffffff, 1, 1000, 0);
 		var pos = this.Camera.camera.position
-		this.light.position.y = 20;
-		this.light.castShadow = true;
-		this.light.shadowCameraFar = 10000;
-		this.light.shadowCameraNear = 1;
-		this.light.shadowMapHeight = 2048;
-		this.light.shadowMapWidth = 2048;
+		light.position.y = 20;
+		light.castShadow = true;
+		light.shadowCameraFar = 10000;
+		light.shadowCameraNear = 1;
+		light.shadowMapHeight = 2048;
+		light.shadowMapWidth = 2048;
+		var sunMesh = new three.MeshBasicMaterial();
+		var sunGeo = new three.SphereGeometry(2);
 		
-		this.Scene.add(this.light);
+		var sun = new three.Mesh(sunGeo, sunMesh);
+		sun.position.x = light.position.x
+		sun.position.y = light.position.y
+		sun.position.z = light.position.z
+		
+		this.Scene.add(sun);
+		this.Scene.add(light);
 	}
 
 	public LoadMeshes(): void {
