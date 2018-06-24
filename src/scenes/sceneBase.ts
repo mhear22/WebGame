@@ -1,6 +1,6 @@
 import { CameraController } from "../Services/CameraController";
 import * as three from "three";
-import { Asset } from "../objects/asset";
+import { Asset } from "../Objects/Asset";
 
 export abstract class SceneBase {
 	constructor(protected Camera:CameraController) {

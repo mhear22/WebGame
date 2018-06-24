@@ -24,6 +24,8 @@ export class Cube extends Asset {
 		this.element.position.x = x;
 		this.element.position.y = y;
 		this.element.position.z = z;
+		this.element.castShadow = true;
+		this.element.receiveShadow = true;
 	}
 
 	public Interval(keyMap: any,timeSplit:number) {

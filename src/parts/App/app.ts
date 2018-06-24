@@ -2,14 +2,13 @@ import { Component, ViewChild, ElementRef, AfterViewInit, inject, Inject } from 
 import * as three from "three";
 import { Scene, PerspectiveCamera, WebGLRenderer, Mesh, Vector3, Camera } from "three";
 import { interval } from "rxjs";
-import { Asset } from "../../objects/asset";
-import { Cube } from "../../objects/cube";
+import { Asset } from "../../Objects/Asset";
+import { Cube } from "../../Objects/Cube";
 import { CameraController } from "../../Services/CameraController";
 import { SceneBase } from "../../Scenes/sceneBase";
 import { TempScene } from "../../Scenes/TempScene";
 import { MatDialog } from "@angular/material/dialog";
-import { DebugInfo } from "../../Objects/debugModel";
-import { PathMapper } from "../../Services/PathMapper";
+import { DebugInfo } from "../../Objects/DebugModel";
 
 @Component({
 	selector: 'app',
@@ -54,6 +53,7 @@ export class App implements AfterViewInit {
 		this.renderer.setPixelRatio(devicePixelRatio);
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
 		this.renderer.shadowMap.enabled = true;
+		this.renderer.shadowMapEnabled = true;
 		this.renderer.shadowMap.type = three.PCFSoftShadowMap;
 		this.renderer.setClearColor(0x000000, 1);
 		this.renderer.autoClear = true;
@@ -100,7 +100,7 @@ export class App implements AfterViewInit {
 			this.times.push(this.LastSplit);
 		}
 		
-		this.debugInfo.paintedCount = PathMapper.Squares;
+		//this.debugInfo.paintedCount = PathMapper.Squares;
 		this.debugInfo.CamSpeed = `${this.Camera.speed}`;
 		
 		this.debugInfo.CamPosString = `

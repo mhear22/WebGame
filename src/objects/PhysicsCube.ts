@@ -1,5 +1,5 @@
-import { Asset } from "./asset";
-import { Cube } from "./cube";
+import { Asset } from "./Asset";
+import { Cube } from "./Cube";
 import { Vector3 } from "three";
 
 export class PhysicsCube extends Cube {
@@ -24,7 +24,7 @@ export class PhysicsCube extends Cube {
 		
 		newMomentum = (1-(timeSplit * 0.01)) * newMomentum;
 		
-		if(this.Element.position.y >= -9) {
+		if(this.Element.position.y >= (-9 + (this.height/2))) {
 			this.Momentum.y = newMomentum;
 			this.Element.position.add(this.Momentum);
 		}
