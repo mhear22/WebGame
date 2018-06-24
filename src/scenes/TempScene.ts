@@ -45,7 +45,7 @@ export class TempScene extends SceneBase {
 	}
 
 	private SpawnCube(pos:three.Vector3) {
-		var nuCube = new PhysicsCube(2, 2, 2, pos.x, 20, pos.z - 10);
+		var nuCube = new PhysicsCube(2, 2, 2, pos.x, 20, pos.z - 20);
 		this.Meshes.push(nuCube);
 		this.Scene.add(nuCube.Element);
 	}
