@@ -1,7 +1,7 @@
 import * as three from "three";
 import { Vector3, Matrix4 } from "three";
 import { MatDialog, MatDialogRef } from "@angular/material";
-import { InventoryDialog } from "../Inventory/Inventory";
+import { InventoryDialog } from "../Parts/Inventory/Inventory";
 import { delay } from "rxjs/operators";
 import "rxjs";
 
@@ -42,7 +42,8 @@ export class CameraController {
 		if (changed)
 			this.camera.updateProjectionMatrix();
 	}
-
+	
+	public speed = 0;
 	public Interval(keyMap: any, timeSplit: number): void {
 		if (keyMap["+"]) {
 			if (this.FOV < 179)
@@ -53,19 +54,28 @@ export class CameraController {
 				this.FOV -= 1;
 		}
 
-		var speed = 1;
-		if (keyMap["shift"])
-			speed = 2;
-		
+		if (keyMap["shift"]) {
+			if(this.speed == 1) {
+				this.speed = 2;
+			}
+			else {
+				this.speed = this.speed * 1.05;
+				if(this.speed > 4)
+					this.speed = 4;
+			}
+		}
+		else
+			this.speed = 1;
+			
 		if(!this.IsMovementLocked) {
 			if (keyMap["w"])
-				this.Move(new Vector3(0, 0, -timeSplit * speed));
+				this.Move(new Vector3(0, 0, -timeSplit * this.speed));
 			if (keyMap["s"])
-				this.Move(new Vector3(0, 0, timeSplit * speed));
+				this.Move(new Vector3(0, 0, timeSplit * this.speed));
 			if (keyMap["a"])
-				this.Move(new Vector3(-timeSplit * speed, 0, 0));
+				this.Move(new Vector3(-timeSplit * this.speed, 0, 0));
 			if (keyMap["d"])
-				this.Move(new Vector3(timeSplit * speed, 0, 0));
+				this.Move(new Vector3(timeSplit * this.speed, 0, 0));
 		}
 
 		if (keyMap["e"] && !this.IsInventoryLocked) {

@@ -22,6 +22,8 @@ export class PhysicsCube extends Cube {
 		
 		var newMomentum:number = this.Momentum.y - grav;
 		
+		newMomentum = (1+(timeSplit * 0.0001)) * newMomentum;
+		
 		if(this.Element.position.y >= -9) {
 			this.Momentum.y = newMomentum;
 			this.Element.position.add(this.Momentum);

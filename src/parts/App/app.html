@@ -1,8 +1,12 @@
 <canvas #splash></canvas>
 <div [hidden]="!ShowDebug" class="screen-text">
-	{{FPSString}}
-	{{MouseString}}
+	{{debugInfo.FPSString}}
+	{{debugInfo.MouseString}}
+	CameraSpeed:{{debugInfo.CamSpeed}}
 	<div>
-		{{CamPosString}}
+		{{debugInfo.CamPosString}}
+	</div>
+	<div>
+		Squares:{{debugInfo.paintedCount}}
 	</div>
 </div>

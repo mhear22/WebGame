@@ -1,7 +1,7 @@
 import { CameraController } from "./CameraController";
-import { Asset } from "../../objects/asset";
+import { Asset } from "../Objects/asset";
 import { Vector2 } from "three";
-import { Cube } from "../../objects/cube";
+import { Cube } from "../Objects/cube";
 import * as three from "three";
 
 export class PathMapper {
@@ -29,7 +29,10 @@ export class PathMapper {
 		return false;
 	}
 	
+	public static Squares:number = 0;
+	
 	public Iterate(Step:Number):void {
+		
 		var cam = this.Camera.camera.position;
 		var CamX = cam.z;
 		var CamY = cam.x;
@@ -71,6 +74,7 @@ export class PathMapper {
 				var Y = Math.floor(pos.y/10);
 				this.floor[X][Y] = true;
 				
+				PathMapper.Squares++;
 				var cube = new Cube(10,2,10,Y*10, -10,X*10);
 				this.Meshes.push(cube);
 				this.Scene.add(cube.Element);

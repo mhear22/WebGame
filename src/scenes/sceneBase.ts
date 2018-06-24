@@ -1,11 +1,10 @@
-import { CameraController } from "../parts/Service/CameraController";
+import { CameraController } from "../Services/CameraController";
 import * as three from "three";
 import { Asset } from "../objects/asset";
 
 export abstract class SceneBase {
-	constructor(protected Camera:CameraController, KeyMap:any) {
+	constructor(protected Camera:CameraController) {
 		this.Scene = new three.Scene();
-		this.KeyMap = KeyMap;
 	}
 	
 	protected KeyMap:any;
@@ -13,7 +12,7 @@ export abstract class SceneBase {
 	protected Meshes:Asset[] = [];
 	
 	public abstract LoadMeshes():void;
-	public abstract Iterate(Step:number):void;
+	public abstract Iterate(KeyMap:any, Step:number):void;
 	
 	public GetScene():three.Scene{
 		return this.Scene;

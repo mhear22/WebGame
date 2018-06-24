@@ -4,10 +4,12 @@ import { Scene, PerspectiveCamera, WebGLRenderer, Mesh, Vector3, Camera } from "
 import { interval } from "rxjs";
 import { Asset } from "../../objects/asset";
 import { Cube } from "../../objects/cube";
-import { CameraController } from "../Service/CameraController";
-import { SceneBase } from "../../scenes/sceneBase";
-import { TempScene } from "../../scenes/TempScene";
+import { CameraController } from "../../Services/CameraController";
+import { SceneBase } from "../../Scenes/sceneBase";
+import { TempScene } from "../../Scenes/TempScene";
 import { MatDialog } from "@angular/material/dialog";
+import { DebugInfo } from "../../Objects/debugModel";
+import { PathMapper } from "../../Services/PathMapper";
 
 @Component({
 	selector: 'app',
@@ -34,15 +36,14 @@ export class App implements AfterViewInit {
 	}
 
 	private ShowDebug:boolean = true;
-	private FPSString:string = "";
-	private MouseString:string = "";
-	private CamPosString:string = "";
 	
 	private keyMap: any = {};
 	private renderer: WebGLRenderer;
 	private Camera: CameraController;
 	private Scene:SceneBase;
 	private LastSplit:number;
+	
+	public debugInfo:DebugInfo = new DebugInfo();
 	
 	private BeginInit() {
 		this.Camera = new CameraController(this.canvas, this.dialog);
@@ -57,7 +58,7 @@ export class App implements AfterViewInit {
 		this.renderer.setClearColor(0x000000, 1);
 		this.renderer.autoClear = true;
 		
-		this.Scene = new TempScene(this.Camera, this.keyMap);
+		this.Scene = new TempScene(this.Camera);
 		this.Scene.LoadMeshes();
 		var isDrawing = false;
 
@@ -92,20 +93,23 @@ export class App implements AfterViewInit {
 		
 		if(this.times.length > 10) {
 			var average = this.times.reduce((x,y) => x+y)/this.times.length;
-			this.FPSString = `${(1000/average).toFixed(2)}`;
+			this.debugInfo.FPSString = `${(1000/average).toFixed(2)}`;
 			this.times = [];
 		}
 		else {
 			this.times.push(this.LastSplit);
 		}
 		
-		this.CamPosString = `
+		this.debugInfo.paintedCount = PathMapper.Squares;
+		this.debugInfo.CamSpeed = `${this.Camera.speed}`;
+		
+		this.debugInfo.CamPosString = `
 			X:${cam.position.x.toFixed(2)}
 			Y:${cam.position.y.toFixed(2)}
 			Z:${cam.position.z.toFixed(2)}
 		`
 		
-		this.MouseString = `
+		this.debugInfo.MouseString = `
 			X:${cam.rotation.x.toFixed(2)}
 			Y:${cam.rotation.y.toFixed(2)}
 			Z:${cam.rotation.z.toFixed(2)}
@@ -135,7 +139,7 @@ export class App implements AfterViewInit {
 	}
 	
 	private Logic(lastFrameSplit:number) {
-		this.Scene.Iterate(lastFrameSplit);
+		this.Scene.Iterate(this.keyMap, lastFrameSplit);
 		this.Camera.Interval(this.keyMap, lastFrameSplit);
 	}
 	
