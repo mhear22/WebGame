@@ -4,6 +4,7 @@ import { Cube } from "../Objects/Cube";
 import * as three from "three";
 import { PhysicsCube } from "../Objects/PhysicsCube";
 import { PlaneMapper } from "../Services/Plane";
+import { Sun } from "../Objects/Sun";
 
 export class TempScene extends SceneBase {
 
@@ -16,24 +17,7 @@ export class TempScene extends SceneBase {
 	}
 	
 	private drawLight() {
-		var light = new three.PointLight(0xffffff, 1, 1000, 0);
-		var pos = this.Camera.camera.position
-		light.position.y = 20;
-		light.castShadow = true;
-		light.shadowCameraFar = 10000;
-		light.shadowCameraNear = 1;
-		light.shadowMapHeight = 2048;
-		light.shadowMapWidth = 2048;
-		var sunMesh = new three.MeshBasicMaterial();
-		var sunGeo = new three.SphereGeometry(2);
-		
-		var sun = new three.Mesh(sunGeo, sunMesh);
-		sun.position.x = light.position.x
-		sun.position.y = light.position.y
-		sun.position.z = light.position.z
-		
-		this.Scene.add(sun);
-		this.Scene.add(light);
+		this.Meshes.push(new Sun(this.Scene, 0, 20, 0))
 	}
 
 	public LoadMeshes(): void {
