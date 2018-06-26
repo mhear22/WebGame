@@ -5,7 +5,7 @@ import { FormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { routes } from "./routes";
 import { BrowserModule } from '@angular/platform-browser';
-import { InventoryDialog } from "./parts/Inventory/Inventory";
+import { InventoryDialog } from "./Parts/Inventory/Inventory";
 import { MatDialogModule } from "@angular/material/dialog";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -28,6 +28,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 		InventoryDialog,
 	],
 	providers: [
+		InventoryDialog
 	],
 })
 export class AppModule { }

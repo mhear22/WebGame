@@ -1,14 +1,13 @@
 import { Component, ViewChild, ElementRef, AfterViewInit, inject, Inject } from "@angular/core";
 import * as three from "three";
-import { Scene, PerspectiveCamera, WebGLRenderer, Mesh, Vector3, Camera } from "three";
+import { WebGLRenderer } from "three";
 import { interval } from "rxjs";
-import { Asset } from "../../Objects/Asset";
-import { Cube } from "../../Objects/Cube";
 import { CameraController } from "../../Services/CameraController";
 import { SceneBase } from "../../Scenes/sceneBase";
 import { TempScene } from "../../Scenes/TempScene";
 import { MatDialog } from "@angular/material/dialog";
 import { DebugInfo } from "../../Objects/DebugModel";
+import { InventoryDialog } from "../Inventory/Inventory";
 
 @Component({
 	selector: 'app',
