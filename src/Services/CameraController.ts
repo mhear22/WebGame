@@ -4,6 +4,7 @@ import { MatDialog, MatDialogRef } from "@angular/material";
 import { InventoryDialog } from "../Parts/Inventory/Inventory";
 import { delay } from "rxjs/operators";
 import "rxjs";
+import { KeyController } from "./KeyController";
 
 export class CameraController {
 	private perspectiveCamera: three.PerspectiveCamera;
@@ -43,17 +44,17 @@ export class CameraController {
 	}
 	
 	public speed = 0;
-	public Interval(keyMap: any, timeSplit: number): void {
-		if (keyMap["+"]) {
+	public Interval(keyController: KeyController, timeSplit: number): void {
+		if (keyController.KeyMap["+"]) {
 			if (this.FOV < 179)
 				this.FOV += 1;
 		}
-		if (keyMap["-"]) {
+		if (keyController.KeyMap["-"]) {
 			if (this.FOV > 1)
 				this.FOV -= 1;
 		}
 
-		if (keyMap["shift"]) {
+		if (keyController.KeyMap["shift"]) {
 			if(this.speed == 1) {
 				this.speed = 2;
 			}
@@ -67,17 +68,17 @@ export class CameraController {
 			this.speed = 1;
 			
 		if(!this.IsMovementLocked) {
-			if (keyMap["w"])
+			if (keyController.KeyMap["w"])
 				this.Move(new Vector3(0, 0, -timeSplit * this.speed));
-			if (keyMap["s"])
+			if (keyController.KeyMap["s"])
 				this.Move(new Vector3(0, 0, timeSplit * this.speed));
-			if (keyMap["a"])
+			if (keyController.KeyMap["a"])
 				this.Move(new Vector3(-timeSplit * this.speed, 0, 0));
-			if (keyMap["d"])
+			if (keyController.KeyMap["d"])
 				this.Move(new Vector3(timeSplit * this.speed, 0, 0));
 		}
 
-		if (keyMap["e"] && !this.IsInventoryLocked) {
+		if (keyController.KeyMap["e"] && !this.IsInventoryLocked) {
 			this.IsInventoryLocked = true;
 			setTimeout(() => {
 				this.IsInventoryLocked = false;
@@ -142,7 +143,7 @@ export class CameraController {
 		this.camera.rotation.y = 0;
 		this.camera.rotation.z = 0;
 
-		this.camera.rotateY(this.RotY)
+		this.camera.rotateY(this.RotY);
 		this.camera.rotateX(this.RotX);
 	}
 

@@ -7,7 +7,7 @@ import { SceneBase } from "../../Scenes/sceneBase";
 import { TempScene } from "../../Scenes/TempScene";
 import { MatDialog } from "@angular/material/dialog";
 import { DebugInfo } from "../../Objects/DebugModel";
-import { InventoryDialog } from "../Inventory/Inventory";
+import { KeyController } from "../../Services/KeyController";
 
 @Component({
 	selector: 'app',
@@ -16,8 +16,8 @@ import { InventoryDialog } from "../Inventory/Inventory";
 export class App implements AfterViewInit {
 
 	constructor(@Inject(MatDialog) private dialog:MatDialog) {
-		document.onkeydown = (ev: KeyboardEvent) => this.KeyPress(ev, true);
-		document.onkeyup = (ev: KeyboardEvent) => this.KeyPress(ev, false);
+		document.onkeydown = (ev: KeyboardEvent) => this.keyController.KeyPress(ev, true);
+		document.onkeyup = (ev: KeyboardEvent) => this.keyController.KeyPress(ev, false);
 		document.onmousewheel = (ev: MouseEvent) => this.MouseEvent(ev);
 		document.onmousemove = (ev: MouseEvent) => this.MouseEvent(ev);
 		document.onclick = (ev: MouseEvent) => this.MouseEvent(ev, ev.button + 1);
@@ -35,7 +35,7 @@ export class App implements AfterViewInit {
 
 	private ShowDebug:boolean = true;
 	
-	private keyMap: any = {};
+	private keyController:KeyController;
 	private renderer: WebGLRenderer;
 	private Camera: CameraController;
 	private Scene:SceneBase;
@@ -45,6 +45,7 @@ export class App implements AfterViewInit {
 	
 	private BeginInit() {
 		this.Camera = new CameraController(this.canvas, this.dialog);
+		this.keyController = new KeyController();
 		this.renderer = new three.WebGLRenderer({
 			canvas: this.canvas,
 			antialias: true
@@ -57,7 +58,7 @@ export class App implements AfterViewInit {
 		this.renderer.setClearColor(0x000000, 1);
 		this.renderer.autoClear = true;
 		
-		this.Scene = new TempScene(this.Camera);
+		this.Scene = new TempScene(this.Camera, this.keyController);
 		var isDrawing = false;
 
 		
@@ -72,7 +73,7 @@ export class App implements AfterViewInit {
 				
 				if(this.ShowDebug)
 					this.RenderDebug();
-				if(this.keyMap["`"])
+				if(this.keyController.KeyMap["`"])
 					this.ShowDebug = !this.ShowDebug;
 				
 				this.Logic(this.LastSplit/100);
@@ -127,18 +128,13 @@ export class App implements AfterViewInit {
 		return split;
 	}
 
-	private KeyPress(press: KeyboardEvent, isPressed: boolean) {
-		this.keyMap[press.key.toLowerCase()] = isPressed;
-		this.keyMap["shift"] = press.shiftKey;
-	}
-
 	private MouseEvent(mouse: MouseEvent, mouseKey: number = 0) {
 		this.Camera.MouseEvent(mouse,mouseKey);
 	}
 	
 	private Logic(lastFrameSplit:number) {
-		this.Scene.Iterate(this.keyMap, lastFrameSplit);
-		this.Camera.Interval(this.keyMap, lastFrameSplit);
+		this.Scene.Iterate(this.keyController, lastFrameSplit);
+		this.Camera.Interval(this.keyController, lastFrameSplit);
 	}
 	
 	private Animate() {

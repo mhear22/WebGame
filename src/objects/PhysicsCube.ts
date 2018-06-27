@@ -1,9 +1,11 @@
 import { Asset } from "./Asset";
 import { Cube } from "./Cube";
 import { Vector3 } from "three";
+import { KeyController } from "../Services/KeyController";
 
 export class PhysicsCube extends Cube {
 	constructor(
+		KeyController:KeyController,
 		width: number = 1,
 		height: number = 1,
 		depth: number = 1,
