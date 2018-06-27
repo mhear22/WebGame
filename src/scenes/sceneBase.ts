@@ -11,10 +11,14 @@ export abstract class SceneBase {
 	protected Scene:three.Scene;
 	protected Meshes:Asset[] = [];
 	
-	public abstract LoadMeshes():void;
 	public abstract Iterate(KeyMap:any, Step:number):void;
 	
 	public GetScene():three.Scene{
 		return this.Scene;
+	}
+	
+	public Add(asset:Asset) {
+		this.Scene.add(asset.Element);
+		this.Meshes.push(asset);
 	}
 }

@@ -58,7 +58,6 @@ export class App implements AfterViewInit {
 		this.renderer.autoClear = true;
 		
 		this.Scene = new TempScene(this.Camera);
-		this.Scene.LoadMeshes();
 		var isDrawing = false;
 
 		

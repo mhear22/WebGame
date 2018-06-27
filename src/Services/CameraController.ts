@@ -10,6 +10,9 @@ export class CameraController {
 	private mouseLocked: boolean;
 	private FOV: number = 75;
 
+	public get RotationX(){ return this.RotX; } 
+	public get RotationY(){ return this.RotY; } 
+	
 	private RotX: number = 0;
 	private RotY: number = 0;
 
@@ -19,7 +22,6 @@ export class CameraController {
 	private IsRotationLocked:boolean = false;
 	private IsMovementLocked:boolean = false;
 	
-	private pointerId = 0;
 	private InventoryOpen:boolean = false;
 	private IsInventoryLocked:boolean= false;
 	private InventoryWindow:MatDialogRef<InventoryDialog, any>;
@@ -27,9 +29,6 @@ export class CameraController {
 	constructor(private canvas: HTMLCanvasElement, private dialog:MatDialog) {
 		this.perspectiveCamera = new three.PerspectiveCamera(this.FOV, window.innerWidth / window.innerHeight, 0.1, 1000);
 		this.UpdateCamera();
-		document.onpointermove = (ev:PointerEvent) => {
-			this.pointerId = ev.pointerId;
-		}
 	}
 
 	public UpdateCamera(): void {
@@ -92,8 +91,6 @@ export class CameraController {
 					height:'80vh',
 					width:'80vh'
 				});
-				
-				this.canvas.releasePointerCapture(this.pointerId);
 
 				this.InventoryWindow.afterClosed().subscribe(x=> {
 					this.InventoryOpen = false;
