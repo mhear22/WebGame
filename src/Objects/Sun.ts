@@ -2,6 +2,8 @@ import { Asset } from "./Asset";
 import * as three from "three";
 
 export class Sun extends Asset {
+	private light:three.PointLight;
+	
 	constructor(
 		Scene:three.Scene,
 		X:number = 0,
@@ -19,21 +21,21 @@ export class Sun extends Asset {
 		this.element.position.y = Y;
 		this.element.position.z = Z;
 		
-		var light = new three.PointLight(0xFFFFFF, 1, 1000, 0);
-		light.position.y = Y;
-		light.position.x = X;
-		light.position.z = Z;
+		this.light = new three.PointLight(0xFFFFFF, 1, 1000, 0);
+		this.light.position.y = Y;
+		this.light.position.x = X;
+		this.light.position.z = Z;
 		
-		light.castShadow = true;
-		light.shadowCameraFar = 10000;
-		light.shadowCameraNear = 1;
-		light.shadowMapHeight = 2048;
-		light.shadowMapWidth = 2048;
+		this.light.castShadow = true;
+		this.light.shadowCameraFar = 10000;
+		this.light.shadowCameraNear = 1;
+		this.light.shadowMapHeight = 2048;
+		this.light.shadowMapWidth = 2048;
+		this.light.intensity = 0.5;
 		
-		Scene.add(light);
+		Scene.add(this.light);
 	}
 	
 	Interval(keyMap:any, timeSplit:number) {
-		
 	}
 }

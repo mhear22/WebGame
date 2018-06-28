@@ -7,24 +7,30 @@ import { Sun } from "../Objects/Sun";
 import { Plane } from "../Objects/Plane";
 import { Vector3 } from "three";
 import { KeyController } from "../Services/KeyController";
+import { PathMapper } from "../Services/PathMapper";
 
 export class TempScene extends SceneBase {
 
+	private mapper:PathMapper;
+	
 	constructor(
 		protected Camera: CameraController,
 		keyController:KeyController
 	) {
 		super(Camera);
-		this.Add(new Plane(-9));
+		this.mapper = new PathMapper(Camera, this.Meshes, this.Scene);
+		//this.Add(new Plane(-9));
 		var pos = Camera.camera.position;
 		this.Add(new PhysicsCube(keyController,2, 2, 2, pos.x, 20, pos.z - 20));
-		this.Add(new Sun(this.Scene, 0, 20, 0))
-		this.Add(new Sun(this.Scene, 100, 20, 0))
-		this.Add(new Sun(this.Scene, 0, 20, 100))
+		this.Add(new Sun(this.Scene, 0, 40, 0))
+		this.Add(new Sun(this.Scene, 100, 40, 0))
+		this.Add(new Sun(this.Scene, 0, 40, 100))
 	}
 
 	private SpaceLimiter: number = 0;
 	public Iterate(KeyMap: KeyController, Step: number): void {
+		this.mapper.Iterate(Step);
+		
 		if (KeyMap.KeyMap[" "]) {
 			if (this.SpaceLimiter > 0) {
 				this.SpaceLimiter = -100;
@@ -32,7 +38,7 @@ export class TempScene extends SceneBase {
 				var vec = new Vector3(0,0,-10);
 				vec.applyAxisAngle(this.Camera.camera.up,this.Camera.RotationY);
 				var loc = new Vector3(pos.x, pos.y, pos.z).add(vec);
-				this.Add(new PhysicsCube(KeyMap,2,2,2,loc.x, 1, loc.z));
+				this.Add(new PhysicsCube(KeyMap,2,2,2,loc.x, 10, loc.z));
 			}
 			else {
 				this.SpaceLimiter += Step * 100;
