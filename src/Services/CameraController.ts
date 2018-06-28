@@ -61,8 +61,8 @@ export class CameraController {
 			}
 			else {
 				this.speed = this.speed * 1.05;
-				if(this.speed > 4)
-					this.speed = 4;
+				if(this.speed > 170)
+					this.speed = 170;
 			}
 		}
 		else

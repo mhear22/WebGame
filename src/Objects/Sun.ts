@@ -21,7 +21,7 @@ export class Sun extends Asset {
 		this.element.position.y = Y;
 		this.element.position.z = Z;
 		
-		this.light = new three.PointLight(0xFFFFFF, 1, 1000, 0);
+		this.light = new three.PointLight(0xFFFFFF, 0.5, 100000000, 0);
 		this.light.position.y = Y;
 		this.light.position.x = X;
 		this.light.position.z = Z;
@@ -31,7 +31,6 @@ export class Sun extends Asset {
 		this.light.shadowCameraNear = 1;
 		this.light.shadowMapHeight = 2048;
 		this.light.shadowMapWidth = 2048;
-		this.light.intensity = 0.5;
 		
 		Scene.add(this.light);
 	}
