@@ -27,14 +27,17 @@ export class Sun extends Asset {
 		this.light.position.z = Z;
 		
 		this.light.castShadow = true;
-		this.light.shadowCameraFar = 10000;
-		this.light.shadowCameraNear = 1;
-		this.light.shadowMapHeight = 2048;
-		this.light.shadowMapWidth = 2048;
+		this.light.shadow.camera.far = 10000;
+		this.light.shadow.camera.near = 1;
+		this.light.shadow.mapSize.height = 2048;
+		this.light.shadow.mapSize.width = 2048;
 		
 		Scene.add(this.light);
 	}
 	
 	Interval(keyMap:any, timeSplit:number) {
+		this.light.position.x = this.element.position.x;
+		this.light.position.y = this.element.position.y;
+		this.light.position.z = this.element.position.z;
 	}
 }

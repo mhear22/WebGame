@@ -8,6 +8,7 @@ import { Plane } from "../Objects/Plane";
 import { Vector3 } from "three";
 import { KeyController } from "../Services/KeyController";
 import { PathMapper } from "../Services/PathMapper";
+import { Car } from "../Objects/Car";
 
 export class TempScene extends SceneBase {
 
@@ -22,9 +23,10 @@ export class TempScene extends SceneBase {
 		//this.Add(new Plane(-9));
 		var pos = Camera.camera.position;
 		this.Add(new PhysicsCube(keyController,2, 2, 2, pos.x, 20, pos.z - 20));
-		this.Add(new Sun(this.Scene, 0, 40, 0))
-		this.Add(new Sun(this.Scene, 100, 40, 0))
-		this.Add(new Sun(this.Scene, 0, 40, 100))
+		this.Add(new Sun(this.Scene, 0, 80, 0))
+		//this.Add(new Sun(this.Scene, 100, 80, 0))
+		//this.Add(new Sun(this.Scene, 0, 40, 100))
+		this.Add(new Car(this.Scene));
 	}
 
 	private SpaceLimiter: number = 0;
