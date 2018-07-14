@@ -42,6 +42,7 @@ export class App implements AfterViewInit {
 	private LastSplit:number;
 	
 	public debugInfo:DebugInfo = new DebugInfo();
+	public InteractionDialog:string = "";
 	
 	private BeginInit() {
 		this.Camera = new CameraController(this.canvas, this.dialog);
@@ -78,9 +79,8 @@ export class App implements AfterViewInit {
 				if(this.ShowDebug)
 					this.RenderDebug();
 				
-				//if(this.keyController.KeyMap["`"])
-				//	this.ShowDebug = !this.ShowDebug;
-				
+				this.InteractionDialog = this.Scene.InteractionText;
+					
 				this.Logic(this.LastSplit/100);
 				this.Animate();
 				

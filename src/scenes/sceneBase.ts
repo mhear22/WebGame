@@ -8,6 +8,8 @@ export abstract class SceneBase {
 		this.Scene = new three.Scene();
 	}
 	
+	public InteractionText:string;
+	
 	protected Scene:three.Scene;
 	protected Meshes:Asset[] = [];
 	

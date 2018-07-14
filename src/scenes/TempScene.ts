@@ -1,4 +1,4 @@
-import { SceneBase } from "./SceneBase";
+import { SceneBase } from "./sceneBase";
 import { CameraController } from "../Services/CameraController";
 import { Cube } from "../Objects/Cube";
 import * as three from "three";
@@ -11,8 +11,8 @@ import { PathMapper } from "../Services/PathMapper";
 import { Car } from "../Objects/Car";
 
 export class TempScene extends SceneBase {
-
 	private mapper:PathMapper;
+	private car:Car;
 	
 	constructor(
 		protected Camera: CameraController,
@@ -20,18 +20,17 @@ export class TempScene extends SceneBase {
 	) {
 		super(Camera);
 		this.mapper = new PathMapper(Camera, this.Meshes, this.Scene);
-		//this.Add(new Plane(-9));
 		var pos = Camera.camera.position;
 		this.Add(new PhysicsCube(keyController,2, 2, 2, pos.x, 20, pos.z - 20));
 		this.Add(new Sun(this.Scene, 0, 80, 0))
-		//this.Add(new Sun(this.Scene, 100, 80, 0))
-		//this.Add(new Sun(this.Scene, 0, 40, 100))
-		this.Add(new Car(this.Scene));
+		this.car = new Car(this.Scene);
+		this.Add(this.car);
 	}
 
 	private SpaceLimiter: number = 0;
 	public Iterate(KeyMap: KeyController, Step: number): void {
 		this.mapper.Iterate(Step);
+		var carDist = this.car.Element.position.distanceTo(this.Camera.camera.position);
 		
 		if (KeyMap.KeyMap[" "]) {
 			if (this.SpaceLimiter > 0) {
@@ -46,8 +45,15 @@ export class TempScene extends SceneBase {
 				this.SpaceLimiter += Step * 100;
 			}
 		}
-		else if (KeyMap.KeyMap["L"]) {
-			
+		if (KeyMap.KeyMap["enter"] && carDist < 10) {
+			console.log("Close");
+		}
+		
+		if(carDist < 10) {
+			this.InteractionText = "[Press Enter]";
+		}
+		else {
+			this.InteractionText = "";
 		}
 		
 		

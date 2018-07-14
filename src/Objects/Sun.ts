@@ -1,5 +1,6 @@
 import { Asset } from "./Asset";
 import * as three from "three";
+import { KeyController } from "../Services/KeyController";
 
 export class Sun extends Asset {
 	private light:three.PointLight;
@@ -35,7 +36,7 @@ export class Sun extends Asset {
 		Scene.add(this.light);
 	}
 	
-	Interval(keyMap:any, timeSplit:number) {
+	Interval(keyController:KeyController,timeSplit:number) {
 		this.light.position.x = this.element.position.x;
 		this.light.position.y = this.element.position.y;
 		this.light.position.z = this.element.position.z;
