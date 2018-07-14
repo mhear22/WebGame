@@ -1,4 +1,6 @@
 import { defer, fromEvent, fromEventPattern, bindCallback, Observable } from "rxjs";
+import * as moment from "moment";
+
 
 export class KeyController {
 	public KeyMap:any = {};
@@ -11,23 +13,28 @@ export class KeyController {
 		this.KeyMap["ctrl"] = press.ctrlKey;
 		this.KeyMap["alt"] = press.altKey;
 		
-		var observe = this.ObservableMap[key];
+		var observe = this.ObservableMap[key] as CallbackModel;
 		if(observe) {
-			observe();
+			if(observe.lastCall < moment().add("ms", -observe.timeout)) {
+				observe.callback();
+				observe.lastCall = moment();
+				this.ObservableMap[key] = observe;
+			}
 		}
 		
 	}
 	
-	public WaitFor(key:string, debounce:number=0):Observable<void> {
-		var response = bindCallback<void>(callback => {
-			var obj = this.ObservableMap[key];
-			if(obj) {
-				
-			}
-			else {
-				this.ObservableMap[key] = callback;
-			}
-		})();
-		return response;
+	public WaitFor(key:string, callback:() => void, debounce:number=0) {
+		var model = new CallbackModel();
+		model.callback = callback;
+		model.timeout = debounce;
+		model.lastCall = moment().add("d",-1);
+		this.ObservableMap[key.toLowerCase()] = model;
 	}
+}
+
+export class CallbackModel {
+	callback:()=>void;
+	timeout:number;
+	lastCall:moment.Moment;
 }

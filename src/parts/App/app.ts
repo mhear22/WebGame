@@ -61,6 +61,10 @@ export class App implements AfterViewInit {
 		this.Scene = new TempScene(this.Camera, this.keyController);
 		var isDrawing = false;
 
+		this.keyController.WaitFor("`", () => {
+			console.log("Toggle Debug")
+			this.ShowDebug = !this.ShowDebug;
+		}, 100);
 		
 		var lastFrame = new Date();
 		interval(16).subscribe(x => {
@@ -73,8 +77,9 @@ export class App implements AfterViewInit {
 				
 				if(this.ShowDebug)
 					this.RenderDebug();
-				if(this.keyController.KeyMap["`"])
-					this.ShowDebug = !this.ShowDebug;
+				
+				//if(this.keyController.KeyMap["`"])
+				//	this.ShowDebug = !this.ShowDebug;
 				
 				this.Logic(this.LastSplit/100);
 				this.Animate();
