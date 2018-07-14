@@ -10,11 +10,13 @@ export class Sun extends Asset {
 		X:number = 0,
 		Y:number = 0,
 		Z:number = 0,
-		radius:number = 2
+		radius:number = 2,
+		color:number = 0xFFFFFF,
+		intensity:number = 0.5
 	) {
 		super();
 		
-		var sunMesh = new three.MeshBasicMaterial();
+		var sunMesh = new three.MeshBasicMaterial({color:color});
 		var sunGeo = new three.SphereGeometry(radius, 100, 100);
 		this.element = new three.Mesh(sunGeo, sunMesh);
 		
@@ -22,7 +24,7 @@ export class Sun extends Asset {
 		this.element.position.y = Y;
 		this.element.position.z = Z;
 		
-		this.light = new three.PointLight(0xFFFFFF, 0.5, 100000000, 0);
+		this.light = new three.PointLight(color, 0.5, 100000000, 0);
 		this.light.position.y = Y;
 		this.light.position.x = X;
 		this.light.position.z = Z;
@@ -32,6 +34,7 @@ export class Sun extends Asset {
 		this.light.shadow.camera.near = 1;
 		this.light.shadow.mapSize.height = 2048;
 		this.light.shadow.mapSize.width = 2048;
+		this.light.intensity = intensity;
 		
 		Scene.add(this.light);
 	}

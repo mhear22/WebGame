@@ -7,17 +7,16 @@ import { Vector3 } from "three";
 
 
 export class Car extends Asset {
-	private leftLight: Sun;
-	private rightLight: Sun;
-	
-	private driving:boolean = false;
+	private BodyItems: BodyItem[] = [];
+
+	private driving: boolean = false;
 	constructor(
-		scene:three.Scene,
-		private camera:CameraController,
-		keyController:KeyController
+		scene: three.Scene,
+		private camera: CameraController,
+		keyController: KeyController
 	) {
 		super();
-		var geo = new three.BoxGeometry(4,2,4);
+		var geo = new three.BoxGeometry(4, 2, 4);
 		var mat = new three.MeshPhongMaterial();
 		this.element = new three.Mesh(geo, mat);
 		this.element.castShadow = true;
@@ -25,31 +24,42 @@ export class Car extends Asset {
 		this.element.position.x = 4;
 		this.element.position.y = 1;
 		this.element.position.z = -20;
+
+		var lightRecess = -1.80;
+		this.BodyItems.push({
+			Item: new Sun(scene, 0, 0, 0, .25),
+			positionOffset: new three.Vector3(lightRecess, 0, -1.5)
+		});
+
+		this.BodyItems.push({
+			Item: new Sun(scene, 0, 0, 0, .25),
+			positionOffset: new three.Vector3(lightRecess, 0, +1.5)
+		});
 		
-		this.leftLight = new Sun(scene,
-			this.element.position.x - 2.05,
-			this.element.position.y,
-			this.element.position.z - 1.5,
-			.125
-		);
-		this.rightLight = new Sun(scene,
-			this.element.position.x - 2.05,
-			this.element.position.y,
-			this.element.position.z + 1.5,
-			.125
-		);
-		scene.add(this.leftLight.Element);
-		scene.add(this.rightLight.Element);
 		
+		this.BodyItems.push({
+			Item: new Sun(scene, 0,0,0,.25, 0xFF0000, 0.1),
+			positionOffset:new three.Vector3(-lightRecess, 0, -1.5)
+		})
+		
+		this.BodyItems.push({
+			Item: new Sun(scene, 0,0,0,.25, 0xFF0000, 0.1),
+			positionOffset:new three.Vector3(-lightRecess, 0, +1.5)
+		})
+
+		this.BodyItems.forEach(x => {
+			scene.add(x.Item.Element);
+		})
+
 		keyController.WaitFor("enter", () => {
-			if(this.camera.camera.position.distanceTo(this.element.position) < 10) {
+			if (this.camera.camera.position.distanceTo(this.element.position) < 10) {
 				this.ToggleDrivingMode();
 			}
-		},100);
+		}, 100);
 	}
-	
+
 	private ToggleDrivingMode() {
-		if(this.driving) {
+		if (this.driving) {
 			this.camera.ToggleMaps();
 			this.camera.camera.position.y = 8;
 		}
@@ -58,47 +68,52 @@ export class Car extends Asset {
 		}
 		this.driving = !this.driving;
 	}
-	
+
 	private UpdatePositions() {
-		this.leftLight.Element.position.copy(this.element.position);
-		this.leftLight.Element.position.x -= 2.05;
-		this.leftLight.Element.position.z -= 1.5;
-		
-		this.rightLight.Element.position.copy(this.element.position);
-		this.rightLight.Element.position.x -= 2.05;
-		this.rightLight.Element.position.z += 1.5;
-		
-		if(this.driving) {
+		this.BodyItems.forEach(x => {
+			x.Item.Element.position.copy(this.element.position);
+			x.Item.Element.position.x += x.positionOffset.x
+			x.Item.Element.position.y += x.positionOffset.y
+			x.Item.Element.position.z += x.positionOffset.z
+		});
+
+		if (this.driving) {
 			this.camera.camera.position.copy(this.element.position);
-			this.camera.camera.position.y +=2;
+			this.camera.camera.position.y += 2;
 		}
 	}
-	
-	private Momentum:Vector3 = new three.Vector3();
-	public Interval(keyController:KeyController,timeSplit:number) {
-		this.leftLight.Interval(keyController,timeSplit);
-		this.rightLight.Interval(keyController, timeSplit);
-		
-		if(this.driving) {
-			if(keyController.KeyMap["w"]) {
+
+	private Momentum: Vector3 = new three.Vector3();
+	public Interval(keyController: KeyController, timeSplit: number) {
+
+		if (this.driving) {
+			if (keyController.KeyMap["w"]) {
 				this.Momentum.x -= 0.01;
 			}
+
 			if (keyController.KeyMap["s"]) {
 				this.Momentum.x += 0.01;
 			}
-			
+
 			//if(keyController.KeyMap["a"]) {
 			//	this.element.rotation.y += 0.01;
 			//}
-			//
+
 			//if(keyController.KeyMap["d"]) {
 			//	this.element.rotation.y -= 0.01;
 			//}
-			
 		}
-		
+
 		this.element.position.add(this.Momentum);
 		this.Momentum.x = (this.Momentum.x * ((-timeSplit * 0.01) + 1));
 		this.UpdatePositions();
+		this.BodyItems.forEach(x => {
+			x.Item.Interval(keyController, timeSplit);
+		})
 	}
+}
+
+export class BodyItem {
+	Item: Asset;
+	positionOffset: Vector3;
 }
