@@ -4,7 +4,6 @@ import { Cube } from "../Objects/Cube";
 import * as three from "three";
 import { PhysicsCube } from "../Objects/PhysicsCube";
 import { Sun } from "../Objects/Sun";
-import { Plane } from "../Objects/Plane";
 import { Vector3 } from "three";
 import { KeyController } from "../Services/KeyController";
 import { PathMapper } from "../Services/PathMapper";

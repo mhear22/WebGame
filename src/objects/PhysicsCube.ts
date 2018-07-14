@@ -1,7 +1,8 @@
 import { Asset } from "./Asset";
 import { Cube } from "./Cube";
-import { Vector3 } from "three";
+import { Vector3, CubeCamera } from "three";
 import { KeyController } from "../Services/KeyController";
+import * as three from "three";
 
 export class PhysicsCube extends Cube {
 	constructor(
@@ -26,7 +27,7 @@ export class PhysicsCube extends Cube {
 		
 		newMomentum = (1-(timeSplit * 0.01)) * newMomentum;
 		
-		if(this.Element.position.y >= (0 + (this.height/2))) {
+		if(this.Element.position.y >= (this.height/2)) {
 			this.Momentum.y = newMomentum;
 			this.Element.position.add(this.Momentum);
 		}
