@@ -28,6 +28,7 @@ export class TempScene extends SceneBase {
 
 	private SpaceLimiter: number = 0;
 	public Iterate(KeyMap: KeyController, Step: number): void {
+		this.InteractionText = "";
 		this.mapper.Iterate(Step);
 		var carDist = this.car.Element.position.distanceTo(this.Camera.camera.position);
 		
@@ -45,11 +46,8 @@ export class TempScene extends SceneBase {
 			}
 		}
 		
-		if(carDist < 10) {
+		if(carDist < 10 && !this.car.IsDriving) {
 			this.InteractionText = "[Press Enter]";
-		}
-		else {
-			this.InteractionText = "";
 		}
 		
 		

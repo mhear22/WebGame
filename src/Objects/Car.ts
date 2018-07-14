@@ -9,7 +9,7 @@ import { Vector3 } from "three";
 export class Car extends Asset {
 	private BodyItems: BodyItem[] = [];
 
-	private driving: boolean = false;
+	public IsDriving: boolean = false;
 	constructor(
 		scene: three.Scene,
 		private camera: CameraController,
@@ -59,14 +59,14 @@ export class Car extends Asset {
 	}
 
 	private ToggleDrivingMode() {
-		if (this.driving) {
+		if (this.IsDriving) {
 			this.camera.ToggleMaps();
 			this.camera.camera.position.y = 8;
 		}
 		else {
 			this.camera.ToggleMaps();
 		}
-		this.driving = !this.driving;
+		this.IsDriving = !this.IsDriving;
 	}
 
 	private UpdatePositions() {
@@ -81,7 +81,7 @@ export class Car extends Asset {
 			x.Item.Element.position.z += pos.z
 		});
 
-		if (this.driving) {
+		if (this.IsDriving) {
 			this.camera.camera.position.copy(this.element.position);
 			this.camera.camera.position.y += 2;
 		}
@@ -89,13 +89,14 @@ export class Car extends Asset {
 
 	private Momentum: Vector3 = new three.Vector3();
 	public Interval(keyController: KeyController, timeSplit: number) {
-		if (this.driving) {
+		if (this.IsDriving) {
+			var mod = 0.1;
 			if (keyController.KeyMap["w"]) {
-				this.Momentum.x -= 0.01;
+				this.Momentum.x -= timeSplit*mod;
 			}
 
 			if (keyController.KeyMap["s"]) {
-				this.Momentum.x += 0.01;
+				this.Momentum.x += timeSplit*mod;
 			}
 
 			if(keyController.KeyMap["a"]) {
