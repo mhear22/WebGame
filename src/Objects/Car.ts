@@ -35,16 +35,16 @@ export class Car extends Asset {
 			Item: new Sun(scene, 0, 0, 0, .25),
 			positionOffset: new three.Vector3(lightRecess, 0, +1.5)
 		});
-		
-		
+
+
 		this.BodyItems.push({
-			Item: new Sun(scene, 0,0,0,.25, 0xFF0000, 0.1),
-			positionOffset:new three.Vector3(-lightRecess, 0, -1.5)
+			Item: new Sun(scene, 0, 0, 0, .25, 0xFF0000, 0.1),
+			positionOffset: new three.Vector3(-lightRecess, 0, -1.5)
 		})
-		
+
 		this.BodyItems.push({
-			Item: new Sun(scene, 0,0,0,.25, 0xFF0000, 0.1),
-			positionOffset:new three.Vector3(-lightRecess, 0, +1.5)
+			Item: new Sun(scene, 0, 0, 0, .25, 0xFF0000, 0.1),
+			positionOffset: new three.Vector3(-lightRecess, 0, +1.5)
 		})
 
 		this.BodyItems.forEach(x => {
@@ -72,9 +72,13 @@ export class Car extends Asset {
 	private UpdatePositions() {
 		this.BodyItems.forEach(x => {
 			x.Item.Element.position.copy(this.element.position);
-			x.Item.Element.position.x += x.positionOffset.x
-			x.Item.Element.position.y += x.positionOffset.y
-			x.Item.Element.position.z += x.positionOffset.z
+			var pos = new three.Vector3().copy(x.positionOffset);
+			
+			pos.applyAxisAngle(this.element.up,this.element.rotation.y);
+			
+			x.Item.Element.position.x += pos.x
+			x.Item.Element.position.y += pos.y
+			x.Item.Element.position.z += pos.z
 		});
 
 		if (this.driving) {
@@ -85,7 +89,6 @@ export class Car extends Asset {
 
 	private Momentum: Vector3 = new three.Vector3();
 	public Interval(keyController: KeyController, timeSplit: number) {
-
 		if (this.driving) {
 			if (keyController.KeyMap["w"]) {
 				this.Momentum.x -= 0.01;
@@ -95,16 +98,16 @@ export class Car extends Asset {
 				this.Momentum.x += 0.01;
 			}
 
-			//if(keyController.KeyMap["a"]) {
-			//	this.element.rotation.y += 0.01;
-			//}
+			if(keyController.KeyMap["a"]) {
+				this.element.rotation.y += 0.01;
+			}
 
-			//if(keyController.KeyMap["d"]) {
-			//	this.element.rotation.y -= 0.01;
-			//}
+			if(keyController.KeyMap["d"]) {
+				this.element.rotation.y -= 0.01;
+			}
 		}
 
-		this.element.position.add(this.Momentum);
+		this.element.position.add(new three.Vector3().copy(this.Momentum).applyAxisAngle(this.element.up,this.element.rotation.y));
 		this.Momentum.x = (this.Momentum.x * ((-timeSplit * 0.01) + 1));
 		this.UpdatePositions();
 		this.BodyItems.forEach(x => {
