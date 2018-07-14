@@ -22,7 +22,7 @@ export class TempScene extends SceneBase {
 		var pos = Camera.camera.position;
 		this.Add(new PhysicsCube(keyController,2, 2, 2, pos.x, 20, pos.z - 20));
 		this.Add(new Sun(this.Scene, 0, 80, 0))
-		this.car = new Car(this.Scene);
+		this.car = new Car(this.Scene, this.Camera, keyController);
 		this.Add(this.car);
 	}
 
@@ -43,9 +43,6 @@ export class TempScene extends SceneBase {
 			else {
 				this.SpaceLimiter += Step * 100;
 			}
-		}
-		if (KeyMap.KeyMap["enter"] && carDist < 10) {
-			console.log("Close");
 		}
 		
 		if(carDist < 10) {

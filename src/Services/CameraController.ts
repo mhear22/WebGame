@@ -33,6 +33,10 @@ export class CameraController {
 		this.UpdateCamera();
 	}
 
+	public ToggleMaps() {
+		this.IsMovementLocked = !this.IsMovementLocked;
+	}
+	
 	public UpdateCamera(): void {
 		var changed = false;
 		if (this.camera.fov != this.FOV) {
