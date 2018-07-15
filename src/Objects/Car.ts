@@ -4,11 +4,11 @@ import { Sun } from "./Sun";
 import { KeyController } from "../Services/KeyController";
 import { CameraController } from "../Services/CameraController";
 import { Vector3 } from "three";
+import { BodyItem } from "./BodyItem";
 
 
 export class Car extends Asset {
 	private BodyItems: BodyItem[] = [];
-
 	public IsDriving: boolean = false;
 	constructor(
 		scene: three.Scene,
@@ -16,6 +16,7 @@ export class Car extends Asset {
 		keyController: KeyController
 	) {
 		super();
+		
 		var geo = new three.BoxGeometry(4, 2, 4);
 		var mat = new three.MeshPhongMaterial();
 		this.element = new three.Mesh(geo, mat);
@@ -115,9 +116,4 @@ export class Car extends Asset {
 			x.Item.Interval(keyController, timeSplit);
 		})
 	}
-}
-
-export class BodyItem {
-	Item: Asset;
-	positionOffset: Vector3;
 }
