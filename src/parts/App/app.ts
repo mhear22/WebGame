@@ -8,6 +8,7 @@ import { TempScene } from "../../Scenes/TempScene";
 import { MatDialog } from "@angular/material/dialog";
 import { DebugInfo } from "../../Objects/DebugModel";
 import { KeyController } from "../../Services/KeyController";
+import { Scheduler } from "rxjs-compat";
 
 @Component({
 	selector: 'app',
@@ -40,6 +41,8 @@ export class App implements AfterViewInit {
 	private Camera: CameraController;
 	private Scene:SceneBase;
 	private LastSplit:number;
+	private isDrawing = false;
+	private lastFrame = new Date();
 	
 	public debugInfo:DebugInfo = new DebugInfo();
 	public InteractionDialog:string = "";
@@ -60,35 +63,43 @@ export class App implements AfterViewInit {
 		this.renderer.autoClear = true;
 		
 		this.Scene = new TempScene(this.Camera, this.keyController);
-		var isDrawing = false;
-
+		
 		this.keyController.WaitFor("`", () => {
 			console.log("Toggle Debug")
 			this.ShowDebug = !this.ShowDebug;
 		}, 100);
 		
-		var lastFrame = new Date();
-		interval(16).subscribe(x => {
-			if (!isDrawing) {
-				isDrawing = true;
+		this.isDrawing = false;
+		this.lastFrame = new Date();
+		
+		window.requestAnimationFrame(() => this.RunRecursive());
+	}
+	
+	private RunRecursive() {
+		window.requestAnimationFrame(() => this.RunRecursive())
+		this.Run();
+	}
+	
+	private Run() {
+		if (!this.isDrawing) {
+			this.isDrawing = true;
+			
+			var currentFrame = new Date();
+			
+			this.LastSplit = this.getTimeSplit(this.lastFrame, currentFrame);
+			
+			if(this.ShowDebug)
+				this.RenderDebug();
+			
+			this.InteractionDialog = this.Scene.InteractionText;
 				
-				var currentFrame = new Date();
-				
-				this.LastSplit = this.getTimeSplit(lastFrame, currentFrame);
-				
-				if(this.ShowDebug)
-					this.RenderDebug();
-				
-				this.InteractionDialog = this.Scene.InteractionText;
-					
-				this.Logic(this.LastSplit/100);
-				this.Animate();
-				
-				lastFrame = currentFrame;
-				
-				isDrawing = false;
-			}
-		});
+			this.Logic(this.LastSplit/100);
+			this.Animate();
+			
+			this.lastFrame = currentFrame;
+			
+			this.isDrawing = false;
+		}
 	}
 	
 	private times:number[] = [];
