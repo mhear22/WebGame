@@ -9,7 +9,7 @@
 		"/dev/**/*":true,
 		"/dist/**/*":true,
 		"typings/**/*":true,
-		"dist":true,
+		"dist":false,
 		".awcache":true
 	}
 }
