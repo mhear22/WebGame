@@ -14,7 +14,8 @@
 			  "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd"
 			},
 			"program": "${workspaceRoot}/main.js",
-			"protocol": "inspector"
-		  },
+			"protocol": "inspector",
+			"preLaunchTask": "build"
+		}
 	]
 }

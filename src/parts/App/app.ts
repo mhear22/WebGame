@@ -9,6 +9,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { DebugInfo } from "../../Objects/DebugModel";
 import { KeyController } from "../../Services/KeyController";
 import { Scheduler } from "rxjs-compat";
+import { SandboxScene } from "../../scenes/SandboxScene";
 
 @Component({
 	selector: 'app',
@@ -62,7 +63,7 @@ export class App implements AfterViewInit {
 		this.renderer.setClearColor(0x000000, 1);
 		this.renderer.autoClear = true;
 		
-		this.Scene = new TempScene(this.Camera, this.keyController);
+		this.Scene = new SandboxScene(this.Camera, this.keyController);
 		
 		this.keyController.WaitFor("`", () => {
 			console.log("Toggle Debug")
