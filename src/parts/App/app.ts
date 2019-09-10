@@ -1,15 +1,16 @@
 import { Component, ViewChild, ElementRef, AfterViewInit, inject, Inject } from "@angular/core";
 import * as three from "three";
 import { WebGLRenderer } from "three";
-import { interval } from "rxjs";
 import { CameraController } from "../../Services/CameraController";
 import { SceneBase } from "../../Scenes/sceneBase";
 import { TempScene } from "../../Scenes/TempScene";
 import { MatDialog } from "@angular/material/dialog";
 import { DebugInfo } from "../../Objects/DebugModel";
 import { KeyController } from "../../Services/KeyController";
-import { Scheduler } from "rxjs-compat";
 import { SandboxScene } from "../../scenes/SandboxScene";
+import { DebugService } from "../../Services/DebugService";
+import { PlayerService } from "../../Services/PlayerService";
+import { ServiceManager } from "../../Services/ServiceManager";
 
 @Component({
 	selector: 'app',
@@ -35,6 +36,12 @@ export class App implements AfterViewInit {
 		return this.canvasRef.nativeElement;
 	}
 
+	private Iterators:any[] = []
+	
+	private serviceManager = new ServiceManager([
+		DebugService
+	])
+	
 	private ShowDebug:boolean = true;
 	
 	private keyController:KeyController;
