@@ -10,7 +10,7 @@ import { KeyController } from "../../Services/KeyController";
 import { SandboxScene } from "../../scenes/SandboxScene";
 import { DebugService } from "../../Services/DebugService";
 import { PlayerService } from "../../Services/PlayerService";
-import { ServiceManager } from "../../Services/ServiceManager";
+import { ServiceManager, HtmlModel } from "../../Services/ServiceManager";
 
 @Component({
 	selector: 'app',
@@ -38,9 +38,9 @@ export class App implements AfterViewInit {
 
 	private Iterators:any[] = []
 	
-	private serviceManager = new ServiceManager([
-		DebugService
-	])
+	private serviceManager:ServiceManager;
+	
+	private HtmlLayers:HtmlModel[] = []
 	
 	private ShowDebug:boolean = true;
 	
@@ -71,11 +71,14 @@ export class App implements AfterViewInit {
 		this.renderer.autoClear = true;
 		
 		this.Scene = new SandboxScene(this.Camera, this.keyController);
-		
-		this.keyController.WaitFor("`", () => {
-			console.log("Toggle Debug")
-			this.ShowDebug = !this.ShowDebug;
-		}, 100);
+		this.serviceManager = new ServiceManager([
+				DebugService,
+				PlayerService
+			],
+			this.Camera,
+			this.keyController
+		)
+		this.HtmlLayers = this.serviceManager.Htmls();
 		
 		this.isDrawing = false;
 		this.lastFrame = new Date();
@@ -96,47 +99,23 @@ export class App implements AfterViewInit {
 			
 			this.LastSplit = this.getTimeSplit(this.lastFrame, currentFrame);
 			
-			if(this.ShowDebug)
-				this.RenderDebug();
-			
-			this.InteractionDialog = this.Scene.InteractionText;
-				
 			this.Logic(this.LastSplit/100);
+			
+			var current = this.serviceManager.Htmls();
+			this.HtmlLayers.forEach(x=> {
+				current.forEach(cur=>{
+					if(cur.name == x.name) {
+						x.html = cur.html;
+					}
+				});
+			});
+			
 			this.Animate();
 			
 			this.lastFrame = currentFrame;
 			
 			this.isDrawing = false;
 		}
-	}
-	
-	private times:number[] = [];
-	private RenderDebug() {
-		var cam = this.Camera.camera;
-		
-		if(this.times.length > 10) {
-			var average = this.times.reduce((x,y) => x+y)/this.times.length;
-			this.debugInfo.FPSString = `${(1000/average).toFixed(2)}`;
-			this.times = [];
-		}
-		else {
-			this.times.push(this.LastSplit);
-		}
-		
-		//this.debugInfo.paintedCount = PathMapper.Squares;
-		this.debugInfo.CamSpeed = `${this.Camera.speed}`;
-		
-		this.debugInfo.CamPosString = `
-			X:${cam.position.x.toFixed(2)}
-			Y:${cam.position.y.toFixed(2)}
-			Z:${cam.position.z.toFixed(2)}
-		`
-		
-		this.debugInfo.MouseString = `
-			X:${cam.rotation.x.toFixed(2)}
-			Y:${cam.rotation.y.toFixed(2)}
-			Z:${cam.rotation.z.toFixed(2)}
-		`;
 	}
 	
 	private getTimeSplit(initalDate:Date, secondDate:Date):number {
@@ -157,6 +136,7 @@ export class App implements AfterViewInit {
 	}
 	
 	private Logic(lastFrameSplit:number) {
+		this.serviceManager.Iterate(lastFrameSplit);
 		this.Scene.Iterate(this.keyController, lastFrameSplit);
 		this.Camera.Interval(this.keyController, lastFrameSplit);
 	}

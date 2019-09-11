@@ -1,15 +1,7 @@
 <canvas #splash></canvas>
-<div [hidden]="!ShowDebug" class="screen-text">
-	{{debugInfo.FPSString}}
-	{{debugInfo.MouseString}}
-	CameraSpeed:{{debugInfo.CamSpeed}}
-	<div>
-		{{debugInfo.CamPosString}}
-	</div>
-	<div>
-		Squares:{{debugInfo.paintedCount}}
-	</div>
-</div>
-<div style="position:  absolute;top: 60vh;left:  0;right:  0;bottom: 0;color: #ff0000ba;text-align:  center;">
-	{{InteractionDialog}}
-</div>
+
+<div
+	class="html-layer"
+	*ngFor="let layer of HtmlLayers"
+	[innerHTML]="layer.html"
+></div>

@@ -1,19 +1,44 @@
 import { ServiceBase } from "./ServiceBase";
+import { CameraController } from "./CameraController";
+import { KeyController } from "./KeyController";
+
+export class HtmlModel {
+	public html: string;
+	public name: string;
+}
 
 export class ServiceManager {
 	
-	private Iterators:any[]=[];
+	private Iterators:ServiceBase[]=[];
+	private DrawsHtml:ServiceBase[]=[];
 	
 	public Iterate(split:number) {
 		this.Iterators.forEach(element => {
-			element(split)
+			element.Iterate(split)
 		});
 	}
 	
-	public constructor(services:any[]) {
+	public Htmls():HtmlModel[] {
+		return this.DrawsHtml.map(x=> {
+			var name = x.constructor.name;
+			var html = x.GetHtml();
+			return { name: name, html: html};
+		})
+	}
+	
+	public constructor(
+		services: any[],
+		cam: CameraController,
+		key: KeyController
+	) {
 		services.map(x=>{
-			if(x.Iterates)
-				this.Iterators.push(x.Iterate);
+			var obj = new x(cam, key)
+			if(obj instanceof ServiceBase) {
+				if(obj.Iterates)
+					this.Iterators.push(obj);
+				if(obj.DrawsHtml)
+					this.DrawsHtml.push(obj)
+			}
 		})
 	}
 }
