@@ -1,7 +1,5 @@
 <canvas #splash></canvas>
 
-<div
-	class="html-layer"
-	*ngFor="let layer of HtmlLayers"
-	[innerHTML]="layer.html"
-></div>
+<div class="html-layer" *ngFor="let layer of HtmlLayers">
+	<div [innerHTML]="layer.html"></div>
+</div>
