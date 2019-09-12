@@ -71,16 +71,18 @@ export class CameraController {
 		}
 		else
 			this.speed = 1;
-			
+		
+		
+		
 		if(!this.IsMovementLocked) {
 			if (keyController.KeyMap["w"])
-				this.Move(new Vector3(0, 0, -timeSplit * this.speed));
+				this.Move(new Vector3(0, 0, -timeSplit * this.speed * 10));
 			if (keyController.KeyMap["s"])
-				this.Move(new Vector3(0, 0, timeSplit * this.speed));
+				this.Move(new Vector3(0, 0, timeSplit * this.speed * 10));
 			if (keyController.KeyMap["a"])
-				this.Move(new Vector3(-timeSplit * this.speed, 0, 0));
+				this.Move(new Vector3(-timeSplit * this.speed * 10, 0, 0));
 			if (keyController.KeyMap["d"])
-				this.Move(new Vector3(timeSplit * this.speed, 0, 0));
+				this.Move(new Vector3(timeSplit * this.speed * 10, 0, 0));
 		}
 
 		if (keyController.KeyMap["e"] && !this.IsInventoryLocked) {

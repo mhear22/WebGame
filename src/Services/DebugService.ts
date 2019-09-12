@@ -13,17 +13,26 @@ export class DebugService extends ServiceBase {
 			this.Toggle = !this.Toggle;
 		},100)
 		
+		this.cam = this.Camera.camera;
 	}
+	private cam: any;
 	
-	private Toggle = false;
+	private Toggle = true;
 	public DrawsHtml: boolean = true;
 	public Iterates: boolean = true;
 	
-	private splitTime:number = 0
 	private times:number[] = [];
+	private runningTotal = 0;
 	
 	public Iterate(Split:number) {
-		this.splitTime = Split;
+		if(this.runningTotal > 10) {
+			this.times = [];
+			this.runningTotal = 0;
+		}
+		
+		this.times.push(Split);
+		this.runningTotal += Split;
+
 	}
 	
 	private FPSString = "";
@@ -31,26 +40,18 @@ export class DebugService extends ServiceBase {
 		if(!this.Toggle)
 			return "";
 		
-		var cam = this.Camera.camera;
-		if(this.times.length > 10) {
-			var average = this.times.reduce((x,y) => x+y)/this.times.length;
-			this.FPSString = `${(1000/average).toFixed(2)}`;
-			this.times = [];
-		}
-		else {
-			this.times.push(this.splitTime);
-		}
+		this.FPSString = `${(1/(this.runningTotal/this.times.length)).toFixed(2)}`;
 		
 		var text = `<div class="screen-text">
 			${this.FPSString}
-			X:${cam.rotation.x.toFixed(2)}
-			Y:${cam.rotation.y.toFixed(2)}
-			Z:${cam.rotation.z.toFixed(2)}
+			X:${this.cam.rotation.x.toFixed(2)}
+			Y:${this.cam.rotation.y.toFixed(2)}
+			Z:${this.cam.rotation.z.toFixed(2)}
 			CameraSpeed:${this.Camera.speed}
 			<div>
-				X:${cam.position.x.toFixed(2)}
-				Y:${cam.position.y.toFixed(2)}
-				Z:${cam.position.z.toFixed(2)}
+				X:${this.cam.position.x.toFixed(2)}
+				Y:${this.cam.position.y.toFixed(2)}
+				Z:${this.cam.position.z.toFixed(2)}
 			</div>
 		</div>`;
 		return text;

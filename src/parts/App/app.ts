@@ -21,7 +21,7 @@ export class App implements AfterViewInit {
 	constructor(@Inject(MatDialog) private dialog:MatDialog) {
 		document.onkeydown = (ev: KeyboardEvent) => this.keyController.KeyPress(ev, true);
 		document.onkeyup = (ev: KeyboardEvent) => this.keyController.KeyPress(ev, false);
-		document.onmousewheel = (ev: MouseEvent) => this.MouseEvent(ev);
+		//document.onmousewheel = (ev: MouseEvent) => this.MouseEvent(ev);
 		document.onmousemove = (ev: MouseEvent) => this.MouseEvent(ev);
 		document.onclick = (ev: MouseEvent) => this.MouseEvent(ev, ev.button + 1);
 	}
@@ -50,7 +50,7 @@ export class App implements AfterViewInit {
 	private Scene:SceneBase;
 	private LastSplit:number;
 	private isDrawing = false;
-	private lastFrame = new Date();
+	private lastFrame = Date.now();
 	
 	public debugInfo:DebugInfo = new DebugInfo();
 	public InteractionDialog:string = "";
@@ -81,7 +81,11 @@ export class App implements AfterViewInit {
 		this.HtmlLayers = this.serviceManager.Htmls();
 		
 		this.isDrawing = false;
-		this.lastFrame = new Date();
+		this.lastFrame = Date.now();
+		
+		this.keyController.WaitFor('p', () => {
+			this.isPaused = !this.isPaused;
+		},100)
 		
 		window.requestAnimationFrame(() => this.RunRecursive());
 	}
@@ -91,24 +95,19 @@ export class App implements AfterViewInit {
 		this.Run();
 	}
 	
+	private isPaused = false;
+	
 	private Run() {
-		if (!this.isDrawing) {
+		if (!this.isDrawing && !this.isPaused) {
 			this.isDrawing = true;
 			
-			var currentFrame = new Date();
+			var currentFrame = Date.now();
 			
-			this.LastSplit = this.getTimeSplit(this.lastFrame, currentFrame);
+			this.LastSplit = this.getMSSplit(this.lastFrame, currentFrame);
 			
-			this.Logic(this.LastSplit/100);
+			this.Logic(this.LastSplit);
 			
-			var current = this.serviceManager.Htmls();
-			this.HtmlLayers.forEach(x=> {
-				current.forEach(cur=>{
-					if(cur.name == x.name) {
-						x.html = cur.html;
-					}
-				});
-			});
+			this.HtmlUpdate(this.LastSplit);
 			
 			this.Animate();
 			
@@ -118,21 +117,30 @@ export class App implements AfterViewInit {
 		}
 	}
 	
-	private getTimeSplit(initalDate:Date, secondDate:Date):number {
-		var init = initalDate.getMilliseconds();
-		var sec = secondDate.getMilliseconds();
-		
-		var split = 0;
-		if(init > sec) {
-			split = (1000 - init) + sec
-		}
-		else
-			split = sec - init;
-		return split;
+	private getMSSplit(initalDate:number, secondDate:number):number {
+		return (secondDate - initalDate) / 1000.0;
 	}
 
 	private MouseEvent(mouse: MouseEvent, mouseKey: number = 0) {
 		this.Camera.MouseEvent(mouse,mouseKey);
+	}
+	
+	private LastHtmlUpdate = 0;
+	private HtmlUpdate(split:number) {
+		if(this.LastHtmlUpdate > 0.5) {
+			this.LastHtmlUpdate = 0;
+			
+			var current = this.serviceManager.Htmls();
+			this.HtmlLayers.forEach(x=> {
+				current.forEach(cur=>{
+					if(cur.name == x.name) {
+						x.html = cur.html;
+					}
+				});
+			});
+		}
+		this.LastHtmlUpdate += split
+		
 	}
 	
 	private Logic(lastFrameSplit:number) {
