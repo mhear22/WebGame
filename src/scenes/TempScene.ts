@@ -9,6 +9,8 @@ import { KeyController } from "../Services/KeyController";
 import { PathMapper } from "../Services/PathMapper";
 import { Car } from "../Objects/Car";
 
+
+
 export class TempScene extends SceneBase {
 	private mapper:PathMapper;
 	private car:Car;

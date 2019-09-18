@@ -4,6 +4,7 @@ import { CameraController } from "../Services/CameraController";
 import { Sun } from "../Objects/Sun";
 import { Cube } from "../Objects/Cube";
 import { Skybox } from "../Objects/Skybox";
+import { FileAsset } from "../objects/FileAsset";
 
 export class SandboxScene extends SceneBase {
 	
@@ -15,6 +16,7 @@ export class SandboxScene extends SceneBase {
 		this.Add(new Sun(this.Scene, 0, 80, 0));
 		this.Add(new Cube(100, 1, 100, -50, -1, -50));
 		this.Add(new Skybox(this.Camera));
+		this.Add(new FileAsset(""));
 	}
 	
 	public Iterate(keyController: KeyController, Step: number): void {
