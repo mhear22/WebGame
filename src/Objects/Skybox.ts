@@ -16,11 +16,21 @@ export class Skybox extends Asset {
 		
 		
 		var texture = new three.TextureLoader().load(imageSrc)
-		var mat = new MeshPhongMaterial({ map: texture})
-		var geo = new three.BoxGeometry(800,800,800)
-		mat.side = three.BackSide; 
+		texture.magFilter = three.LinearFilter;
+		texture.minFilter = three.LinearFilter;
 		
-		this.element = new three.Mesh(geo,mat)
+		var shader = three.ShaderLib.equirect;
+		var material = new three.ShaderMaterial({
+			fragmentShader: shader.fragmentShader,
+			vertexShader: shader.vertexShader,
+			uniforms: shader.uniforms,
+			depthWrite: false,
+			side: three.BackSide,
+		});
+		material.uniforms.tEquirect.value = texture;
+		
+		var geo = new three.BoxGeometry(800,800,800)
+		this.element = new three.Mesh(geo,material)
 		
 		this.element.receiveShadow = true;
 	}

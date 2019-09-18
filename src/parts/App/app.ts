@@ -127,7 +127,7 @@ export class App implements AfterViewInit {
 	
 	private LastHtmlUpdate = 0;
 	private HtmlUpdate(split:number) {
-		if(this.LastHtmlUpdate > 0.5) {
+		if(this.LastHtmlUpdate > 0.75) {
 			this.LastHtmlUpdate = 0;
 			
 			var current = this.serviceManager.Htmls();
