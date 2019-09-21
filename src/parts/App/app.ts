@@ -11,6 +11,7 @@ import { SandboxScene } from "../../Scenes/SandboxScene";
 import { DebugService } from "../../Services/DebugService";
 import { PlayerService } from "../../Services/PlayerService";
 import { ServiceManager, HtmlModel } from "../../Services/ServiceManager";
+import { setTimeout } from "timers";
 
 @Component({
 	selector: 'app',
@@ -91,19 +92,22 @@ export class App implements AfterViewInit {
 	}
 	
 	private RunRecursive() {
-		window.requestAnimationFrame(() => this.RunRecursive())
-		this.Run();
+		setTimeout(() => {
+			window.requestAnimationFrame(() => this.RunRecursive());
+			this.Run();
+		},0)
 	}
 	
 	private isPaused = false;
+	private currentFrame = Date.now();
 	
 	private Run() {
 		if (!this.isDrawing && !this.isPaused) {
 			this.isDrawing = true;
 			
-			var currentFrame = Date.now();
+			this.currentFrame = Date.now();
 			
-			this.LastSplit = this.getMSSplit(this.lastFrame, currentFrame);
+			this.LastSplit = this.getMSSplit(this.lastFrame, this.currentFrame);
 			
 			this.Logic(this.LastSplit);
 			
@@ -111,7 +115,7 @@ export class App implements AfterViewInit {
 			
 			this.Animate();
 			
-			this.lastFrame = currentFrame;
+			this.lastFrame = this.currentFrame;
 			
 			this.isDrawing = false;
 		}
@@ -126,13 +130,14 @@ export class App implements AfterViewInit {
 	}
 	
 	private LastHtmlUpdate = 0;
+	private currentHtmls: HtmlModel[];
 	private HtmlUpdate(split:number) {
 		if(this.LastHtmlUpdate > 0.75) {
 			this.LastHtmlUpdate = 0;
 			
-			var current = this.serviceManager.Htmls();
+			this.currentHtmls = this.serviceManager.Htmls();
 			this.HtmlLayers.forEach(x=> {
-				current.forEach(cur=>{
+				this.currentHtmls.forEach(cur=>{
 					if(cur.name == x.name) {
 						x.html = cur.html;
 					}
