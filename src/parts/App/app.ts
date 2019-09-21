@@ -2,12 +2,12 @@ import { Component, ViewChild, ElementRef, AfterViewInit, inject, Inject } from 
 import * as three from "three";
 import { WebGLRenderer } from "three";
 import { CameraController } from "../../Services/CameraController";
-import { SceneBase } from "../../Scenes/sceneBase";
+import { SceneBase } from "../../Scenes/SceneBase";
 import { TempScene } from "../../Scenes/TempScene";
 import { MatDialog } from "@angular/material/dialog";
 import { DebugInfo } from "../../Objects/DebugModel";
 import { KeyController } from "../../Services/KeyController";
-import { SandboxScene } from "../../scenes/SandboxScene";
+import { SandboxScene } from "../../Scenes/SandboxScene";
 import { DebugService } from "../../Services/DebugService";
 import { PlayerService } from "../../Services/PlayerService";
 import { ServiceManager, HtmlModel } from "../../Services/ServiceManager";

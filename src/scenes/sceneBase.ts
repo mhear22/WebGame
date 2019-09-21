@@ -1,5 +1,5 @@
 import { CameraController } from "../Services/CameraController";
-import * as three from "three";
+import * as three from "./node_modules/three";
 import { Asset } from "../Objects/Asset";
 import { KeyController } from "../Services/KeyController";
 

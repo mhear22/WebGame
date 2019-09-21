@@ -1,8 +1,8 @@
 import { Asset } from "./Asset";
 import { Cube } from "./Cube";
-import { Vector3, CubeCamera } from "three";
+import { Vector3, CubeCamera } from "./node_modules/three";
 import { KeyController } from "../Services/KeyController";
-import * as three from "three";
+import * as three from "./node_modules/three";
 
 export class PhysicsCube extends Cube {
 	constructor(

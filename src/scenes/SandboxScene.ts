@@ -4,7 +4,7 @@ import { CameraController } from "../Services/CameraController";
 import { Sun } from "../Objects/Sun";
 import { Cube } from "../Objects/Cube";
 import { Skybox } from "../Objects/Skybox";
-import { FileAsset } from "../objects/FileAsset";
+import { FileAsset } from "../Objects/FileAsset";
 import { CarModel } from "../Models/Car/Car";
 import { CubeModel } from "../Models/Cube/Cube";
 

@@ -1,5 +1,5 @@
 import { KeyController } from "../Services/KeyController";
-import * as three from "three";
+import * as three from "./node_modules/three";
 
 export abstract class Asset {
 	abstract Interval(keyController:KeyController,timeSplit:number):void;

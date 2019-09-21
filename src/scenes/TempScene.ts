@@ -1,10 +1,10 @@
-import { SceneBase } from "./sceneBase";
+import { SceneBase } from "./SceneBase";
 import { CameraController } from "../Services/CameraController";
 import { Cube } from "../Objects/Cube";
-import * as three from "three";
+import * as three from "./node_modules/three";
 import { PhysicsCube } from "../Objects/PhysicsCube";
 import { Sun } from "../Objects/Sun";
-import { Vector3 } from "three";
+import { Vector3 } from "./node_modules/three";
 import { KeyController } from "../Services/KeyController";
 import { PathMapper } from "../Services/PathMapper";
 import { Car } from "../Objects/Car";

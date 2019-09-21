@@ -1,4 +1,4 @@
-import { SceneBase } from "./sceneBase";
+import { SceneBase } from "./SceneBase";
 import { SandboxScene } from "./SandboxScene";
 import { TempScene } from "./TempScene";
 import { CameraController } from "../Services/CameraController";
