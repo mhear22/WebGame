@@ -20,7 +20,7 @@ export abstract class SceneBase {
 	}
 	
 	public Add(asset:Asset) {
-		this.Scene.add(asset.Element);
+		asset.AddElement(this.Scene);
 		this.Meshes.push(asset);
 	}
 }

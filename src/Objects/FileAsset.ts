@@ -1,25 +1,25 @@
 import { Asset } from "./Asset";
 import { KeyController } from "../Services/KeyController";
-const car = require('../Models/Car.obj')
 import * as objloader from "webgl-obj-loader"
 import * as three from "three";
 require('three-obj-loader')(three);
 
 export class FileAsset extends Asset {
-	constructor(file:string) {
+	constructor(private file:string) {
 		super();
-		
-		this.download(car).then(x=> {
+	}
+	
+	public AddElement(scene: three.Scene) {
+		this.download(this.file).then(x=> {
 			var loader = new three.OBJLoader();
-			
 			var group = loader.parse(x);
-			
 			this.element = group.children[0]
 			this.element.castShadow = true;
 			this.element.receiveShadow = true;
+			scene.add(this.Element);
 		})
-		
 	}
+	
 	
 	private download(url:string): Promise<string> {
 		return new Promise(function (resolve:any, reject:any) {

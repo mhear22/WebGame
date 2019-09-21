@@ -1,4 +1,4 @@
-import { SceneBase } from "./sceneBase";
+import { SceneBase } from "./SceneBase";
 import { KeyController } from "../Services/KeyController";
 import { CameraController } from "../Services/CameraController";
 import { Sun } from "../Objects/Sun";
@@ -16,7 +16,7 @@ export class SandboxScene extends SceneBase {
 		this.Add(new Sun(this.Scene, 0, 80, 0));
 		this.Add(new Cube(100, 1, 100, -50, -1, -50));
 		this.Add(new Skybox(this.Camera));
-		this.Add(new FileAsset(""));
+		this.Add(new FileAsset(require("../Models/Car.obj")));
 	}
 	
 	public Iterate(keyController: KeyController, Step: number): void {

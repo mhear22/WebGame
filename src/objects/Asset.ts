@@ -1,10 +1,15 @@
-import { Object3D } from "three";
 import { KeyController } from "../Services/KeyController";
+import * as three from "three";
 
 export abstract class Asset {
 	abstract Interval(keyController:KeyController,timeSplit:number):void;
-	protected element:Object3D;
-	get Element():Object3D {
+	protected element:three.Object3D;
+	get Element():three.Object3D {
 		return this.element;
 	}
+	
+	public AddElement(scene: three.Scene) {
+		scene.add(this.Element);
+	}
+	
 }
