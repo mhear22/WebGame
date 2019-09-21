@@ -1,6 +1,6 @@
 # Blender v2.79 (sub 0) OBJ File: 'car.blend'
 # www.blender.org
-mtllib Car.mtl
+mtllib car.mtl
 o Cube.001
 v -0.711450 0.096129 -1.495540
 v -0.711450 0.008142 2.014407

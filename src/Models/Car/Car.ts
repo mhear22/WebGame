@@ -8,7 +8,6 @@ export class CarModel extends FileAsset {
 	
 	OnLoaded() {
 		this.element.scale.addScalar(5);
-		this.element.position.x = -10;
 		this.element.position.z = -20;
 		this.element.rotateY(-45);
 	}

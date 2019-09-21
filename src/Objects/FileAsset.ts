@@ -16,9 +16,10 @@ export abstract class FileAsset extends Asset {
 			this.element = group.children[0]
 			if(this.element instanceof three.Mesh) {
 				var mat = new three.MeshPhongMaterial({
-					side:three.FrontSide
+					side:three.FrontSide,
+					color: "#BBBBBB",
+					transparent: true
 				})
-				//var mat = new three.MeshPhongMaterial({ color: "#BBBBBB" })
 				
 				this.element.material = mat;
 			}
