@@ -35,7 +35,7 @@ export class App implements AfterViewInit {
 	private get canvas(): HTMLCanvasElement {
 		return this.canvasRef.nativeElement;
 	}
-
+	
 	private Iterators:any[] = []
 	
 	private serviceManager:ServiceManager;

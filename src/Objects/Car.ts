@@ -1,9 +1,9 @@
 import { Asset } from "./Asset";
-import * as three from "./node_modules/three";
+import * as three from "three";
 import { Sun } from "./Sun";
 import { KeyController } from "../Services/KeyController";
 import { CameraController } from "../Services/CameraController";
-import { Vector3 } from "./node_modules/three";
+import { Vector3 } from "three";
 import { BodyItem } from "./BodyItem";
 
 

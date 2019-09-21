@@ -1,5 +1,5 @@
 import { Asset } from "./Asset";
-import * as three from "./node_modules/three";
+import * as three from "three";
 import { KeyController } from "../Services/KeyController";
 
 export class Sun extends Asset {

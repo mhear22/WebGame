@@ -1,6 +1,6 @@
 import { Asset } from "./Asset";
-import { Object3D } from "./node_modules/three";
-import * as three from "./node_modules/three";
+import { Object3D } from "three";
+import * as three from "three";
 
 export class Cube extends Asset {
 	constructor(
