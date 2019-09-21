@@ -4,7 +4,7 @@ import * as objloader from "webgl-obj-loader"
 import * as three from "three";
 require('three-obj-loader')(three);
 
-export class FileAsset extends Asset {
+export abstract class FileAsset extends Asset {
 	constructor(private file:string) {
 		super();
 	}
@@ -14,12 +14,23 @@ export class FileAsset extends Asset {
 			var loader = new three.OBJLoader();
 			var group = loader.parse(x);
 			this.element = group.children[0]
+			if(this.element instanceof three.Mesh) {
+				var mat = new three.MeshPhongMaterial({
+					side:three.FrontSide
+				})
+				//var mat = new three.MeshPhongMaterial({ color: "#BBBBBB" })
+				
+				this.element.material = mat;
+			}
 			this.element.castShadow = true;
 			this.element.receiveShadow = true;
-			scene.add(this.Element);
+			this.OnLoaded();
+			scene.add(this.element);
 		})
 	}
 	
+	
+	protected abstract OnLoaded(): void;
 	
 	private download(url:string): Promise<string> {
 		return new Promise(function (resolve:any, reject:any) {
@@ -32,9 +43,4 @@ export class FileAsset extends Asset {
 			return x.response;
 		});
 	}
-	
-	
-	Interval(keyController: KeyController, timeSplit: number): void {
-	}
-	
 }
