@@ -6,6 +6,7 @@ import { Cube } from "../Objects/Cube";
 import { Skybox } from "../Objects/Skybox";
 import { FileAsset } from "../objects/FileAsset";
 import { CarModel } from "../Models/Car/Car";
+import { CubeModel } from "../Models/Cube/Cube";
 
 export class SandboxScene extends SceneBase {
 	
@@ -17,7 +18,8 @@ export class SandboxScene extends SceneBase {
 		this.Add(new Sun(this.Scene, 0, 80, 0));
 		this.Add(new Cube(100, 1, 100, -50, -1, -50));
 		this.Add(new Skybox(this.Camera));
-		this.Add(new CarModel());
+		//this.Add(new CarModel());
+		this.Add(new CubeModel());
 	}
 	
 	public Iterate(keyController: KeyController, Step: number): void {
