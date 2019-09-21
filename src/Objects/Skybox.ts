@@ -1,7 +1,6 @@
 import { Asset } from "./Asset";
 import { KeyController } from "../Services/KeyController";
 import * as three from "three";
-import { MeshPhongMaterial, Material } from "three";
 import { CameraController } from "../Services/CameraController";
 const imageSrc = require("../Assets/skybox.jpg")
 
