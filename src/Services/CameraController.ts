@@ -27,10 +27,32 @@ export class CameraController {
 	private IsInventoryLocked:boolean= false;
 	private InventoryWindow:MatDialogRef<InventoryDialog, any>;
 	
-	constructor(private canvas: HTMLCanvasElement, private dialog:MatDialog) {
+	constructor(private canvas: HTMLCanvasElement, private dialog:MatDialog, private keyController:KeyController) {
 		this.perspectiveCamera = new three.PerspectiveCamera(this.FOV, window.innerWidth / window.innerHeight, 0.1, 1000);
 		this.perspectiveCamera.position.y = 8;
 		this.UpdateCamera();
+		this.keyController.WaitFor("e", () => {
+			if(!this.InventoryOpen) {
+				this.InventoryOpen = true;
+				this.IsRotationLocked = true;
+				this.IsMovementLocked = true;
+				this.InventoryWindow = this.dialog.open(InventoryDialog, {
+					height:'80vh',
+					width:'80vh',
+					data: this.keyController
+				});
+
+				this.InventoryWindow.afterClosed().subscribe(x=> {
+					this.InventoryOpen = false;
+					this.IsMovementLocked = false;
+					this.IsRotationLocked = false;
+				});
+				
+			}
+			else {
+				this.InventoryWindow.close(() => {})
+			}
+		},100)
 	}
 
 	public ToggleMaps() {
@@ -72,8 +94,6 @@ export class CameraController {
 		else
 			this.speed = 1;
 		
-		
-		
 		if(!this.IsMovementLocked) {
 			if (keyController.KeyMap["w"])
 				this.Move(new Vector3(0, 0, -timeSplit * this.speed * 10));
@@ -83,34 +103,6 @@ export class CameraController {
 				this.Move(new Vector3(-timeSplit * this.speed * 10, 0, 0));
 			if (keyController.KeyMap["d"])
 				this.Move(new Vector3(timeSplit * this.speed * 10, 0, 0));
-		}
-
-		if (keyController.KeyMap["e"] && !this.IsInventoryLocked) {
-			this.IsInventoryLocked = true;
-			setTimeout(() => {
-				this.IsInventoryLocked = false;
-			},100);
-
-			if(!this.InventoryOpen) {
-				this.InventoryOpen = true;
-				this.IsRotationLocked = true;
-				this.IsMovementLocked = true;
-				this.InventoryWindow = this.dialog.open(InventoryDialog, {
-					height:'80vh',
-					width:'80vh'
-				});
-
-				this.InventoryWindow.afterClosed().subscribe(x=> {
-					this.InventoryOpen = false;
-					this.IsMovementLocked = false;
-					this.IsRotationLocked = false;
-				});
-			}
-			else {
-				this.InventoryWindow.close(() => {
-					
-				})
-			}
 		}
 
 		this.UpdateCamera();

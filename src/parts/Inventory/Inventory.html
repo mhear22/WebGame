@@ -2,9 +2,13 @@
 	<label>
 		Inventory
 	</label>
-	<div class="rotate">
-		<span>
-			Its fucking nothing
-		</span>
+	<div>
+		<div 
+			class="inv-option"
+			[ngClass]="{'selected':$index == Selected}"
+			*ngFor="let setting of Options; index as i">
+			{{setting}}
+			{{i}}
+		</div>
 	</div>
 </div>

@@ -57,8 +57,8 @@ export class App implements AfterViewInit {
 	public InteractionDialog:string = "";
 	
 	private BeginInit() {
-		this.Camera = new CameraController(this.canvas, this.dialog);
 		this.keyController = new KeyController();
+		this.Camera = new CameraController(this.canvas, this.dialog, this.keyController);
 		this.renderer = new three.WebGLRenderer({
 			canvas: this.canvas,
 			antialias: true
