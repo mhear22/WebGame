@@ -20,11 +20,15 @@ export class InventoryDialog {
 		
 		
 		keyController.WaitFor("w",() => {
-			console.log("up")
-		})
+			this.Selected--;
+			if(this.Selected < 0)
+				this.Selected = 0;
+		},100)
 		
 		keyController.WaitFor("s",() => {
-			console.log("down")
-		})
+			this.Selected++;
+			if(this.Selected >= this.Options.length)
+				this.Selected = this.Options.length - 1
+		},100)
 	}
 }
