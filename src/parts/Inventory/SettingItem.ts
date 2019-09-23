@@ -1,4 +1,5 @@
 export class SettingItem {
 	Name: string = "";
-	Action: ()=>void;
+	Data?:object;
+	Action: (self?:SettingItem)=>SettingItem|void;
 }

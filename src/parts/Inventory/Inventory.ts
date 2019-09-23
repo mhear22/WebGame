@@ -18,9 +18,20 @@ export class InventoryDialog {
 	constructor(@Inject(MAT_DIALOG_DATA) private keyController:KeyController) {
 		
 		this.Options = [
-			{ Name: "Do 1 thing", Action: () => { 
-				
-			}},
+			{ 
+				Name: "Do 1 thing",
+				Data:{setting:true},
+				Action: (self) => {
+					var data:any = self.Data
+					data.setting = !data.setting
+					if(data.setting)
+						self.Name = "Do 1 thing"
+					else
+						self.Name = "Dont 1 thing"
+					self.Data = data;
+					return self;
+				}
+			},
 			{ Name: "Do Another thing", Action: () => {
 				
 			}}
@@ -39,7 +50,10 @@ export class InventoryDialog {
 		},100)
 		
 		keyController.WaitFor(" ",() => {
-			this.Options[this.Selected].Action()
+			var option = this.Options[this.Selected]
+			var response = option.Action(option)
+			if(response)
+				this.Options[this.Selected] = response
 		},100)
 	}
 }
