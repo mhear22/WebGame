@@ -14,7 +14,7 @@ export class KeyController {
 		this.KeyMap["alt"] = press.altKey;
 		
 		var observe = this.ObservableMap[key] as CallbackModel;
-		if(observe) {
+		if(observe && isPressed == true) {
 			if(observe.lastCall < moment().add("ms", -observe.timeout)) {
 				observe.callback();
 				observe.lastCall = moment();

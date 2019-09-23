@@ -19,6 +19,7 @@ export class InventoryDialog {
 		]
 		
 		
+		
 		keyController.WaitFor("w",() => {
 			this.Selected--;
 			if(this.Selected < 0)
