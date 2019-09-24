@@ -3,7 +3,7 @@ import { KeyController } from "../../Services/KeyController";
 
 export class CarModel extends FileAsset {
 	constructor() {
-		super(require("./Car.obj"));
+		super(require("./Car.obj"), require("./Car.mtl"));
 	}
 	
 	OnLoaded() {
