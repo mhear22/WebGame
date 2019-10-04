@@ -7,14 +7,12 @@ export class CarModel extends FileAsset {
 	}
 	
 	OnLoaded() {
-		this.element.scale.addScalar(5);
+		this.element.scale.addScalar(2);
 		this.element.position.z = -20;
 		this.element.rotateY(-45);
 	}
 	
 	Interval(keyController: KeyController, timeSplit: number): void {
-		if(this.element) {
-			this.element.rotateY(timeSplit)
-		}
+		
 	}
 }
