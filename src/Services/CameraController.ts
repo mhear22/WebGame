@@ -81,36 +81,7 @@ export class CameraController {
 				this.FOV -= 1;
 		}
 
-		if (keyController.KeyMap["shift"]) {
-			if(this.speed == 1) {
-				this.speed = 2;
-			}
-			else {
-				this.speed = this.speed * 1.05;
-				if(this.speed > 170)
-					this.speed = 170;
-			}
-		}
-		else
-			this.speed = 1;
-		
-		if(!this.IsMovementLocked) {
-			if (keyController.KeyMap["w"])
-				this.Move(new Vector3(0, 0, -timeSplit * this.speed * 10));
-			if (keyController.KeyMap["s"])
-				this.Move(new Vector3(0, 0, timeSplit * this.speed * 10));
-			if (keyController.KeyMap["a"])
-				this.Move(new Vector3(-timeSplit * this.speed * 10, 0, 0));
-			if (keyController.KeyMap["d"])
-				this.Move(new Vector3(timeSplit * this.speed * 10, 0, 0));
-		}
-
 		this.UpdateCamera();
-	}
-
-	public Move(vector: Vector3) {
-		vector.applyAxisAngle(this.camera.up, this.RotY);
-		this.camera.position.add(vector);
 	}
 
 	public Rotate(x: number, y: number): void {
