@@ -30,3 +30,12 @@ These are 3d objects that exist in the environment. Each piece of code contains 
 
 This is a group of objects come together to create an environment.
 
+## Things to be done
+
+* Collision
+* Buying and Selling Stores
+* Making Money inside the game
+* Fix the issue with the hopping mouse
+* Build a basic environment
+* Menus and settings
+
