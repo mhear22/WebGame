@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { App } from "./Parts/App/App";
-import { HttpModule } from "@angular/http";
+import { HttpClientModule } from "@angular/common/http";
 import { FormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { routes } from "./routes";
@@ -16,7 +16,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 	],
 	imports: [
 		BrowserModule,
-		HttpModule,
+		HttpClientModule,
 		FormsModule,
 		RouterModule.forRoot(routes),
 		BrowserAnimationsModule,

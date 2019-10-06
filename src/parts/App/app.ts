@@ -31,7 +31,7 @@ export class App implements AfterViewInit {
 		this.BeginInit();
 	}
 
-	@ViewChild('splash')
+	@ViewChild('splash', { static:false })
 	private canvasRef: ElementRef;
 	private get canvas(): HTMLCanvasElement {
 		return this.canvasRef.nativeElement;

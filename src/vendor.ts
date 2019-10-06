@@ -1,4 +1,4 @@
-import '@angular/http';
+import '@angular/common/http';
 import '@angular/core';
 import '@angular/router';
 import '@angular/forms';
