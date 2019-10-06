@@ -15,7 +15,7 @@ export class KeyController {
 		
 		var observe = this.ObservableMap[key] as CallbackModel;
 		if(observe && isPressed == true) {
-			if(observe.lastCall < moment().add("ms", -observe.timeout)) {
+			if(observe.lastCall < moment().add(-observe.timeout,"ms")) {
 				observe.callback();
 				observe.lastCall = moment();
 				this.ObservableMap[key] = observe;
@@ -28,7 +28,7 @@ export class KeyController {
 		var model = new CallbackModel();
 		model.callback = callback;
 		model.timeout = debounce;
-		model.lastCall = moment().add("d",-1);
+		model.lastCall = moment().add(-1,"d");
 		this.ObservableMap[key.toLowerCase()] = model;
 	}
 }
