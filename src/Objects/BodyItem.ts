@@ -1,5 +1,5 @@
 import { Asset } from "./Asset";
-import { Vector3 } from "../../node_modules/@types/three";
+import { Vector3 } from "three";
 
 export class BodyItem {
 	Item: Asset;

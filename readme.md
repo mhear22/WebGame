@@ -38,4 +38,3 @@ This is a group of objects come together to create an environment.
 * Fix the issue with the hopping mouse
 * Build a basic environment
 * Menus and settings
-

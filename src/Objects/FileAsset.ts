@@ -18,7 +18,7 @@ export abstract class FileAsset extends Asset {
 			requests.push(this.download(this.mat))
 		Promise.all(requests).then((data) => {
 			var mesh = data[0];
-			var loader = new three.OBJLoader();
+			var loader = new (three as any).OBJLoader();
 			
 			if(data[1]) {
 				var material = data[1];
