@@ -20,15 +20,22 @@ export class CarModel extends FileAsset {
 		
 	}
 	private isBeingUsed = false;
-	private speed = 1
-	private rotation = 0
+	private speed = 1;
+	private rotation = 0;
 	
 	Interval(keyController: KeyController, timeSplit: number): void {
 		if(this.isBeingUsed) {
+			
 			if (keyController.KeyMap["w"])
-				this.Move(new Vector3(0, 0, -timeSplit * -this.speed * 10));
+				this.speed++;
+				//this.Move(new Vector3(0, 0, -timeSplit * -this.speed * 10));
 			if (keyController.KeyMap["s"])
-				this.Move(new Vector3(0, 0, timeSplit * -this.speed * 10));
+				this.speed--;
+				
+			this.speed = this.speed * (1 - timeSplit );
+				
+			this.Move(new Vector3(0, 0, timeSplit * this.speed * 10));
+			
 				
 
 			if (keyController.KeyMap["a"])
@@ -36,8 +43,6 @@ export class CarModel extends FileAsset {
 			if (keyController.KeyMap["d"])
 				this.rotation -= timeSplit;
 			
-
-				
 			this.element.rotation.y = this.rotation;
 			this.Camera.camera.position.copy(this.element.position)
 			this.Camera.camera.position.y = 6;

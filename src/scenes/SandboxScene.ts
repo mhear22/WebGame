@@ -16,7 +16,7 @@ export class SandboxScene extends SceneBase {
 	){
 		super(Camera);
 		this.Add(new Sun(this.Scene, 0, 80, 0));
-		this.Add(new Cube(100, 1, 100, 0, -1, 0));
+		this.Add(new Cube(10000, 1, 10000, 0, -1, 0));
 		this.Add(new Skybox(this.Camera));
 		this.Add(new CarModel(keyController,this.Camera));
 		//this.Add(new CubeModel());
