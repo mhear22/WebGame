@@ -41,7 +41,7 @@ export class App implements AfterViewInit {
 	
 	private serviceManager:ServiceManager;
 	
-	private HtmlLayers:HtmlModel[] = []
+	private HtmlLayers:HtmlModel[] = [new HtmlModel()]
 	
 	private ShowDebug:boolean = true;
 	

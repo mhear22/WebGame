@@ -1,6 +1,5 @@
 import { Asset } from "./Asset";
 import { KeyController } from "../Services/KeyController";
-import * as objloader from "webgl-obj-loader"
 import * as three from "three";
 import { MTLLoader } from "../Services/MTLLoader";
 require('three-obj-loader')(three);
@@ -16,6 +15,7 @@ export abstract class FileAsset extends Asset {
 		requests.push(this.download(this.mesh));
 		if(this.mat)
 			requests.push(this.download(this.mat))
+			
 		Promise.all(requests).then((data) => {
 			var mesh = data[0];
 			var loader = new (three as any).OBJLoader();
