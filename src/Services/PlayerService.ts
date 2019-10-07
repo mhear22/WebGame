@@ -8,10 +8,27 @@ export class PlayerService extends ServiceBase {
 	
 	private MovementSpeed = 1;
 	
-	public static WalkingControls = true;
+	private static walkingControls = true;
+	private static walkingToggled = false;
+	
+	public static get WalkingControls() {
+		return this.walkingControls;
+	}
+	
+	public static set WalkingControls(value:boolean) {
+		if(this.walkingControls != value && value)
+			this.walkingToggled = true;
+		this.walkingControls = value;
+	}
+	
 	
 	public Iterate(timeSplit: number) {
-		if(PlayerService.WalkingControls) {
+		if(PlayerService.walkingToggled) {
+			PlayerService.walkingToggled = false;
+			
+			this.Camera.camera.position.y = 8
+		}
+		if(PlayerService.walkingControls) {
 			if(this.Key.KeyMap["shift"]) {
 				this.MovementSpeed++;
 				if(this.MovementSpeed >= 5)

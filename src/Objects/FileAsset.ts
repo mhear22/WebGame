@@ -28,7 +28,10 @@ export abstract class FileAsset extends Asset {
 			}
 			
 			var group = loader.parse(mesh);
-			this.element = group.children[0]
+			var meshData = (group.children[0] as three.Mesh);
+			this.element = meshData;
+			meshData.geometry.computeBoundingBox()
+			this.box = meshData.geometry.boundingBox;
 			this.element.castShadow = true;
 			this.element.receiveShadow = true;
 			this.OnLoaded();
