@@ -34,6 +34,7 @@ export class DebugService extends ServiceBase {
 		this.runningTotal += Split;
 
 	}
+	public static AdditionalText:string[] = [] 
 	
 	private FPSString = "";
 	public GetHtml() {
@@ -41,6 +42,9 @@ export class DebugService extends ServiceBase {
 			return "";
 		
 		this.FPSString = `${(1/(this.runningTotal/this.times.length)).toFixed(2)}`;
+		DebugService.AdditionalText = DebugService.AdditionalText.filter((val, index, self)=> {
+			return self.indexOf(val) === index
+		});
 		
 		var text = `<div class="screen-text">
 			${this.FPSString}
@@ -53,7 +57,9 @@ export class DebugService extends ServiceBase {
 				Y:${this.cam.position.y.toFixed(2)}
 				Z:${this.cam.position.z.toFixed(2)}
 			</div>
+			${DebugService.AdditionalText.map(x=> "<div>" + x + "</div>").join("")}
 		</div>`;
+		DebugService.AdditionalText = []
 		return text;
 	}
 	

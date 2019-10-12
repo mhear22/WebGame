@@ -13,7 +13,7 @@ export class Skybox extends Asset {
 	constructor(private camera:CameraController) {
 		super();
 		
-		
+		this.canCollide = false;
 		var texture = new three.TextureLoader().load(imageSrc)
 		texture.magFilter = three.LinearFilter;
 		texture.minFilter = three.LinearFilter;

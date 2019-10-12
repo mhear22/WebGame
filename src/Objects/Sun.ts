@@ -15,7 +15,7 @@ export class Sun extends Asset {
 		intensity:number = 0.5
 	) {
 		super();
-		
+		this.canCollide = false;
 		var sunMesh = new three.MeshBasicMaterial({color:color});
 		var sunGeo = new three.SphereGeometry(radius, 100, 100);
 		this.element = new three.Mesh(sunGeo, sunMesh);

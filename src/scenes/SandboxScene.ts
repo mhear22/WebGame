@@ -29,19 +29,10 @@ export class SandboxScene extends SceneBase {
 	public Iterate(keyController: KeyController, Step: number): void {
 		this.Meshes.forEach(element => {
 			try {
+				element.Collide(this.CollideMeshes)
 				element.Interval(keyController, Step);
 			}
 			catch {}
-			
-			if(element instanceof BuildingModel) {
-				this.Meshes.forEach(target => {
-					if(target instanceof CarModel) {
-						var mesh = (element.Element as three.Mesh);
-						//Work out collision detection
-						//https://github.com/josdirksen/threejs-cookbook/blob/master/07-animations-physics/07.06-add-simple-detection-collision.html
-					}
-				})
-			}
 		});
 	}
 }

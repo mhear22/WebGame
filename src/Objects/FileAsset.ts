@@ -34,6 +34,14 @@ export abstract class FileAsset extends Asset {
 			this.box = meshData.geometry.boundingBox;
 			this.element.castShadow = true;
 			this.element.receiveShadow = true;
+			
+			var geometry = (this.Element as three.Mesh).geometry
+			if (geometry instanceof three.BufferGeometry)
+				this.geo = new three.Geometry().fromBufferGeometry(geometry)
+			else
+				this.geo = geometry
+			this.Element.name = this.constructor.name.toString()
+			
 			this.OnLoaded();
 			scene.add(this.element);
 		});
