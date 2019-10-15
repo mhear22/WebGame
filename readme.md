@@ -32,6 +32,7 @@ This is a group of objects come together to create an environment.
 
 ## Things to be done
 
+* Testing
 * Collision
 * Buying and Selling Stores
 * Making Money inside the game

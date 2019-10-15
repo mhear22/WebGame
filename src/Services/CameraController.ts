@@ -2,7 +2,6 @@ import * as three from "three";
 import { Vector3, Matrix4 } from "three";
 import { MatDialog, MatDialogRef } from "@angular/material";
 import { InventoryDialog } from "../Parts/Inventory/Inventory";
-import { delay } from "rxjs/operators";
 import "rxjs";
 import { KeyController } from "./KeyController";
 
