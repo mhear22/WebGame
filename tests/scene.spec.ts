@@ -10,7 +10,7 @@ class TestScene extends SceneBase {
 	constructor(public Camera: CameraController) {
 		super(Camera)
 		this.Add(new Cube(10,10,10, 0, -1, 0))
-		this.Add(new Cube(100,100,100, 0, -1, 0))
+		this.Add(new Cube(10,10,10, 5, -1, 5))
 	}
 	public get MeshList() { return this.Meshes; }
 	public get CollideList() { return this.CollideMeshes; }
@@ -25,8 +25,9 @@ describe("scene",() => {
 		var nocol = false;
 		try {
 			scene.MeshList.forEach(x=> {
-				x.Collide(scene.CollideList)
-			})
+				if(x.Collide(scene.CollideList))
+					throw "Collision Occured"
+ 			})
 			nocol = true;
 		}
 		catch { }

@@ -15,6 +15,12 @@
 			"type": "shell",
 			"command": "webpack-dev-server",
 			"problemMatcher": [],
+		},
+		{
+			"label": "test",
+			"type": "shell",
+			"command":"jest",
+			"group": "test"
 		}
 	]
 }
