@@ -7,7 +7,7 @@
 		"typings/**/*"
 	],
 	"include": [
-		"src/**/*"
+		"src/**/*", "tests/scene.spec.ts"
 	],
 	"compilerOptions": {
     "downlevelIteration": true,
