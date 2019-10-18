@@ -29,9 +29,8 @@ export class SandboxScene extends SceneBase {
 	public Iterate(keyController: KeyController, Step: number): void {
 		this.Meshes.forEach(element => {
 			try {
-				if(!element.Collide(this.CollideMeshes)) {
-					element.Interval(keyController, Step);
-				}
+				element.Collide(this.CollideMeshes)
+				element.Interval(keyController, Step);
 			}
 			catch {}
 		});

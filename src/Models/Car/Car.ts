@@ -11,8 +11,8 @@ export class CarModel extends FileAsset {
 	
 	OnLoaded() {
 		this.element.scale.addScalar(2);
-		this.element.position.z = -20;
-		this.element.position.y = 5;
+		this.element.position.z = -60;
+		this.element.position.y = 0;
 		this.keyController.WaitFor("f",() => {
 			var dist = this.element.position.distanceTo(this.Camera.camera.position)
 			if(dist <= 10) {
@@ -28,7 +28,6 @@ export class CarModel extends FileAsset {
 	
 	Interval(keyController: KeyController, timeSplit: number): void {
 		if(this.isBeingUsed) {
-			
 			if (keyController.KeyMap["w"])
 				this.speed++;
 			if (keyController.KeyMap["s"])
@@ -40,9 +39,14 @@ export class CarModel extends FileAsset {
 		}
 		
 		this.speed = this.speed * (1 - timeSplit );
-		this.Move(new Vector3(0, 0, timeSplit * this.speed));
-		this.element.rotation.y = this.rotation;
 		
+		var escapeDir = this.UnCollide()
+		escapeDir.y = 0;
+		this.element.position.add(escapeDir)
+		if(!this.IsCollided)
+			this.Move(new Vector3(0, 0, timeSplit * this.speed));
+		
+		this.element.rotation.y = this.rotation;
 		if(this.isBeingUsed) {
 			this.Camera.camera.position.copy(this.element.position)
 			this.Camera.camera.position.y = 6;

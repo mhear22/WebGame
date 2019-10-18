@@ -19,6 +19,8 @@ export abstract class Asset {
 	get Box(): three.Box3 { return null; }
 
 	private static Index = 0;
+	private colidedDirs:three.Vector3[] = []
+	public IsCollided = false;
 	
 	public AddElement(scene: three.Scene) {
 		var geometry = (this.Element as three.Mesh).geometry
@@ -30,32 +32,51 @@ export abstract class Asset {
 		scene.add(this.Element);
 	}
 	
+	public UnCollide() {
+		if(this.IsCollided) {
+			var average = new three.Vector3()
+			this.colidedDirs.forEach(element => {
+				average.x -= element.x;
+				average.y -= element.y;
+				average.z -= element.z;
+			});
+			var result = average.clone().divideScalar(this.colidedDirs.length/1)
+			this.colidedDirs = []
+			return result
+		}
+		return new three.Vector3()
+	}
+	
 	public Collide(elements: three.Object3D[]) {
 		if(!this.element || !this.canCollide)
 			return;
 		var elementMesh = (this.Element as three.Mesh)
 		
-		var isCollided = false;
 		var first = true;
-		this.Geo.vertices.map(x=> {
+		this.colidedDirs = []
+		this.IsCollided = false;
+		
+		var results = this.Geo.vertices.map(x=> {
 			var name = this.Element.name;
 			var glob = x.clone().applyMatrix4(elementMesh.matrix)
 			var dir = glob.sub(elementMesh.position)
 			var dirNorm = dir.clone().normalize()
 			var ray = new three.Raycaster(elementMesh.position,dirNorm);
 			var objects = elements.filter(x=>x.name != name)
-			
-			var result = ray.intersectObjects(objects)
+			var max = x.distanceTo(new three.Vector3)
+			var result = ray.intersectObjects(objects).filter(obj=>obj.distance <= max)
 			
 			if(result.length > 0) {
-				isCollided = true
+				this.IsCollided = true
+				this.colidedDirs.push(dirNorm.clone())
+				
 				result.forEach(colided => {
 					var str = `${colided.object.name} collided with ${name}`
 					DebugService.AdditionalText.push(str)
 				})
 			}
-		})
-		
-		return isCollided
+		});
+
+		return this.IsCollided
 	}
 }
