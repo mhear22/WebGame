@@ -58,12 +58,14 @@ export abstract class Asset {
 		
 		var results = this.Geo.vertices.map(x=> {
 			var name = this.Element.name;
-			var glob = x.clone().applyMatrix4(elementMesh.matrix)
+			var glob = x.clone()
+				.multiply(this.element.scale)
+				.applyMatrix4(elementMesh.matrix)
 			var dir = glob.sub(elementMesh.position)
 			var dirNorm = dir.clone().normalize()
 			var ray = new three.Raycaster(elementMesh.position,dirNorm);
 			var objects = elements.filter(x=>x.name != name)
-			var max = x.distanceTo(new three.Vector3)
+			var max = x.clone().multiply(this.element.scale).distanceTo(new three.Vector3)
 			var result = ray.intersectObjects(objects).filter(obj=>obj.distance <= max)
 			
 			if(result.length > 0) {

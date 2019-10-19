@@ -32,8 +32,8 @@ export class Sun extends Asset {
 		this.light.castShadow = true;
 		this.light.shadow.camera.far = 10000;
 		this.light.shadow.camera.near = 1;
-		this.light.shadow.mapSize.height = 2048;
-		this.light.shadow.mapSize.width = 2048;
+		this.light.shadow.mapSize.height = Math.pow(64,2);
+		this.light.shadow.mapSize.width = Math.pow(64,2);
 		this.light.intensity = intensity;
 		
 		Scene.add(this.light);

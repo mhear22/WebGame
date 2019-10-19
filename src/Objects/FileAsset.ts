@@ -30,6 +30,8 @@ export abstract class FileAsset extends Asset {
 			var group = loader.parse(mesh);
 			var meshData = (group.children[0] as three.Mesh);
 			this.element = meshData;
+			this.OnLoaded();
+			
 			meshData.geometry.computeBoundingBox()
 			this.box = meshData.geometry.boundingBox;
 			this.element.castShadow = true;
@@ -42,7 +44,6 @@ export abstract class FileAsset extends Asset {
 				this.geo = geometry
 			this.Element.name = this.constructor.name.toString()
 			
-			this.OnLoaded();
 			scene.add(this.element);
 		});
 	}

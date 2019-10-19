@@ -22,12 +22,11 @@ export class CarModel extends FileAsset {
 		this.element.position.copy(this.position);
 		this.keyController.WaitFor("f", () => {
 			var dist = this.element.position.distanceTo(this.Camera.camera.position)
-			if (dist <= 10) {
+			if (dist <= 20) {
 				PlayerService.WalkingControls = this.isBeingUsed;
 				this.isBeingUsed = !this.isBeingUsed;
 			}
 		})
-
 	}
 	private isBeingUsed = false;
 	private momentum: three.Vector3 = new three.Vector3()
@@ -53,15 +52,11 @@ export class CarModel extends FileAsset {
 				if (keyController.KeyMap["d"])
 					this.rotation += timeSplit;
 			}
-
-
 		}
 		else if (this.bricked) {
 			this.momentum.z += timeSplit;
 		}
 
-		
-		
 		if (!this.IsCollided) {
 			this.momentum.z = this.momentum.z * (1 - timeSplit);
 			this.Move(this.momentum.clone());
@@ -70,7 +65,6 @@ export class CarModel extends FileAsset {
 			var escapeDir = this.UnCollide()
 			escapeDir.y = 0;
 			escapeDir.normalize()
-
 			var mentum = (this.momentum.clone()).applyAxisAngle(this.Camera.camera.up, this.rotation).normalize()
 			var angle = three.Math.radToDeg(mentum.angleTo(escapeDir))
 			if(!isNaN(angle)) {
@@ -78,14 +72,16 @@ export class CarModel extends FileAsset {
 				if (angle < 90) {
 					this.Move(this.momentum.clone())
 				}
+				else {
+					this.momentum.setZ(0).setX(0)
+				}
 			}
-
 		}
 
 		this.element.rotation.y = this.rotation;
 		if (this.isBeingUsed) {
 			this.Camera.camera.position.copy(this.element.position)
-			this.Camera.camera.position.y = 6;
+			this.Camera.camera.position.y = this.element.position.y + 5;
 		}
 	}
 

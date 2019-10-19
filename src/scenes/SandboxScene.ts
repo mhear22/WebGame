@@ -19,7 +19,7 @@ export class SandboxScene extends SceneBase {
 		keyController: KeyController
 	){
 		super(Camera);
-		this.Scene.add(new three.AmbientLight(0x404040))
+		//this.Scene.add(new three.AmbientLight(0x404040))
 		this.Add(new Sun(this.Scene, 0, 80, 0));
 		this.Add(new Cube(1000, 1, 1000, 0, -2, 0));
 		this.Add(new Skybox(this.Camera));

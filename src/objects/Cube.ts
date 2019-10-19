@@ -17,6 +17,7 @@ export class Cube extends Asset {
 			'#BBBBBB',
 			'#BEEEEF'
 		];
+		this.canCollide = true;
 		
 		var random = Math.floor(Math.random()*colors.length)+1;
 		var mat = new three.MeshPhongMaterial({ color: colors[random-1] });
