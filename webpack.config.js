@@ -8,7 +8,7 @@ module.exports = {
 		main: ['./src/main.ts', './src/main.scss'],
 	},
 	output: {
-		filename: './[name].js',
+		filename: './[name].[hash].js',
 		path: path.resolve(__dirname, 'dist')
 	},
 	devtool: 'source-map',

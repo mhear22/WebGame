@@ -66,14 +66,15 @@ export class CarModel extends FileAsset {
 			escapeDir.y = 0;
 			escapeDir.normalize()
 			var mentum = (this.momentum.clone()).applyAxisAngle(this.Camera.camera.up, this.rotation).normalize()
-			var angle = three.Math.radToDeg(mentum.angleTo(escapeDir))
-			if(!isNaN(angle)) {
-				console.log(angle)
-				if (angle < 90) {
-					this.Move(this.momentum.clone())
-				}
-				else {
-					this.momentum.setZ(0).setX(0)
+			if((mentum.z + mentum.x + mentum.y) != 0) {
+				var angle = three.Math.radToDeg(mentum.angleTo(escapeDir))
+				if(!isNaN(angle)) {
+					if (angle < 90) {
+						this.Move(this.momentum.clone())
+					}
+					else {
+						this.momentum.setZ(0).setX(0)
+					}
 				}
 			}
 		}
