@@ -11,7 +11,8 @@ export class CarModel extends FileAsset {
 		private keyController: KeyController,
 		private Camera: CameraController,
 		private position: three.Vector3 = new three.Vector3(),
-		private rotation: number = 0
+		private rotation: number = 0,
+		private bricked = false
 	) {
 		super(require("./Car.obj"), require("./Car.mtl"));
 	}
@@ -30,7 +31,6 @@ export class CarModel extends FileAsset {
 	}
 	private isBeingUsed = false;
 	private momentum: three.Vector3 = new three.Vector3()
-	private bricked = true;
 	private speed = 0;
 
 	Interval(keyController: KeyController, timeSplit: number): void {
@@ -40,26 +40,46 @@ export class CarModel extends FileAsset {
 				this.momentum.z += timeSplit;
 			if (keyController.KeyMap["s"])
 				this.momentum.z -= timeSplit;
-			if (keyController.KeyMap["a"])
-				this.rotation += timeSplit;
-			if (keyController.KeyMap["d"])
-				this.rotation -= timeSplit;
+
+			if (this.momentum.z >= -0.1) {
+				if (keyController.KeyMap["a"])
+					this.rotation += timeSplit;
+				if (keyController.KeyMap["d"])
+					this.rotation -= timeSplit;
+			}
+			else {
+				if (keyController.KeyMap["a"])
+					this.rotation -= timeSplit;
+				if (keyController.KeyMap["d"])
+					this.rotation += timeSplit;
+			}
+
+
 		}
 		else if (this.bricked) {
 			this.momentum.z += timeSplit;
 		}
+
 		
-		this.momentum.z = this.momentum.z * (1 - timeSplit);
 		
-		
-		if (!this.IsCollided)
+		if (!this.IsCollided) {
+			this.momentum.z = this.momentum.z * (1 - timeSplit);
 			this.Move(this.momentum.clone());
+		}
 		else {
 			var escapeDir = this.UnCollide()
 			escapeDir.y = 0;
 			escapeDir.normalize()
-			this.momentum.setX(0).setY(0).setZ(0)
-			this.element.position.add(escapeDir)
+
+			var mentum = (this.momentum.clone()).applyAxisAngle(this.Camera.camera.up, this.rotation).normalize()
+			var angle = three.Math.radToDeg(mentum.angleTo(escapeDir))
+			if(!isNaN(angle)) {
+				console.log(angle)
+				if (angle < 90) {
+					this.Move(this.momentum.clone())
+				}
+			}
+
 		}
 
 		this.element.rotation.y = this.rotation;

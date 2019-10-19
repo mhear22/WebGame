@@ -40,7 +40,7 @@ export abstract class Asset {
 				average.y -= element.y;
 				average.z -= element.z;
 			});
-			var result = average.clone().divideScalar(this.colidedDirs.length/1)
+			var result = average.clone().divideScalar(this.colidedDirs.length/1).normalize()
 			this.colidedDirs = []
 			return result
 		}
@@ -69,11 +69,11 @@ export abstract class Asset {
 			if(result.length > 0) {
 				this.IsCollided = true
 				this.colidedDirs.push(dirNorm.clone())
-				
 				result.forEach(colided => {
 					var str = `${colided.object.name} collided with ${name}`
 					DebugService.AdditionalText.push(str)
 				})
+				
 			}
 		});
 
