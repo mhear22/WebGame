@@ -12,6 +12,8 @@ import { DebugService } from "../../Services/DebugService";
 import { PlayerService } from "../../Services/PlayerService";
 import { ServiceManager, HtmlModel } from "../../Services/ServiceManager";
 import { setTimeout } from "timers";
+import { RenderService } from "../../Services/RenderService";
+import { TestScene } from "../../Scenes/TestScene";
 
 @Component({
 	selector: 'app',
@@ -19,7 +21,7 @@ import { setTimeout } from "timers";
 })
 export class App implements AfterViewInit {
 
-	constructor(@Inject(MatDialog) private dialog:MatDialog) {
+	constructor(@Inject(MatDialog) private dialog: MatDialog) {
 		document.onkeydown = (ev: KeyboardEvent) => this.keyController.KeyPress(ev, true);
 		document.onkeyup = (ev: KeyboardEvent) => this.keyController.KeyPress(ev, false);
 		//document.onmousewheel = (ev: MouseEvent) => this.MouseEvent(ev);
@@ -31,129 +33,126 @@ export class App implements AfterViewInit {
 		this.BeginInit();
 	}
 
-	@ViewChild('splash', { static:false })
+	@ViewChild('splash', { static: false })
 	private canvasRef: ElementRef;
 	private get canvas(): HTMLCanvasElement {
 		return this.canvasRef.nativeElement;
 	}
-	
-	private Iterators:any[] = []
-	
-	private serviceManager:ServiceManager;
-	
-	private HtmlLayers:HtmlModel[] = [new HtmlModel()]
-	
-	private ShowDebug:boolean = true;
-	
-	private keyController:KeyController;
-	private renderer: WebGLRenderer;
+
+	private Iterators: any[] = []
+
+	private serviceManager: ServiceManager;
+
+	private HtmlLayers: HtmlModel[] = [new HtmlModel()]
+
+	private ShowDebug: boolean = true;
+
+	private keyController: KeyController;
+	private renderer: RenderService;
 	private Camera: CameraController;
-	private Scene:SceneBase;
-	private LastSplit:number;
+	private Scene: SceneBase;
+	private LastSplit: number;
 	private isDrawing = false;
 	private lastFrame = Date.now();
-	
-	public debugInfo:DebugInfo = new DebugInfo();
-	public InteractionDialog:string = "";
-	
+
+	public debugInfo: DebugInfo = new DebugInfo();
+	public InteractionDialog: string = "";
+
 	private BeginInit() {
 		this.keyController = new KeyController();
 		this.Camera = new CameraController(this.canvas, this.dialog, this.keyController);
-		this.renderer = new three.WebGLRenderer({
-			canvas: this.canvas,
-			antialias: true
-		});
-		this.renderer.setPixelRatio(devicePixelRatio);
-		this.renderer.setSize(window.innerWidth, window.innerHeight);
-		this.renderer.shadowMap.enabled = true;
-		this.renderer.shadowMap.type = three.PCFSoftShadowMap;
-		this.renderer.setClearColor(0x000000, 1);
-		this.renderer.autoClear = true;
-		
-		this.Scene = new SandboxScene(this.Camera, this.keyController);
+		this.renderer = new RenderService(this.canvas)
+
+		this.Scene = new TestScene(this.Camera, this.keyController);
+		//this.Scene = new SandboxScene(this.Camera, this.keyController);
 		this.serviceManager = new ServiceManager([
-				DebugService,
-				PlayerService
-			],
+			DebugService,
+			PlayerService
+		],
 			this.Camera,
 			this.keyController
 		)
 		this.HtmlLayers = this.serviceManager.Htmls();
-		
+
 		this.isDrawing = false;
 		this.lastFrame = Date.now();
+
+		this.keyController.WaitFor('l', () => {
+			this.Scene = new SandboxScene(this.Camera, this.keyController)
+		})
+		
 		
 		this.keyController.WaitFor('p', () => {
 			this.isPaused = !this.isPaused;
-		},100)
-		
+		}, 100)
+
 		window.requestAnimationFrame(() => this.RunRecursive());
 	}
-	
+
 	private RunRecursive() {
 		setTimeout(() => {
 			window.requestAnimationFrame(() => this.RunRecursive());
 			this.Run();
-		},0)
+		}, 0)
 	}
-	
+
 	private isPaused = false;
 	private currentFrame = Date.now();
-	
+
 	private Run() {
 		if (!this.isDrawing && !this.isPaused) {
 			this.isDrawing = true;
-			
+
 			this.currentFrame = Date.now();
-			
+
 			this.LastSplit = this.getMSSplit(this.lastFrame, this.currentFrame);
-			
+
 			this.Logic(this.LastSplit);
-			
+
 			this.HtmlUpdate(this.LastSplit);
-			
+
 			this.Animate();
-			
+
 			this.lastFrame = this.currentFrame;
-			
+
 			this.isDrawing = false;
 		}
 	}
-	
-	private getMSSplit(initalDate:number, secondDate:number):number {
+
+	private getMSSplit(initalDate: number, secondDate: number): number {
 		return (secondDate - initalDate) / 1000.0;
 	}
 
 	private MouseEvent(mouse: MouseEvent, mouseKey: number = 0) {
-		this.Camera.MouseEvent(mouse,mouseKey);
+		this.Camera.MouseEvent(mouse, mouseKey);
 	}
-	
+
 	private LastHtmlUpdate = 0;
 	private currentHtmls: HtmlModel[];
-	private HtmlUpdate(split:number) {
-		if(this.LastHtmlUpdate > 0.75) {
+	private HtmlUpdate(split: number) {
+		if (this.LastHtmlUpdate > 0.75) {
 			this.LastHtmlUpdate = 0;
-			
+
 			this.currentHtmls = this.serviceManager.Htmls();
-			this.HtmlLayers.forEach(x=> {
-				this.currentHtmls.forEach(cur=>{
-					if(cur.name == x.name) {
+			this.HtmlLayers.forEach(x => {
+				this.currentHtmls.forEach(cur => {
+					if (cur.name == x.name) {
 						x.html = cur.html;
 					}
 				});
 			});
 		}
 		this.LastHtmlUpdate += split
-		
+
 	}
-	
-	private Logic(lastFrameSplit:number) {
+
+	private Logic(lastFrameSplit: number) {
 		this.serviceManager.Iterate(lastFrameSplit);
 		this.Scene.Iterate(this.keyController, lastFrameSplit);
 		this.Camera.Interval(this.keyController, lastFrameSplit);
 	}
-	
+
 	private Animate() {
-		this.renderer.render(this.Scene.GetScene(), this.Camera.camera);
+		this.renderer.Renderer.render(this.Scene.GetScene(), this.Camera.camera);
 	}
 }

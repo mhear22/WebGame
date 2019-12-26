@@ -23,7 +23,4 @@ export class SceneLoader {
 		
 		return constructed as SceneBase
 	}
-	
-	
-	
 }
