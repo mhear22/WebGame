@@ -5,22 +5,16 @@ import { CameraController } from "../Services/CameraController";
 import { KeyController } from "../Services/KeyController";
 
 export class SceneLoader {
-	private levels = [
-		{name: "Temp Level", level: TempScene },
-		{name: "Sandbox", level: SandboxScene}
+	private static levels = [
+		{ name: "Temp Level", level: TempScene },
+		{ name: "Sandbox", level: SandboxScene }
 	]
-	
-	constructor(
-		private Camera: CameraController,
-		private key: KeyController 
-	) { }
-	
-	
-	public LoadLevel(name: string) {
-		var level = this.levels.find(x=>x.name == name);
-		
-		var constructed = level.level.apply(this, [this.Camera, this.key])
-		
-		return constructed as SceneBase
+
+	public static OnLevelChange: (scene:any) => void;
+
+	public static LoadLevel(name: string) {
+		var level = this.levels.find(x => x.name == name);
+		var constructor = level.level;
+		this.OnLevelChange(constructor);
 	}
 }

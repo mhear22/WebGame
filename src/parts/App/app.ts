@@ -14,6 +14,7 @@ import { ServiceManager, HtmlModel } from "../../Services/ServiceManager";
 import { setTimeout } from "timers";
 import { RenderService } from "../../Services/RenderService";
 import { TestScene } from "../../Scenes/TestScene";
+import { SceneLoader } from "../../Scenes/SceneLoader";
 
 @Component({
 	selector: 'app',
@@ -61,10 +62,13 @@ export class App implements AfterViewInit {
 	private BeginInit() {
 		this.keyController = new KeyController();
 		this.Camera = new CameraController(this.canvas, this.dialog, this.keyController);
-		this.renderer = new RenderService(this.canvas)
-
+		this.renderer = new RenderService(this.canvas);
+		
 		this.Scene = new TestScene(this.Camera, this.keyController);
-		//this.Scene = new SandboxScene(this.Camera, this.keyController);
+		SceneLoader.OnLevelChange = (scene) => {
+			this.Scene = new scene(this.Camera, this.keyController)
+		}
+
 		this.serviceManager = new ServiceManager([
 			DebugService,
 			PlayerService
@@ -76,11 +80,6 @@ export class App implements AfterViewInit {
 
 		this.isDrawing = false;
 		this.lastFrame = Date.now();
-
-		this.keyController.WaitFor('l', () => {
-			this.Scene = new SandboxScene(this.Camera, this.keyController)
-		})
-		
 		
 		this.keyController.WaitFor('p', () => {
 			this.isPaused = !this.isPaused;

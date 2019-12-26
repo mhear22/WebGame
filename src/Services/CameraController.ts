@@ -53,7 +53,7 @@ export class CameraController {
 			}
 		},100)
 	}
-
+	
 	public ToggleMaps() {
 		this.IsMovementLocked = !this.IsMovementLocked;
 	}
