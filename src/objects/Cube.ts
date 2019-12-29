@@ -12,7 +12,7 @@ export class Cube extends Asset {
 		z:number = 0
 	) {
 		super();
-		var geo = new three.BoxGeometry(width, height, depth);
+		var geo = new three.BoxBufferGeometry(width, height, depth);
 		var colors = [
 			'#BBBBBB',
 			'#BEEEEF'

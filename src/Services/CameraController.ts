@@ -13,6 +13,9 @@ export class CameraController {
 	public get RotationX(){ return this.RotX; } 
 	public get RotationY(){ return this.RotY; } 
 	
+	public static Close = 0.1;
+	public static Far = 500;
+	
 	private RotX: number = 0;
 	private RotY: number = 0;
 
@@ -27,7 +30,7 @@ export class CameraController {
 	private InventoryWindow:MatDialogRef<InventoryDialog, any>;
 	
 	constructor(private canvas: HTMLCanvasElement, private dialog:MatDialog, private keyController:KeyController) {
-		this.perspectiveCamera = new three.PerspectiveCamera(this.FOV, window.innerWidth / window.innerHeight, 0.1, 1000);
+		this.perspectiveCamera = new three.PerspectiveCamera(this.FOV, window.innerWidth / window.innerHeight, CameraController.Close, CameraController.Far);
 		this.perspectiveCamera.position.y = 8;
 		this.UpdateCamera();
 		this.keyController.WaitFor("e", () => {

@@ -17,7 +17,7 @@ export class Car extends Asset {
 	) {
 		super();
 		
-		var geo = new three.BoxGeometry(4, 2, 4);
+		var geo = new three.BoxBufferGeometry(4, 2, 4);
 		var mat = new three.MeshPhongMaterial();
 		this.element = new three.Mesh(geo, mat);
 		this.element.castShadow = true;

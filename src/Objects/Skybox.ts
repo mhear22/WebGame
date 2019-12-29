@@ -28,7 +28,8 @@ export class Skybox extends Asset {
 		});
 		material.uniforms.tEquirect.value = texture;
 		
-		var geo = new three.BoxGeometry(800,800,800)
+		var dist = CameraController.Far * 0.99;
+		var geo = new three.BoxBufferGeometry(dist,dist,dist)
 		this.element = new three.Mesh(geo,material)
 		
 		this.element.receiveShadow = true;

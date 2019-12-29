@@ -7,6 +7,7 @@ export class RenderService {
 		this.Renderer = new three.WebGLRenderer({
 			canvas: canvas, 
 			antialias: true,
+			powerPreference: "high-performance"
 		})
 		this.Renderer.setPixelRatio(1);
 		this.Renderer.setSize(window.innerWidth, window.innerHeight);

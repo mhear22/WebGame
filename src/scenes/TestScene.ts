@@ -4,6 +4,7 @@ import { KeyController } from "../Services/KeyController";
 import { Sun } from "../Objects/Sun";
 import { Cube } from "../Objects/Cube";
 import { Skybox } from "../Objects/Skybox";
+import * as three from 'three';
 
 export class TestScene extends SceneBase {
 	public Iterate(keyController: KeyController, Step: number): void {
@@ -21,8 +22,9 @@ export class TestScene extends SceneBase {
 		keyController: KeyController
 	) {
 		super(Camera);
+		//this.Scene.add(new three.AmbientLight("0x404040"))
 		this.Add(new Sun(this.Scene, 0, 80, 0));
-		this.Add(new Cube(1000, 1, 1000, 0, -2, 0));
+		this.Add(new Cube(100, 1, 100, 0, -2, 0));
 		this.Add(new Skybox(this.Camera));
 	}
 }
