@@ -32,11 +32,14 @@ This is a group of objects come together to create an environment.
 
 ## Things to be done
 
-* Testing
-* Collision
+* make a service to deal with save states
+* make a main menu that should launch when there is no save state
+	* show something in the background
+	* work out a design for the inventory and main menu
+
+
 * Buying and Selling Stores
 * Making Money inside the game
 * Fix the issue with the hopping mouse
-* Build a basic environment
 * Menus and settings
 * PostProcessing (Aliasing, bloom)

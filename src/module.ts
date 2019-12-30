@@ -8,6 +8,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { InventoryDialog } from "./Parts/Inventory/Inventory";
 import { MatDialogModule } from "@angular/material/dialog";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { StorageServiceModule } from "angular-webstorage-service";
+import { SaveService } from "./Services/SaveService";
 
 @NgModule({
 	declarations: [
@@ -21,6 +23,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 		RouterModule.forRoot(routes),
 		BrowserAnimationsModule,
 		MatDialogModule,
+		StorageServiceModule
 	],
 	bootstrap: [App],
 	entryComponents: [
@@ -28,7 +31,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 		InventoryDialog,
 	],
 	providers: [
-		InventoryDialog
+		InventoryDialog,
+		SaveService
 	],
 })
 export class AppModule { }

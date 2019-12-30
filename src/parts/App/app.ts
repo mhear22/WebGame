@@ -15,6 +15,8 @@ import { setTimeout } from "timers";
 import { RenderService } from "../../Services/RenderService";
 import { TestScene } from "../../Scenes/TestScene";
 import { SceneLoader } from "../../Scenes/SceneLoader";
+import { SaveService } from "../../Services/SaveService";
+import { SaveModel } from "../../Objects/SaveModel";
 
 @Component({
 	selector: 'app',
@@ -22,7 +24,10 @@ import { SceneLoader } from "../../Scenes/SceneLoader";
 })
 export class App implements AfterViewInit {
 
-	constructor(@Inject(MatDialog) private dialog: MatDialog) {
+	constructor(
+		@Inject(MatDialog) private dialog: MatDialog,
+		@Inject(SaveService) private saveService: SaveService
+	) {
 		document.onkeydown = (ev: KeyboardEvent) => this.keyController.KeyPress(ev, true);
 		document.onkeyup = (ev: KeyboardEvent) => this.keyController.KeyPress(ev, false);
 		//document.onmousewheel = (ev: MouseEvent) => this.MouseEvent(ev);
@@ -63,12 +68,9 @@ export class App implements AfterViewInit {
 		this.keyController = new KeyController();
 		this.Camera = new CameraController(this.canvas, this.dialog, this.keyController);
 		this.renderer = new RenderService(this.canvas);
-		
-		this.Scene = new TestScene(this.Camera, this.keyController);
 		SceneLoader.OnLevelChange = (scene) => {
 			this.Scene = new scene(this.Camera, this.keyController)
 		}
-
 		this.serviceManager = new ServiceManager([
 			DebugService,
 			PlayerService
@@ -84,6 +86,24 @@ export class App implements AfterViewInit {
 		this.keyController.WaitFor('p', () => {
 			this.isPaused = !this.isPaused;
 		}, 100)
+		
+		this.keyController.WaitFor('*',() => {this.Save()},1000)
+		
+		
+		if(this.saveService.HasSave()) {
+			//Do something to setup from a save
+			var save = this.saveService.GetSave();
+			SceneLoader.LoadLevel(save.CurrentScene);
+		}
+		else {
+			//Setup a save and configure
+			SceneLoader.LoadLevel("test")
+			this.Save()
+		}
+		
+		
+		
+
 
 		window.requestAnimationFrame(() => this.RunRecursive());
 	}
@@ -145,6 +165,14 @@ export class App implements AfterViewInit {
 
 	}
 
+	private Save() {
+		var oldSave = this.saveService.GetSave();
+		if(!oldSave)
+			oldSave = new SaveModel()
+		oldSave.CurrentScene = SceneLoader.SceneName;
+		this.saveService.Save(oldSave)
+	}
+	
 	private Logic(lastFrameSplit: number) {
 		this.serviceManager.Iterate(lastFrameSplit);
 		this.Scene.Iterate(this.keyController, lastFrameSplit);
