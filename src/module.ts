@@ -10,11 +10,13 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StorageServiceModule } from "angular-webstorage-service";
 import { SaveService } from "./Services/SaveService";
+import { MainMenuDialog } from "./Parts/MainMenu/MainMenu";
 
 @NgModule({
 	declarations: [
 		App,
 		InventoryDialog,
+		MainMenuDialog
 	],
 	imports: [
 		BrowserModule,
@@ -29,10 +31,12 @@ import { SaveService } from "./Services/SaveService";
 	entryComponents: [
 		App,
 		InventoryDialog,
+		MainMenuDialog
 	],
 	providers: [
 		InventoryDialog,
-		SaveService
+		SaveService,
+		MainMenuDialog
 	],
 })
 export class AppModule { }

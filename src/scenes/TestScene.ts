@@ -5,6 +5,7 @@ import { Sun } from "../Objects/Sun";
 import { Cube } from "../Objects/Cube";
 import { Skybox } from "../Objects/Skybox";
 import * as three from 'three';
+import { Injector } from "@angular/core";
 
 export class TestScene extends SceneBase {
 	public Iterate(keyController: KeyController, Step: number): void {
@@ -19,9 +20,10 @@ export class TestScene extends SceneBase {
 
 	constructor(
 		protected Camera: CameraController,
-		keyController: KeyController
+		keyController: KeyController,
+		injector: Injector
 	) {
-		super(Camera);
+		super(Camera, injector);
 		//this.Scene.add(new three.AmbientLight("0x404040"))
 		this.Add(new Sun(this.Scene, 0, 80, 0));
 		this.Add(new Cube(100, 1, 100, 0, -2, 0));

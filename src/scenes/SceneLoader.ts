@@ -4,12 +4,14 @@ import { TempScene } from "./TempScene";
 import { CameraController } from "../Services/CameraController";
 import { KeyController } from "../Services/KeyController";
 import { TestScene } from "./TestScene";
+import { MainMenuScene } from "./MainMenuScene";
 
 export class SceneLoader {
 	private static levels = [
 		{ name: "Temp Level", level: TempScene },
 		{ name: "Sandbox", level: SandboxScene },
-		{ name: "test", level: TestScene }
+		{ name: "test", level: TestScene },
+		{ name: "MainMenu", level: MainMenuScene}
 	]
 
 	public static OnLevelChange: (scene:any) => void;

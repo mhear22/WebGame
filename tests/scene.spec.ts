@@ -8,7 +8,7 @@ class TestScene extends SceneBase {
 		throw new Error("Method not implemented.");
 	}
 	constructor(public Camera: CameraController) {
-		super(Camera)
+		super(Camera);
 		this.Add(new Cube(10, 10, 10, 0, -1, 0))
 		this.Add(new Cube(10, 10, 10, 5, -1, 5))
 	}

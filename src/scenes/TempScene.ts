@@ -8,6 +8,7 @@ import { Vector3 } from "three";
 import { KeyController } from "../Services/KeyController";
 import { PathMapper } from "../Services/PathMapper";
 import { Car } from "../Objects/Car";
+import { Injector } from "@angular/core";
 
 
 
@@ -17,9 +18,10 @@ export class TempScene extends SceneBase {
 	
 	constructor(
 		protected Camera: CameraController,
-		keyController:KeyController
+		keyController:KeyController,
+		injector: Injector
 	) {
-		super(Camera);
+		super(Camera, injector);
 		this.mapper = new PathMapper(Camera, this.Meshes, this.Scene);
 		var pos = Camera.camera.position;
 		this.Add(new PhysicsCube(keyController,2, 2, 2, pos.x, 20, pos.z - 20));

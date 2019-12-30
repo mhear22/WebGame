@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, AfterViewInit, inject, Inject } from "@angular/core";
+import { Component, ViewChild, ElementRef, AfterViewInit, inject, Inject, Injector } from "@angular/core";
 import * as three from "three";
 import { WebGLRenderer } from "three";
 import { CameraController } from "../../Services/CameraController";
@@ -26,7 +26,8 @@ export class App implements AfterViewInit {
 
 	constructor(
 		@Inject(MatDialog) private dialog: MatDialog,
-		@Inject(SaveService) private saveService: SaveService
+		@Inject(SaveService) private saveService: SaveService,
+		@Inject(Injector) private injector: Injector
 	) {
 		document.onkeydown = (ev: KeyboardEvent) => this.keyController.KeyPress(ev, true);
 		document.onkeyup = (ev: KeyboardEvent) => this.keyController.KeyPress(ev, false);
@@ -69,7 +70,7 @@ export class App implements AfterViewInit {
 		this.Camera = new CameraController(this.canvas, this.dialog, this.keyController);
 		this.renderer = new RenderService(this.canvas);
 		SceneLoader.OnLevelChange = (scene) => {
-			this.Scene = new scene(this.Camera, this.keyController)
+			this.Scene = new scene(this.Camera, this.keyController, this.injector)
 		}
 		this.serviceManager = new ServiceManager([
 			DebugService,
@@ -96,15 +97,9 @@ export class App implements AfterViewInit {
 			SceneLoader.LoadLevel(save.CurrentScene);
 		}
 		else {
-			//Setup a save and configure
-			SceneLoader.LoadLevel("test")
-			this.Save()
+			SceneLoader.LoadLevel("MainMenu")
 		}
 		
-		
-		
-
-
 		window.requestAnimationFrame(() => this.RunRecursive());
 	}
 

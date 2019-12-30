@@ -10,15 +10,17 @@ import { CubeModel } from "../Models/Cube/Cube";
 import { BuildingModel } from "../Models/Building/building";
 import * as three from "three"
 import { BoxModel } from "../Models/Box/box";
+import { Injector } from "@angular/core";
 
 
 export class SandboxScene extends SceneBase {
 	
 	constructor(
 		protected Camera: CameraController,
-		keyController: KeyController
-	){
-		super(Camera);
+		keyController: KeyController,
+		injector:Injector
+	) {
+		super(Camera, injector);
 		//this.Scene.add(new three.AmbientLight(0x404040))
 		this.Add(new Sun(this.Scene, 0, 80, 0));
 		this.Add(new Cube(1000, 1, 1000, 0, -2, 0));
