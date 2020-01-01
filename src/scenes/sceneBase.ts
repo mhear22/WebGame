@@ -26,6 +26,15 @@ export abstract class SceneBase {
 		return this.Scene;
 	}
 	
+	public ColideIterate(key:KeyController, step: number):void {
+		this.Meshes.forEach(element => {
+			try {
+				element.Collide(this.CollideMeshes)
+				element.Interval(key, step);
+			}
+			catch {}
+		});
+	}
 
 	public Add(asset:Asset) {
 		asset.AddElement(this.Scene);

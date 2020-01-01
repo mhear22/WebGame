@@ -36,6 +36,10 @@ module.exports = {
 				use: 'html-loader'
 			},
 			{
+				test: /\.(frag|vert)/,
+				use: 'html-loader'
+			},
+			{
 				test: /\.s?css$/,
 				use: ['style-loader', 'css-loader', 'sass-loader']
 			}
