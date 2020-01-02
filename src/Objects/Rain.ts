@@ -3,28 +3,21 @@ import { KeyController } from "../Services/KeyController";
 import * as three from 'three';
 
 export class Rain extends Asset {
-	private flicked = false;
 	Interval(keyController: KeyController, timeSplit: number): void {
 		//https://gpfault.net/posts/webgl2-particles.txt.html
 		var loadedUniforms = ((this.element as three.Points).material as three.ShaderMaterial).uniforms
-		var color = loadedUniforms.color.value
-		if(this.flicked)
-			loadedUniforms.color.value = new three.Color(0xff0000)
-		else
-			loadedUniforms.color.value = new three.Color(0xffffff)
-		this.flicked = !this.flicked;
 		
-		loadedUniforms.i_Velocity.value;
+		loadedUniforms.age.value = (loadedUniforms.age.value + timeSplit);
 	}
 
 	constructor() {
 		super();
 
 		var geo = new three.Geometry();
-		for (var i = 0; i < 1000; i++) {
+		for (var i = 0; i < 2000; i++) {
 			var vect = new three.Vector3(
-				three.Math.randFloatSpread(20),
-				three.Math.randFloatSpread(20) + 10,
+				three.Math.randFloatSpread(50),
+				three.Math.randFloatSpread(40) + 10,
 				three.Math.randFloatSpread(20) - 10
 			);
 
@@ -34,7 +27,8 @@ export class Rain extends Asset {
 		
 		
 		var uniforms = {
-			color: { value: new three.Color(0xff0000) }
+			color: { value: new three.Color(0xffffff) },
+			age: { value: 0.0 }
 		};
 
 		var vert = require("../Shaders/Rain/vertex.vert");
