@@ -6,7 +6,7 @@ export class KeyController {
 	public KeyMap:any = {};
 	protected ObservableMap:any = {};
 	
-	public KeyPress(press:KeyboardEvent, isPressed:boolean) {
+	public KeyPress(press:KeyboardEvent|any, isPressed:boolean) {
 		var key = press.key.toLowerCase();
 		this.KeyMap[key] = isPressed;
 		this.KeyMap["shift"] = press.shiftKey;
