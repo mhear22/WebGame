@@ -12,14 +12,14 @@ export class DebugService extends ServiceBase {
 		super(Camera, Key, injector);
 		
 		Key.WaitFor("`",() =>{
-			this.Toggle = !this.Toggle;
+			DebugService.DebugMode = !DebugService.DebugMode;
 		},100)
 		
 		this.cam = this.Camera.camera;
 	}
 	private cam: any;
 	
-	private Toggle = false;
+	public static DebugMode = false;
 	public DrawsHtml: boolean = true;
 	public Iterates: boolean = true;
 	
@@ -40,7 +40,7 @@ export class DebugService extends ServiceBase {
 	
 	private FPSString = "";
 	public GetHtml() {
-		if(!this.Toggle)
+		if(!DebugService.DebugMode)
 			return "";
 		
 		this.FPSString = `${(1/(this.runningTotal/this.times.length)).toFixed(2)}`;
