@@ -39,33 +39,35 @@ export class MainMenuDialog {
 		})
 		this.displayedMenu = this.MenuRoot.Children;
 
-		this.key.WaitFor("w", () => {
-			this.selected--
-			this.checkSelected()
-		});
-
-		this.key.WaitFor("s", () => {
-			this.selected++
-			this.checkSelected()
-		});
-
-		this.key.WaitFor(" ", () => {
-			if(this.closed)
-				return;
-			var item = this.displayedMenu[this.selected];
-
-			if (item.Name == "Back") {
-				this.displayedMenu = item.Parent.Parent.Children
-			}
-			else if (item.Action) {
-				item.Action();
-			}
-			else if (item.Children) {
-				this.selected = 0;
-				this.displayedMenu = item.Children.filter(x => x.Name != "Back")
-				this.displayedMenu.push(new MenuItem("Back", null, null, item))
-			}
-		})
+		setTimeout(() => {
+			this.key.WaitFor("w", () => {
+				this.selected--
+				this.checkSelected()
+			});
+	
+			this.key.WaitFor("s", () => {
+				this.selected++
+				this.checkSelected()
+			});
+	
+			this.key.WaitFor(` `, () => {
+				if(this.closed)
+					return;
+				var item = this.displayedMenu[this.selected];
+	
+				if (item.Name == "Back") {
+					this.displayedMenu = item.Parent.Parent.Children
+				}
+				else if (item.Action) {
+					item.Action();
+				}
+				else if (item.Children) {
+					this.selected = 0;
+					this.displayedMenu = item.Children.filter(x => x.Name != "Back")
+					this.displayedMenu.push(new MenuItem("Back", null, null, item))
+				}
+			})
+		},10)
 	}
 
 	private checkSelected() {
