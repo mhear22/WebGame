@@ -32,11 +32,12 @@ This is a group of objects come together to create an environment.
 
 ## Things to be done
 
-* make a service to deal with save states
-* make a main menu that should launch when there is no save state
-	* show something in the background
-	* work out a design for the inventory and main menu
-
+* Make the player have a physical coliding body
+* build a game in its own scene
+	* Maze game
+	* FPS?
+	* Neat environment
+		* Side of a motorway in the rain going over a bank
 
 * Buying and Selling Stores
 * Making Money inside the game
