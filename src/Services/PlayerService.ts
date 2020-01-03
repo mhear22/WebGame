@@ -1,34 +1,53 @@
 import { ServiceBase } from "./ServiceBase";
 import { Vector2, Vector3 } from "three";
+import { Injector } from "@angular/core";
+import { KeyController } from "./KeyController";
+import { CameraController } from "./CameraController";
+import { MatDialogRef, MatDialog } from "@angular/material";
+import { InventoryDialog } from "../Parts/Inventory/Inventory";
 
 export class PlayerService extends ServiceBase {
 	public DrawsHtml: boolean = false;
 	public Draws3D: boolean = false;
 	public Iterates: boolean = true;
-	
+
 	private MovementSpeed = 1;
+	public static WalkingControls = true;
 	
-	private static walkingControls = true;
-	private static walkingToggled = false;
-	
-	public static get WalkingControls() {
-		return this.walkingControls;
+	private InventoryOpen:boolean = false;
+	private InventoryWindow:MatDialogRef<InventoryDialog, any>;
+
+	public constructor(
+		protected Camera: CameraController,
+		protected Key: KeyController,
+		protected injector: Injector
+	) {
+		super(Camera, Key, injector);
+		var dialog = injector.get(MatDialog);
+		this.Key.WaitFor("e", () => {
+			if(!this.InventoryOpen) {
+				this.InventoryOpen = true;
+				PlayerService.WalkingControls = false;
+				this.InventoryWindow = dialog.open(InventoryDialog, {
+					height:'80vh',
+					width:'80vh',
+					data: this.Key
+				});
+				
+				this.InventoryWindow.afterClosed().subscribe(x=> {
+					PlayerService.WalkingControls = true;
+					this.InventoryOpen = false;
+				});
+				
+			}
+			else {
+				this.InventoryWindow.close(() => {})
+			}
+		},100)
 	}
-	
-	public static set WalkingControls(value:boolean) {
-		if(this.walkingControls != value && value)
-			this.walkingToggled = true;
-		this.walkingControls = value;
-	}
-	
 	
 	public Iterate(timeSplit: number) {
-		if(PlayerService.walkingToggled) {
-			PlayerService.walkingToggled = false;
-			
-			this.Camera.camera.position.y = 8
-		}
-		if(PlayerService.walkingControls) {
+		if(PlayerService.WalkingControls) {
 			if(this.Key.KeyMap["shift"]) {
 				this.MovementSpeed++;
 				if(this.MovementSpeed >= 5)

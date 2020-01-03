@@ -5,6 +5,7 @@ import { KeyController } from "../Services/KeyController";
 import { CameraController } from "../Services/CameraController";
 import { Vector3 } from "three";
 import { BodyItem } from "./BodyItem";
+import { PlayerService } from "../Services/PlayerService";
 
 
 export class Car extends Asset {
@@ -61,11 +62,11 @@ export class Car extends Asset {
 
 	private ToggleDrivingMode() {
 		if (this.IsDriving) {
-			this.camera.ToggleMaps();
+			PlayerService.WalkingControls = true;
 			this.camera.camera.position.y = 8;
 		}
 		else {
-			this.camera.ToggleMaps();
+			PlayerService.WalkingControls = false;
 		}
 		this.IsDriving = !this.IsDriving;
 	}

@@ -1,13 +1,15 @@
 import { ServiceBase } from "./ServiceBase";
 import { KeyController } from "./KeyController";
 import { CameraController } from "./CameraController";
+import { Injector } from "@angular/core";
 
 export class DebugService extends ServiceBase {
 	public constructor(
 		Camera: CameraController,
-		Key: KeyController
+		Key: KeyController,
+		injector: Injector
 	) { 
-		super(Camera, Key);
+		super(Camera, Key, injector);
 		
 		Key.WaitFor("`",() =>{
 			this.Toggle = !this.Toggle;

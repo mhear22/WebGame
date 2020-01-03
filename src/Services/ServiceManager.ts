@@ -1,6 +1,7 @@
 import { ServiceBase } from "./ServiceBase";
 import { CameraController } from "./CameraController";
 import { KeyController } from "./KeyController";
+import { Injector, inject } from "@angular/core";
 
 export class HtmlModel {
 	public html: string;
@@ -29,10 +30,11 @@ export class ServiceManager {
 	public constructor(
 		services: any[],
 		cam: CameraController,
-		key: KeyController
+		key: KeyController,
+		injector: Injector
 	) {
 		services.map(x=>{
-			var obj = new x(cam, key)
+			var obj = new x(cam, key, injector)
 			if(obj instanceof ServiceBase) {
 				if(obj.Iterates)
 					this.Iterators.push(obj);

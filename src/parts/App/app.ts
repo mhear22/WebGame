@@ -77,7 +77,8 @@ export class App implements AfterViewInit {
 			PlayerService
 		],
 			this.Camera,
-			this.keyController
+			this.keyController,
+			this.injector
 		)
 		this.HtmlLayers = this.serviceManager.Htmls();
 

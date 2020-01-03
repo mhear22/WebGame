@@ -1,10 +1,12 @@
 import { CameraController } from "./CameraController";
 import { KeyController } from "./KeyController";
+import { Injector } from "@angular/core";
 
 export abstract class ServiceBase {
 	public constructor(
 		protected Camera: CameraController,
-		protected Key: KeyController
+		protected Key: KeyController,
+		protected injector: Injector
 	) { }
 	
 	public abstract DrawsHtml:boolean = false;

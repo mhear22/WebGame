@@ -7,59 +7,30 @@ import { KeyController } from "./KeyController";
 
 export class CameraController {
 	private perspectiveCamera: three.PerspectiveCamera;
+	
 	private mouseLocked: boolean;
 	private FOV: number = 75;
 
 	public get RotationX(){ return this.RotX; } 
-	public get RotationY(){ return this.RotY; } 
+	public get RotationY(){ return this.RotY; }
+	private RotX: number = 0;
+	private RotY: number = 0;
+	
+	private InvertX: boolean = true;
+	private InvertY: boolean = true;
 	
 	public static Close = 0.1;
 	public static Far = 500;
-	
-	private RotX: number = 0;
-	private RotY: number = 0;
 
-	private InvertX: boolean = true;
-	private InvertY: boolean = true;
-
-	private IsRotationLocked:boolean = false;
-	private IsMovementLocked:boolean = false;
+	public MouseInput:boolean = true;
 	
-	private InventoryOpen:boolean = false;
-	private IsInventoryLocked:boolean= false;
-	private InventoryWindow:MatDialogRef<InventoryDialog, any>;
 	
 	constructor(private canvas: HTMLCanvasElement, private dialog:MatDialog, private keyController:KeyController) {
 		this.perspectiveCamera = new three.PerspectiveCamera(this.FOV, window.innerWidth / window.innerHeight, CameraController.Close, CameraController.Far);
 		this.perspectiveCamera.position.y = 8;
 		this.UpdateCamera();
-		this.keyController.WaitFor("e", () => {
-			if(!this.InventoryOpen) {
-				this.InventoryOpen = true;
-				this.IsRotationLocked = true;
-				this.IsMovementLocked = true;
-				this.InventoryWindow = this.dialog.open(InventoryDialog, {
-					height:'80vh',
-					width:'80vh',
-					data: this.keyController
-				});
-
-				this.InventoryWindow.afterClosed().subscribe(x=> {
-					this.InventoryOpen = false;
-					this.IsMovementLocked = false;
-					this.IsRotationLocked = false;
-				});
-				
-			}
-			else {
-				this.InventoryWindow.close(() => {})
-			}
-		},100)
 	}
 	
-	public ToggleMaps() {
-		this.IsMovementLocked = !this.IsMovementLocked;
-	}
 	
 	public UpdateCamera(): void {
 		var changed = false;
@@ -87,8 +58,6 @@ export class CameraController {
 	}
 
 	public Rotate(x: number, y: number): void {
-		if(this.IsRotationLocked)
-			return;
 		if (this.InvertY)
 			this.RotY -= x;
 		else
@@ -122,7 +91,7 @@ export class CameraController {
 	public MouseEvent(mouse: MouseEvent, mouseKey: number = 0) {
 		this.mouseLocked = !(document.pointerLockElement !== this.canvas)
 
-		if (this.mouseLocked) {
+		if (this.mouseLocked && this.MouseInput) {
 			var sen = 1000;
 			this.Rotate(mouse.movementX / sen, mouse.movementY / sen);
 		}
