@@ -62,8 +62,8 @@ export class Car extends Asset {
 
 	private ToggleDrivingMode() {
 		if (this.IsDriving) {
-			PlayerService.WalkingControls = true;
 			this.camera.camera.position.y = 8;
+			PlayerService.WalkingControls = true;
 		}
 		else {
 			PlayerService.WalkingControls = false;

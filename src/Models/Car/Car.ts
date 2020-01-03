@@ -25,6 +25,8 @@ export class CarModel extends FileAsset {
 			if (dist <= 20) {
 				PlayerService.WalkingControls = this.isBeingUsed;
 				this.isBeingUsed = !this.isBeingUsed;
+				if(!this.isBeingUsed) 
+					this.Camera.camera.position.y = 8
 			}
 		})
 	}

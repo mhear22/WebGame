@@ -21,8 +21,7 @@ export class MainMenuScene extends SceneBase {
 		
 		this.Add(new Rain())
 		this.Add(new Sun(this.Scene, 0,80,0));
-		//PlayerService.WalkingControls = false
-		//this.Camera.MouseInput = false
+		
 		var dialog = this.Injector.get(MatDialog);
 		var menu = dialog.open(MainMenuDialog, {
 			data: this.key,
@@ -34,7 +33,13 @@ export class MainMenuScene extends SceneBase {
 			
 		});
 		
-		//Trigger Dialog popup
-		//Disable movement
+		//Race Conditions suck
+		//Walking controls are being set to true by the SceneManager
+		//but this scene says they should be false
+		setTimeout(() => {
+			this.Camera.MouseInput = false;
+			PlayerService.WalkingControls = false;
+		},200)
+		
 	}
 }

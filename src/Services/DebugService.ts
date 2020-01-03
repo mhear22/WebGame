@@ -19,7 +19,7 @@ export class DebugService extends ServiceBase {
 	}
 	private cam: any;
 	
-	private Toggle = true;
+	private Toggle = false;
 	public DrawsHtml: boolean = true;
 	public Iterates: boolean = true;
 	

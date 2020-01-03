@@ -70,6 +70,9 @@ export class App implements AfterViewInit {
 		this.Camera = new CameraController(this.canvas, this.dialog, this.keyController);
 		this.renderer = new RenderService(this.canvas);
 		SceneLoader.OnLevelChange = (scene) => {
+			this.dialog.closeAll()
+			PlayerService.WalkingControls = true;
+			this.Camera.MouseInput = true;
 			this.Scene = new scene(this.Camera, this.keyController, this.injector)
 		}
 		this.serviceManager = new ServiceManager([

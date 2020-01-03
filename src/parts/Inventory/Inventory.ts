@@ -46,6 +46,7 @@ export class InventoryDialog {
 			{
 				Name:"Quit",
 				Action: () => {
+					SceneLoader.LoadLevel("MainMenu")
 					//Go to a home screen
 				}
 			}
