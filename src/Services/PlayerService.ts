@@ -26,8 +26,14 @@ export class PlayerService extends ServiceBase {
 		var dialog = injector.get(MatDialog);
 		this.Key.WaitFor("e", () => {
 			if(!this.InventoryOpen) {
+				var alreadyDisabled = PlayerService.WalkingControls == false;
+				if(!alreadyDisabled) {
+					PlayerService.WalkingControls = false;
+					this.Camera.MouseInput = false;
+				}
+				
 				this.InventoryOpen = true;
-				PlayerService.WalkingControls = false;
+				
 				this.InventoryWindow = dialog.open(InventoryDialog, {
 					height:'80vh',
 					width:'80vh',
@@ -35,7 +41,10 @@ export class PlayerService extends ServiceBase {
 				});
 				
 				this.InventoryWindow.afterClosed().subscribe(x=> {
-					PlayerService.WalkingControls = true;
+					if(!alreadyDisabled) {
+						PlayerService.WalkingControls = true;
+						this.Camera.MouseInput = true;
+					}
 					this.InventoryOpen = false;
 				});
 				

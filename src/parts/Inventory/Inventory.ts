@@ -1,5 +1,5 @@
 import { Component, Inject } from "@angular/core";
-import { MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { KeyController } from "../../Services/KeyController";
 import { SettingItem } from "./SettingItem"
 import { SceneLoader } from "../../Scenes/SceneLoader";
@@ -14,10 +14,17 @@ import { SceneLoader } from "../../Scenes/SceneLoader";
 export class InventoryDialog {
 	private Options: SettingItem[] = [];
 	private Selected: number = 0;
+	private isClosed = false;
 
-
-	constructor(@Inject(MAT_DIALOG_DATA) private keyController: KeyController) {
-
+	constructor(
+		@Inject(MAT_DIALOG_DATA) private keyController: KeyController,
+		@Inject(MatDialogRef) private dialogRef:MatDialogRef<any>
+	) {
+		dialogRef.beforeClose().subscribe(() => {
+			this.isClosed = true;
+		});
+		
+		
 		this.Options = [
 			{
 				Name: "Do 1 thing",
@@ -34,9 +41,7 @@ export class InventoryDialog {
 				}
 			},
 			{
-				Name: "Do Another thing", Action: () => {
-
-				},
+				Name: "Do Another thing", Action: () => {},
 			},
 			{
 				Name: "Load Sandbox World", Action: () => {
@@ -65,10 +70,13 @@ export class InventoryDialog {
 		}, 100)
 
 		keyController.WaitFor(" ", () => {
+			if(this.isClosed)
+				return;
 			var option = this.Options[this.Selected]
 			var response = option.Action(option)
 			if (response)
 				this.Options[this.Selected] = response
+			
 		}, 100)
 	}
 }

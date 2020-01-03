@@ -6,6 +6,11 @@ canvas {
 }
 
 .main-menu {
+	padding: 15px;
+	&>div {
+		padding: 15px;
+		justify-content: center;
+	}
 }
 
 .inv-option {
@@ -14,7 +19,7 @@ canvas {
 }
 
 .selected {
-	border: 1px solid blue;
+	text-decoration: underline;
 }
 
 app {
