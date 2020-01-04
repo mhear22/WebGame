@@ -9,7 +9,7 @@ import * as three from 'three';
 
 
 export class BankScene extends SceneBase {
-	public Iterate(keyController: KeyController, Step: number): void { }
+	public Iterate = this.ColideIterate
 	
 	constructor(
 		cam:CameraController,
@@ -18,8 +18,8 @@ export class BankScene extends SceneBase {
 	) {
 		super(cam,injector);
 		
-		this.Add(new BankModel(10, new three.Vector3(0,-20,0)));
-		this.Add(new Sun(this.Scene,0,100));
-		this.Add(new Skybox(this.Camera));
+		this.Add(new BankModel(60, new three.Vector3(0,-10,100)));
+		this.Add(new Sun(this.Scene,0,100,0,null,null, 2));
+		this.Add(new Skybox(cam));
 	}
 }

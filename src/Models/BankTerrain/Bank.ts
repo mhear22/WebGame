@@ -4,7 +4,7 @@ import { Vector3 } from "three";
 
 export class BankModel extends FileAsset {
 	constructor(private scale:number = 0, private pos:Vector3 = new Vector3()) {
-		super(require("./bank.obj"), require("./bank.mtl"))
+		super(require("./bank.obj"), require("./bank.mtl"), require("./bank.png"))
 	}
 	
 	OnLoaded() {
@@ -12,6 +12,5 @@ export class BankModel extends FileAsset {
 		this.element.position.copy(this.pos)
 	}
 	
-	Interval(keyController: KeyController, timeSplit: number): void {
-	}
+	Interval(keyController: KeyController, timeSplit: number): void { }
 }

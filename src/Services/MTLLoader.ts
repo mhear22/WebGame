@@ -6,7 +6,7 @@
 import * as THREE from "three";
 import { Texture } from "three";
 export class MTLLoader implements THREE.MaterialLoader {
-	constructor(manager?: THREE.LoadingManager) {
+	constructor(manager?: THREE.LoadingManager,private textureUrl?:string) {
 		if (!this.manager) {
 			this.manager = THREE.DefaultLoadingManager
 		}
@@ -157,7 +157,7 @@ export class MTLLoader implements THREE.MaterialLoader {
 				}
 			}
 		}
-		var materialCreator = new MaterialCreator(this.resourcePath || path, this.materialOptions);
+		var materialCreator = new MaterialCreator(this.resourcePath || path, this.materialOptions,this.textureUrl);
 		materialCreator.setCrossOrigin(this.crossOrigin);
 		materialCreator.setManager(this.manager);
 		materialCreator.setMaterials(materialsInfo);
@@ -165,9 +165,7 @@ export class MTLLoader implements THREE.MaterialLoader {
 	}
 }
 export class MaterialCreator {
-	constructor(baseUrl?: string, options?: any) {
-		this.baseUrl = baseUrl || '';
-		this.options = options;
+	constructor(public baseUrl: string = '', public options?: any, public textureUrl?:any) {
 		this.materialsInfo = {};
 		this.materials = {};
 		this.materialsArray = [];
@@ -176,8 +174,6 @@ export class MaterialCreator {
 		this.wrap = (this.options && this.options.wrap) ? this.options.wrap : THREE.RepeatWrapping;
 	}
 
-	public baseUrl: any;
-	public options: any
 	side: any;
 	wrap: any;
 	params: any;
@@ -382,18 +378,21 @@ export class MaterialCreator {
 		return texParams;
 	}
 	loadTexture(url: string, mapping: any, onLoad: any, onProgress: any, onError: any) {
-		try {
-			var texture;
-			var loader: any = (THREE.Loader as any).Handlers.get(url);
-			var manager = (this.manager !== undefined) ? this.manager : THREE.DefaultLoadingManager;
-			if (loader === null) {
-				loader = new THREE.TextureLoader(manager);
-			}
-			if (loader.setCrossOrigin) loader.setCrossOrigin(this.crossOrigin);
+		var texture;
+		
+		var manager = (this.manager !== undefined) ? this.manager : THREE.DefaultLoadingManager;
+		var loader:any = new THREE.TextureLoader(manager);
+		
+		if (loader && loader.setCrossOrigin)
+			loader.setCrossOrigin(this.crossOrigin);
+			
+		if(this.textureUrl)
+			texture = loader.load(this.textureUrl, onLoad, onProgress, onError);
+		else
 			texture = loader.load(url, onLoad, onProgress, onError);
-			if (mapping !== undefined) texture.mapping = mapping;
-			return texture;
-		}
-		catch {}
+			
+		if (mapping !== undefined)
+			texture.mapping = mapping;
+		return texture;
 	}
 }
