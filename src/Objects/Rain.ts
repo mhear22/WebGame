@@ -10,24 +10,28 @@ export class Rain extends Asset {
 		loadedUniforms.age.value = (loadedUniforms.age.value + timeSplit);
 	}
 
-	constructor() {
+	constructor(
+		pos:three.Vector3 = new three.Vector3(0,0,-10),
+		scale:three.Vector3 = new three.Vector3(50,50,20),
+		intensity=2000
+	) {
 		super();
 
 		var geo = new three.Geometry();
-		for (var i = 0; i < 2000; i++) {
+		for (var i = 0; i < intensity; i++) {
 			var vect = new three.Vector3(
-				three.Math.randFloatSpread(50),
-				three.Math.randFloatSpread(40) + 10,
-				three.Math.randFloatSpread(20) - 10
+				three.Math.randFloatSpread(scale.x),
+				three.Math.randFloatSpread(scale.y),
+				three.Math.randFloatSpread(scale.z)
 			);
 
 			geo.vertices.push(vect);
 		}
-
 		
 		
 		var uniforms = {
 			color: { value: new three.Color(0xffffff) },
+			height: {value: scale.y},
 			age: { value: 0.0 }
 		};
 
@@ -40,6 +44,8 @@ export class Rain extends Asset {
 			
 		});
 
-		this.element = new three.Points(geo, shad)
+		this.element = new three.Points(geo, shad);
+		if(pos)
+			this.element.position.copy(pos);
 	}
 }

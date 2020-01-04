@@ -1,4 +1,5 @@
 uniform float age;
+uniform float height;
 
 void main() {
 	gl_PointSize = 2.0;
@@ -7,7 +8,7 @@ void main() {
 	
 	float new_y = i_position.y - (15.0 * age);
 	
-	new_y = mod(new_y, 40.0) - 10.0;
+	new_y = mod(new_y, height) - 10.0;
 	
 	i_position.y = new_y;
 
