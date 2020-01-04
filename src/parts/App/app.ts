@@ -72,6 +72,7 @@ export class App implements AfterViewInit {
 		SceneLoader.OnLevelChange = (scene) => {
 			this.dialog.closeAll();
 			PlayerService.WalkingControls = true;
+			PlayerService.InventoryEnabled = true;
 			this.Camera.MouseInput = true;
 			this.Camera.camera.position.set(0,8,0);
 			this.Camera.camera.rotation.set(0,0,0);

@@ -15,11 +15,11 @@ export class MainMenuDialog {
 	private MenuRoot: MenuItem =
 		new MenuItem("Root", [
 			new MenuItem("Continue"),
-			new MenuItem("Level Select", [
-				new MenuItem("Test Scene",null, () => {SceneLoader.LoadLevel("test")}),
-				new MenuItem("Sandbox Scene",null, () => {SceneLoader.LoadLevel("Sandbox")}),
-				new MenuItem("Temp Scene",null, () => {SceneLoader.LoadLevel("Temp Level")})
-			]),
+			new MenuItem("Level Select", SceneLoader.Levels
+			.filter(x=>x.display)
+			.map(x=>{
+				return new MenuItem(x.name, null, () => { SceneLoader.LoadLevel(x.name) })
+			})),
 			new MenuItem("Settings", [
 				new MenuItem("Shadow Quality"),
 				new MenuItem("Debug Settings", null, () => {

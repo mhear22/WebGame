@@ -13,6 +13,7 @@ export class PlayerService extends ServiceBase {
 
 	private MovementSpeed = 1;
 	public static WalkingControls = true;
+	public static InventoryEnabled = true;
 	
 	private InventoryOpen:boolean = false;
 	private InventoryWindow:MatDialogRef<InventoryDialog, any>;
@@ -25,6 +26,8 @@ export class PlayerService extends ServiceBase {
 		super(Camera, Key, injector);
 		var dialog = injector.get(MatDialog);
 		this.Key.WaitFor("e", () => {
+			if(!PlayerService.InventoryEnabled)
+				return;
 			if(!this.InventoryOpen) {
 				var alreadyDisabled = PlayerService.WalkingControls == false;
 				if(!alreadyDisabled) {

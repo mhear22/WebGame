@@ -382,15 +382,18 @@ export class MaterialCreator {
 		return texParams;
 	}
 	loadTexture(url: string, mapping: any, onLoad: any, onProgress: any, onError: any) {
-		var texture;
-		var loader: any = (THREE.Loader as any).Handlers.get(url);
-		var manager = (this.manager !== undefined) ? this.manager : THREE.DefaultLoadingManager;
-		if (loader === null) {
-			loader = new THREE.TextureLoader(manager);
+		try {
+			var texture;
+			var loader: any = (THREE.Loader as any).Handlers.get(url);
+			var manager = (this.manager !== undefined) ? this.manager : THREE.DefaultLoadingManager;
+			if (loader === null) {
+				loader = new THREE.TextureLoader(manager);
+			}
+			if (loader.setCrossOrigin) loader.setCrossOrigin(this.crossOrigin);
+			texture = loader.load(url, onLoad, onProgress, onError);
+			if (mapping !== undefined) texture.mapping = mapping;
+			return texture;
 		}
-		if (loader.setCrossOrigin) loader.setCrossOrigin(this.crossOrigin);
-		texture = loader.load(url, onLoad, onProgress, onError);
-		if (mapping !== undefined) texture.mapping = mapping;
-		return texture;
+		catch {}
 	}
 }
