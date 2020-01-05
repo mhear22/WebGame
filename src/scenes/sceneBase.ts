@@ -10,13 +10,11 @@ export abstract class SceneBase {
 		this.Scene = new three.Scene();
 	}
 	
-	
-	
 	public InteractionText:string;
 	protected Scene:three.Scene;
 	protected Meshes:Asset[] = [];
 	
-	protected get CollideMeshes() {
+	public get CollideMeshes() {
 		return this.Meshes
 			.filter(x=> x.Element && x.CanCollide)
 			.map(x=>x.Element);

@@ -9,6 +9,7 @@ export class Rain extends Asset {
 		
 		loadedUniforms.age.value = (loadedUniforms.age.value + timeSplit);
 	}
+	
 
 	constructor(
 		pos:three.Vector3 = new three.Vector3(0,0,-10),
@@ -16,7 +17,7 @@ export class Rain extends Asset {
 		intensity=2000
 	) {
 		super();
-
+		this.canCollide = false;
 		var geo = new three.Geometry();
 		for (var i = 0; i < intensity; i++) {
 			var vect = new three.Vector3(

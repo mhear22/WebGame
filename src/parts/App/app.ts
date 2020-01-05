@@ -73,10 +73,12 @@ export class App implements AfterViewInit {
 			this.dialog.closeAll();
 			PlayerService.WalkingControls = true;
 			PlayerService.InventoryEnabled = true;
+			PlayerService.Gravity = true;
 			this.Camera.MouseInput = true;
 			this.Camera.camera.position.set(0,8,0);
 			this.Camera.camera.rotation.set(0,0,0);
 			this.Scene = new scene(this.Camera, this.keyController, this.injector)
+			this.serviceManager.ActiveScene = this.Scene;
 		}
 		this.serviceManager = new ServiceManager([
 			DebugService,
