@@ -104,6 +104,11 @@ export class App implements AfterViewInit {
 			//Do something to setup from a save
 			var save = this.saveService.GetSave();
 			SceneLoader.LoadLevel(save.CurrentScene);
+			try {
+				var pos = save.PlayerPosition;
+				this.Camera.camera.position.set(pos.x,pos.y,pos.z);
+			}
+			catch {}
 		}
 		else {
 			SceneLoader.LoadLevel("MainMenu")
@@ -175,6 +180,7 @@ export class App implements AfterViewInit {
 			oldSave = new SaveModel()
 		oldSave.CurrentScene = SceneLoader.SceneName;
 		oldSave.DebugMode = DebugService.DebugMode;
+		oldSave.PlayerPosition = this.Camera.camera.position;
 		this.saveService.Save(oldSave)
 	}
 	
