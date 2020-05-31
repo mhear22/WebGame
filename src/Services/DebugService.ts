@@ -17,8 +17,10 @@ export class DebugService extends ServiceBase {
 		}, 100)
 
 		this.cam = this.Camera.camera;
-		
-		DebugService.DebugMode = injector.get(SaveService).GetSave().DebugMode;
+		try{
+			DebugService.DebugMode = injector.get(SaveService).GetSave().DebugMode;
+		}
+		catch {}
 	}
 	private cam: any;
 
