@@ -7,7 +7,7 @@ export class Rain extends Asset {
 		//https://gpfault.net/posts/webgl2-particles.txt.html
 		var loadedUniforms = ((this.element as three.Points).material as three.ShaderMaterial).uniforms
 		
-		loadedUniforms.age.value = (loadedUniforms.age.value + timeSplit);
+		loadedUniforms.age.value = (loadedUniforms.age.value + timeSplit * 3);
 	}
 	
 
@@ -31,7 +31,7 @@ export class Rain extends Asset {
 		
 		
 		var uniforms = {
-			color: { value: new three.Color(0xffffff) },
+			color: { value: new three.Color(0x999999) },
 			height: {value: scale.y},
 			age: { value: 0.0 }
 		};

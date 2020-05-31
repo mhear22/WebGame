@@ -1,6 +1,7 @@
 const path = require("path");
 const htmlWebpackPlugin = require("html-webpack-plugin");
 const clearWebpackPlugin = require("clean-webpack-plugin");
+const webpack = require("webpack")
 
 module.exports = {
 	entry: {
@@ -79,6 +80,11 @@ module.exports = {
 		}
 	},
 	plugins: [
+		new webpack.LoaderOptionsPlugin({
+			options: {
+				context: process.cwd()
+			}
+		}),
 		new clearWebpackPlugin(['dist'], {
 			verbose: false
 		}),
