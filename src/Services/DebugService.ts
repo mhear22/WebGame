@@ -2,6 +2,7 @@ import { ServiceBase } from "./ServiceBase";
 import { KeyController } from "./KeyController";
 import { CameraController } from "./CameraController";
 import { Injector } from "@angular/core";
+import { SaveService } from "./SaveService";
 
 export class DebugService extends ServiceBase {
 	public constructor(
@@ -16,6 +17,8 @@ export class DebugService extends ServiceBase {
 		}, 100)
 
 		this.cam = this.Camera.camera;
+		
+		DebugService.DebugMode = injector.get(SaveService).GetSave().DebugMode;
 	}
 	private cam: any;
 

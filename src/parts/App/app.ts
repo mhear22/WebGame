@@ -174,6 +174,7 @@ export class App implements AfterViewInit {
 		if(!oldSave)
 			oldSave = new SaveModel()
 		oldSave.CurrentScene = SceneLoader.SceneName;
+		oldSave.DebugMode = DebugService.DebugMode;
 		this.saveService.Save(oldSave)
 	}
 	
