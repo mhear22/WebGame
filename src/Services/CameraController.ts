@@ -20,7 +20,7 @@ export class CameraController {
 	private InvertY: boolean = true;
 	
 	public static Close = 0.1;
-	public static Far = 500;
+	public static Far = 5000;
 
 	public MouseInput:boolean = true;
 	
