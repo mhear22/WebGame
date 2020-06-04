@@ -100,13 +100,32 @@ export class PlayerService extends ServiceBase {
 			pos.y -= 8;
 			var ray = this.intersection(pos, new three.Vector3(0,-1,0))
 			
+			var yChange = 0;
+			//
 			if (ray) {
 				if (ray.distance > 1) {
-					this.Camera.camera.position.y -= ((ray.distance) * 0.99);
+					yChange -= ((ray.distance));
 				}
 			}
 			else
-				this.Camera.camera.position.y += 0.1;
+			{
+				var upPos = pos.clone()
+				upPos.y += 1
+				ray = this.intersection(upPos, new three.Vector3(0,-1,0))
+				if(ray) {
+					var dist = ray.distance;
+					yChange = dist
+				}
+				else
+					yChange += 0.1;
+				
+			}
+			
+			
+			//console.log(yChange)
+			this.Camera.camera.position.y += yChange
+			//if (yChange>=0.001||yChange<=-0.001) {
+			//}
 		}
 		
 		/*
