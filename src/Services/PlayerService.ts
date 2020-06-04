@@ -74,15 +74,18 @@ export class PlayerService extends ServiceBase {
 				this.MovementSpeed = 1;
 		}
 
+		var z = 0;
+		var x = 0;
+		
 		if (this.Key.KeyMap["w"])
-			return new Vector3(0, 0, -timeSplit * this.MovementSpeed * 10);
+			z = -timeSplit * this.MovementSpeed * 10;
 		if (this.Key.KeyMap["s"])
-			return new Vector3(0, 0, timeSplit * this.MovementSpeed * 10);
+			z = timeSplit * this.MovementSpeed * 10;
 		if (this.Key.KeyMap["a"])
-			return new Vector3(-timeSplit * this.MovementSpeed * 10, 0, 0);
+			x = -timeSplit * this.MovementSpeed * 10;
 		if (this.Key.KeyMap["d"])
-			return new Vector3(timeSplit * this.MovementSpeed * 10, 0, 0);
-		return new Vector3(0,0,0)
+			x = timeSplit * this.MovementSpeed * 10;
+		return new Vector3(x,0,z)
 	}
 	
 	private intersection(camPos: three.Vector3, direction: three.Vector3) {
