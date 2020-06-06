@@ -6,4 +6,5 @@ run: electron
 	electron main.asar.js
 	
 pack:
+	#Probably doesnt work
 	electron-packager dist/ game --overwrite
