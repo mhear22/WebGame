@@ -3,7 +3,7 @@ version: 0.2
 phases:
     install:
         commands:
-            - npm install -g webpack
+            - npm install -g webpack webpack-cli
             - npm install
     build:
         commands:
