@@ -20,7 +20,7 @@ import { SaveModel } from "../../Objects/SaveModel";
 
 @Component({
 	selector: 'app',
-	template: require('./app.html')
+	template: require('./App.html')
 })
 export class App implements AfterViewInit {
 
