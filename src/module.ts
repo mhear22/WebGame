@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { App } from "./Parts/App/App";
+import { App } from "./Parts/App/App2";
 import { HttpClientModule } from "@angular/common/http";
 import { FormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
