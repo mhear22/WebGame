@@ -13,6 +13,8 @@ export class PlayerService extends ServiceBase {
 	public Draws3D: boolean = false;
 	public Iterates: boolean = true;
 
+	private FallingMomentum = 1;
+	
 	private MovementSpeed = 1;
 	public static WalkingControls = true;
 	public static Gravity = true;
@@ -100,9 +102,19 @@ export class PlayerService extends ServiceBase {
 			var scene = this.GetScene()
 			var meshes = scene.CollideMeshes;
 			var pos = this.Camera.camera.position.clone()
-			pos.y -= 8;
 			var ray = this.intersection(pos, new three.Vector3(0,-1,0))
+			if(ray) {
+				if(ray.distance < 9 && ray.distance > 7) {
+					this.Camera.camera.position.y -= (ray.distance - 8);
+				}
+			}
+			else {
+				this.FallingMomentum = this.FallingMomentum * (1 + timeSplit/1000)
+				
+				this.Camera.camera.position.y -= this.FallingMomentum/100;
+			}
 			
+			/*
 			var yChange = 0;
 			//
 			if (ray) {
@@ -121,51 +133,19 @@ export class PlayerService extends ServiceBase {
 				}
 				else
 					yChange += 0.1;
-				
 			}
 			
-			
-			//console.log(yChange)
 			this.Camera.camera.position.y += yChange
-			//if (yChange>=0.001||yChange<=-0.001) {
-			//}
+			*/
 		}
 		
-		/*
-		if(PlayerService.Gravity) {
-			var pos = this.Camera.camera.position.clone()
-			pos.y -= 8;
-			
-			var ray = this.intersection(pos, new three.Vector3(0,-1,0))
-			
-			if (ray) {
-				//Over the floor
-				var floor = ray;
-				if (floor.distance > 0.5) {
-					this.Camera.camera.position.y -= ray.distance/10;
-				}
-				else
-					this.Camera.camera.position.y -= ray.distance;
-			}
-			else {
-				pos.y += 1
-				var floorAbove = this.intersection(pos, new three.Vector3(0,-1,0))
-				if(floorAbove) {
-					if(floorAbove.distance < 1) {
-						var actualDist = Math.abs(floorAbove.distance - 1)
-						this.Camera.camera.position.y += actualDist;
-					}
-				}
-				else
-					this.Camera.camera.position.y += 0.1;
-				//Under the floor
-				//console.log("Flying up")
-				//flying up
-			}
-				
-		}
-		*/
+		var position = this.Camera.camera.position.clone()
 		
+		var raydown = this.intersection(position, new three.Vector3(0,-1,0))
+		if(raydown) {
+			console.log("down" + raydown.distance)
+		}
+	
 		if(PlayerService.WalkingControls) {
 			this.Move(this.MovementDirection(timeSplit));
 		}
