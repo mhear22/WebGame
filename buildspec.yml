@@ -12,5 +12,5 @@ phases:
 
 artifacts:
     files:
-		dist/dist/*
+        dist/dist/*
     discard-paths: yes
