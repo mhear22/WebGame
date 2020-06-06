@@ -8,9 +8,9 @@ phases:
     build:
         commands:
             - webpack --mode=production
-            - zip -r dist.zip dist/
+            #- zip -r dist.zip dist/dist/
 
 artifacts:
     files:
-        dist.zip
+		dist/dist/*
     discard-paths: yes
