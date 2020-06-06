@@ -9,7 +9,7 @@ export class CrateModel extends FileAsset {
 		private y: number = 5,
 		private z: number = -10
 	) {
-		super(require("./Crate.obj"))
+		super(require("./crate.obj"))
 	}
 	
 	private isClose = false;

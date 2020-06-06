@@ -3,7 +3,7 @@ import { KeyController } from "../../Services/KeyController";
 
 export class CubeModel extends FileAsset {
 	constructor() {
-		super(require("./Cube.obj"))
+		super(require("./cube.obj"))
 	}
 	
 	OnLoaded() {
