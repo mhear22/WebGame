@@ -2,6 +2,7 @@ import { ServiceBase } from "./ServiceBase";
 import { CameraController } from "./CameraController";
 import { KeyController } from "./KeyController";
 import { Injector, inject } from "@angular/core";
+import { SceneBase } from "../Scenes/SceneBase";
 
 export class HtmlModel {
 	public html: string;
@@ -18,6 +19,8 @@ export class ServiceManager {
 			element.Iterate(split)
 		});
 	}
+	
+	public ActiveScene: SceneBase;
 	
 	public Htmls():HtmlModel[] {
 		return this.DrawsHtml.map(x=> {
@@ -40,6 +43,7 @@ export class ServiceManager {
 					this.Iterators.push(obj);
 				if(obj.DrawsHtml)
 					this.DrawsHtml.push(obj)
+				obj.GetScene = () => this.ActiveScene;
 			}
 		})
 	}

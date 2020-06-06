@@ -71,10 +71,13 @@ export abstract class Asset {
 			if(result.length > 0) {
 				this.IsCollided = true
 				this.colidedDirs.push(dirNorm.clone())
-				result.forEach(colided => {
-					var str = `${colided.object.name} collided with ${name}`
-					DebugService.AdditionalText.push(str)
-				})
+				
+				if(DebugService.DebugMode) {
+					result.forEach(colided => {
+						var str = `${colided.object.name} collided with ${name}`
+						DebugService.AdditionalText.push(str)
+					})
+				}
 				
 			}
 		});

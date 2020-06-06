@@ -5,6 +5,8 @@ import { KeyController } from "./KeyController";
 import { CameraController } from "./CameraController";
 import { MatDialogRef, MatDialog } from "@angular/material";
 import { InventoryDialog } from "../Parts/Inventory/Inventory";
+import * as three from 'three';
+
 
 export class PlayerService extends ServiceBase {
 	public DrawsHtml: boolean = false;
@@ -13,9 +15,11 @@ export class PlayerService extends ServiceBase {
 
 	private MovementSpeed = 1;
 	public static WalkingControls = true;
-	
-	private InventoryOpen:boolean = false;
-	private InventoryWindow:MatDialogRef<InventoryDialog, any>;
+	public static Gravity = true;
+	public static InventoryEnabled = true;
+
+	private InventoryOpen: boolean = false;
+	private InventoryWindow: MatDialogRef<InventoryDialog, any>;
 
 	public constructor(
 		protected Camera: CameraController,
@@ -25,59 +29,145 @@ export class PlayerService extends ServiceBase {
 		super(Camera, Key, injector);
 		var dialog = injector.get(MatDialog);
 		this.Key.WaitFor("e", () => {
-			if(!this.InventoryOpen) {
+			if (!PlayerService.InventoryEnabled)
+				return;
+			if (!this.InventoryOpen) {
 				var alreadyDisabled = PlayerService.WalkingControls == false;
-				if(!alreadyDisabled) {
+				if (!alreadyDisabled) {
 					PlayerService.WalkingControls = false;
 					this.Camera.MouseInput = false;
 				}
-				
+
 				this.InventoryOpen = true;
-				
+
 				this.InventoryWindow = dialog.open(InventoryDialog, {
-					height:'80vh',
-					width:'80vh',
+					height: '80vh',
+					width: '80vh',
 					data: this.Key
 				});
-				
-				this.InventoryWindow.afterClosed().subscribe(x=> {
-					if(!alreadyDisabled) {
+
+				this.InventoryWindow.afterClosed().subscribe(x => {
+					if (!alreadyDisabled) {
 						PlayerService.WalkingControls = true;
 						this.Camera.MouseInput = true;
 					}
 					this.InventoryOpen = false;
 				});
-				
+
 			}
 			else {
-				this.InventoryWindow.close(() => {})
+				this.InventoryWindow.close(() => { })
 			}
-		},100)
+		}, 100)
+	}
+
+	private MovementDirection(timeSplit: number) {
+		if (this.Key.KeyMap["shift"]) {
+			this.MovementSpeed++;
+			if (this.MovementSpeed >= 5)
+				this.MovementSpeed = 5;
+		}
+		else {
+			if (this.MovementSpeed > 1)
+				this.MovementSpeed--;
+			else
+				this.MovementSpeed = 1;
+		}
+
+		var z = 0;
+		var x = 0;
+		
+		if (this.Key.KeyMap["w"])
+			z = -timeSplit * this.MovementSpeed * 10;
+		if (this.Key.KeyMap["s"])
+			z = timeSplit * this.MovementSpeed * 10;
+		if (this.Key.KeyMap["a"])
+			x = -timeSplit * this.MovementSpeed * 10;
+		if (this.Key.KeyMap["d"])
+			x = timeSplit * this.MovementSpeed * 10;
+		return new Vector3(x,0,z)
+	}
+	
+	private intersection(camPos: three.Vector3, direction: three.Vector3) {
+		var ray = new three.Raycaster(camPos, direction, 0, 100);
+		var meshes = this.GetScene().CollideMeshes;
+		var rays = ray.intersectObjects(meshes).filter(x => x.distance > 0).sort(x => x.distance);
+		return rays[0];
 	}
 	
 	public Iterate(timeSplit: number) {
-		if(PlayerService.WalkingControls) {
-			if(this.Key.KeyMap["shift"]) {
-				this.MovementSpeed++;
-				if(this.MovementSpeed >= 5)
-					this.MovementSpeed = 5;
+		if(PlayerService.Gravity) {
+			var scene = this.GetScene()
+			var meshes = scene.CollideMeshes;
+			var pos = this.Camera.camera.position.clone()
+			pos.y -= 8;
+			var ray = this.intersection(pos, new three.Vector3(0,-1,0))
+			
+			var yChange = 0;
+			//
+			if (ray) {
+				if (ray.distance > 1) {
+					yChange -= ((ray.distance));
+				}
 			}
-			else {
-				if(this.MovementSpeed > 1) {
-					this.MovementSpeed--;
+			else
+			{
+				var upPos = pos.clone()
+				upPos.y += 1
+				ray = this.intersection(upPos, new three.Vector3(0,-1,0))
+				if(ray) {
+					var dist = ray.distance;
+					yChange = dist
 				}
 				else
-					this.MovementSpeed = 1;
+					yChange += 0.1;
+				
 			}
 			
-			if (this.Key.KeyMap["w"])
-				this.Move(new Vector3(0, 0, -timeSplit * this.MovementSpeed * 10));
-			if (this.Key.KeyMap["s"])
-				this.Move(new Vector3(0, 0, timeSplit * this.MovementSpeed * 10));
-			if (this.Key.KeyMap["a"])
-				this.Move(new Vector3(-timeSplit * this.MovementSpeed * 10, 0, 0));
-			if (this.Key.KeyMap["d"])
-				this.Move(new Vector3(timeSplit * this.MovementSpeed * 10, 0, 0));
+			
+			//console.log(yChange)
+			this.Camera.camera.position.y += yChange
+			//if (yChange>=0.001||yChange<=-0.001) {
+			//}
+		}
+		
+		/*
+		if(PlayerService.Gravity) {
+			var pos = this.Camera.camera.position.clone()
+			pos.y -= 8;
+			
+			var ray = this.intersection(pos, new three.Vector3(0,-1,0))
+			
+			if (ray) {
+				//Over the floor
+				var floor = ray;
+				if (floor.distance > 0.5) {
+					this.Camera.camera.position.y -= ray.distance/10;
+				}
+				else
+					this.Camera.camera.position.y -= ray.distance;
+			}
+			else {
+				pos.y += 1
+				var floorAbove = this.intersection(pos, new three.Vector3(0,-1,0))
+				if(floorAbove) {
+					if(floorAbove.distance < 1) {
+						var actualDist = Math.abs(floorAbove.distance - 1)
+						this.Camera.camera.position.y += actualDist;
+					}
+				}
+				else
+					this.Camera.camera.position.y += 0.1;
+				//Under the floor
+				//console.log("Flying up")
+				//flying up
+			}
+				
+		}
+		*/
+		
+		if(PlayerService.WalkingControls) {
+			this.Move(this.MovementDirection(timeSplit));
 		}
 	}
 	public Move(vector: Vector3) {

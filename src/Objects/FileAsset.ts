@@ -6,7 +6,7 @@ require('three-obj-loader')(three);
 
 
 export abstract class FileAsset extends Asset {
-	constructor(private mesh:string, private mat?:string) {
+	constructor(private mesh:string, private mat?:string, private texture?:string) {
 		super();
 	}
 	
@@ -22,7 +22,7 @@ export abstract class FileAsset extends Asset {
 			
 			if(data[1]) {
 				var material = data[1];
-				var mtl = new MTLLoader();
+				var mtl = new MTLLoader(null,this.texture);
 				var parsedMaterial = mtl.parse(material)
 				loader.setMaterials(parsedMaterial)
 			}

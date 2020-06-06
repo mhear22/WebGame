@@ -39,6 +39,8 @@ export class MainMenuScene extends SceneBase {
 		setTimeout(() => {
 			this.Camera.MouseInput = false;
 			PlayerService.WalkingControls = false;
+			PlayerService.InventoryEnabled = false;
+			PlayerService.Gravity = false;
 		},200)
 		
 	}

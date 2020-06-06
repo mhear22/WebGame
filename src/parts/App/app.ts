@@ -72,10 +72,13 @@ export class App implements AfterViewInit {
 		SceneLoader.OnLevelChange = (scene) => {
 			this.dialog.closeAll();
 			PlayerService.WalkingControls = true;
+			PlayerService.InventoryEnabled = true;
+			PlayerService.Gravity = true;
 			this.Camera.MouseInput = true;
 			this.Camera.camera.position.set(0,8,0);
 			this.Camera.camera.rotation.set(0,0,0);
 			this.Scene = new scene(this.Camera, this.keyController, this.injector)
+			this.serviceManager.ActiveScene = this.Scene;
 		}
 		this.serviceManager = new ServiceManager([
 			DebugService,
@@ -101,6 +104,11 @@ export class App implements AfterViewInit {
 			//Do something to setup from a save
 			var save = this.saveService.GetSave();
 			SceneLoader.LoadLevel(save.CurrentScene);
+			try {
+				var pos = save.PlayerPosition;
+				this.Camera.camera.position.set(pos.x,pos.y,pos.z);
+			}
+			catch {}
 		}
 		else {
 			SceneLoader.LoadLevel("MainMenu")
@@ -171,7 +179,10 @@ export class App implements AfterViewInit {
 		if(!oldSave)
 			oldSave = new SaveModel()
 		oldSave.CurrentScene = SceneLoader.SceneName;
+		oldSave.DebugMode = DebugService.DebugMode;
+		oldSave.PlayerPosition = this.Camera.camera.position;
 		this.saveService.Save(oldSave)
+		console.log("Saved")
 	}
 	
 	private Logic(lastFrameSplit: number) {
