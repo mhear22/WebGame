@@ -1,11 +1,16 @@
 const path = require("path");
 const htmlWebpackPlugin = require("html-webpack-plugin");
 const clearWebpackPlugin = require("clean-webpack-plugin");
-const webpack = require("webpack")
+const webpack = require("webpack");
+const fs = require("fs");
 
 module.exports = (env, argv) => {
-	var isDev = argv.mode == "development"
-
+	var isDev = argv.mode == "development";
+	
+	var currentTime = new Date().toISOString();
+	var data = `export function getVersion() {return "${currentTime}"}`;
+	fs.writeFile("./src/version.ts", data, () => {});
+	
 	var config = {
 		entry: {
 			vendor: './src/vendor.ts',

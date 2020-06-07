@@ -4,8 +4,6 @@ import { AppModule } from './module';
 import { enableProdMode } from '@angular/core';
 import "zone.js";
 
-
-
 if(location.hostname !== "localhost") {
 	enableProdMode();
 }

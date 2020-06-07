@@ -4,6 +4,8 @@ import { KeyController } from "../../Services/KeyController";
 import { MenuItem } from "../../Objects/MenuItem";
 import { DebugService } from "../../Services/DebugService";
 import { SceneLoader } from "../../Scenes/SceneLoader";
+import { getVersion } from "../../version";
+import * as moment from "moment";
 
 @Component({
 	template: require("./MainMenu.html")
@@ -13,6 +15,14 @@ export class MainMenuDialog {
 	private closed = false;
 
 	private title = "Web Game";
+	private version = this.getDateVersion();
+	
+	private getDateVersion() {
+		var ver = getVersion();
+		var datetime = new Date(ver)
+		
+		return moment(datetime).fromNow();
+	}
 	
 	private MenuRoot: MenuItem =
 		new MenuItem("Web Game", [
