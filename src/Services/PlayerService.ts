@@ -13,7 +13,7 @@ export class PlayerService extends ServiceBase {
 	public Draws3D: boolean = false;
 	public Iterates: boolean = true;
 
-	private FallingMomentum = 1;
+	private FallingMomentum = 10;
 	
 	private MovementSpeed = 1;
 	public static WalkingControls = true;
@@ -103,49 +103,16 @@ export class PlayerService extends ServiceBase {
 			var meshes = scene.CollideMeshes;
 			var pos = this.Camera.camera.position.clone()
 			var ray = this.intersection(pos, new three.Vector3(0,-1,0))
-			if(ray) {
-				if(ray.distance < 9 && ray.distance > 7) {
-					this.Camera.camera.position.y -= (ray.distance - 8);
-				}
+			if(ray && ray.distance < 9 && ray.distance > 7) {
+				this.Camera.camera.position.y -= (ray.distance - 8);
+				this.FallingMomentum = 10;
 			}
 			else {
-				this.FallingMomentum = this.FallingMomentum * (1 + timeSplit/1000)
-				
+				this.FallingMomentum = this.FallingMomentum * (1 + timeSplit)
 				this.Camera.camera.position.y -= this.FallingMomentum/100;
 			}
-			
-			/*
-			var yChange = 0;
-			//
-			if (ray) {
-				if (ray.distance > 1) {
-					yChange -= ((ray.distance));
-				}
-			}
-			else
-			{
-				var upPos = pos.clone()
-				upPos.y += 1
-				ray = this.intersection(upPos, new three.Vector3(0,-1,0))
-				if(ray) {
-					var dist = ray.distance;
-					yChange = dist
-				}
-				else
-					yChange += 0.1;
-			}
-			
-			this.Camera.camera.position.y += yChange
-			*/
 		}
 		
-		var position = this.Camera.camera.position.clone()
-		
-		var raydown = this.intersection(position, new three.Vector3(0,-1,0))
-		if(raydown) {
-			console.log("down" + raydown.distance)
-		}
-	
 		if(PlayerService.WalkingControls) {
 			this.Move(this.MovementDirection(timeSplit));
 		}
