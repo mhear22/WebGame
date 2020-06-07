@@ -10,7 +10,10 @@ import { Rain } from "../Objects/Rain";
 import { PlayerService } from "../Services/PlayerService";
 
 export class MainMenuScene extends SceneBase {
-	public Iterate = this.ColideIterate;
+	public Iterate = (keyController:KeyController, Step:number) => {
+		this.Camera.camera.rotateZ(Step);
+		this.ColideIterate(keyController, Step);
+	} 
 	
 	constructor(
 		protected Camera: CameraController,

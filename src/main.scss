@@ -1,24 +1,23 @@
 @import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
+@import "./Parts/MainMenu/MainMenu.scss";
 
 canvas {
 	width: 100%;
 	height: 100%;
 }
 
-.main-menu {
-	padding: 15px;
-	&>div {
-		padding: 15px;
-		justify-content: center;
-	}
+* {
+	font-family: Helvetica, sans-serif;
 }
 
-.inv-option {
+.inv-option, .menu-item {
+	font-weight: bold;
 	padding: 10px;
 	width: 100%
 }
 
 .selected {
+	color: red;
 	text-decoration: underline;
 }
 
