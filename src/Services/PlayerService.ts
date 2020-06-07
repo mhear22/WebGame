@@ -114,7 +114,27 @@ export class PlayerService extends ServiceBase {
 		}
 		
 		if(PlayerService.WalkingControls) {
-			this.Move(this.MovementDirection(timeSplit));
+			var movementDir = this.MovementDirection(timeSplit);
+			
+			var isZeroed = movementDir.x == 0 && movementDir.z == 0;
+			
+			if(!isZeroed) {
+				var pos = this.Camera.camera.position.clone();
+				pos.y -= 7;
+				var normDir = movementDir.clone().normalize().applyAxisAngle(this.Camera.camera.up, this.Camera.RotationY);
+				var ray = this.intersection(pos, normDir);
+				if(ray && ray.distance < 0.8) {
+					console.log("About to colide");
+				}
+				else {
+					this.Move(movementDir);
+				}
+			}
+			else {
+				
+				this.Move(movementDir);
+			}
+			
 		}
 	}
 	public Move(vector: Vector3) {

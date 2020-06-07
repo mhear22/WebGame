@@ -40,8 +40,7 @@ export class BankScene extends SceneBase {
 		
 		this.sun = new Sun(this.Scene,0,100,0,null,null, 2);
 		
-		
-		this.Add(new BankModel(60, new three.Vector3(0,-10,100)));
+		this.Add(new BankModel(60, new three.Vector3(0,-11,100)));
 		
 		this.crates = [
 			new CrateModel(this.Camera,100,5,0),
