@@ -123,10 +123,7 @@ export class PlayerService extends ServiceBase {
 				pos.y -= 7;
 				var normDir = movementDir.clone().normalize().applyAxisAngle(this.Camera.camera.up, this.Camera.RotationY);
 				var ray = this.intersection(pos, normDir);
-				if(ray && ray.distance < 0.8) {
-					console.log("About to colide");
-				}
-				else {
+				if(!ray || ray.distance > 0.8) {
 					this.Move(movementDir);
 				}
 			}
