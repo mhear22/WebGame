@@ -1,16 +1,24 @@
 version: 0.2
 
 phases:
-    install:
-        commands:
-            - npm install -g webpack webpack-cli
-            - npm install
-    build:
-        commands:
-            - webpack --mode=production
-            #- zip -r dist.zip dist/dist/
+  install:
+    commands:
+      - npm install -g webpack webpack-cli
+      - npm install
+  build:
+    commands:
+      - webpack --mode=production
+      - aws cloudformation package --template-file ./template.yml --s3-bucket ${Bucket} --output-template-file serverless.yml
+      #- zip -r dist.zip dist/dist/
 
 artifacts:
-    files:
-        dist/*
-    discard-paths: yes
+  secondary-artifacts:
+    S3SiteFiles:
+      discard-paths: yes
+      files:
+        - dist/*
+    BuildOutput:
+      discard-paths: yes
+      files:
+        - serverless.yml
+        - config.json
