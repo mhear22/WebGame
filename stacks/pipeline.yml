@@ -224,7 +224,7 @@ Resources:
             Version: '2012-10-17'
             Statement:
               - Effect: Allow
-                Resource: !Sub ${PipelineBucket.Arn}/*
+                Resource: "*"
                 Action: s3:*
               - Effect: Allow
                 Resource: "*"
