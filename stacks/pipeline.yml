@@ -1,0 +1,240 @@
+Parameters:
+  ProjectName:
+    Description: "Should be a lowercase name"
+    Type: String
+    Default: webgame
+
+  ProjectOwner:
+    Type: String
+    Default: mhear22
+    
+  ProjectRepo:
+    Description: Preconfigured Code project
+    Type: String
+    Default: WebGame
+  
+  Branch:
+    Description: "The branch to use to build from"
+    Type: String
+    Default: production
+
+Resources:
+  PipelineBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub ${ProjectName}-cloudformation-bucket
+
+      
+  ###
+  # Code Build and pipeline info
+  ###
+  
+  CodePipelineWebhook:
+    Type: AWS::CodePipeline::Webhook
+    Properties:
+      Authentication: GITHUB_HMAC
+      AuthenticationConfiguration:
+        SecretToken: "{{resolve:ssm:patoken:1}}"
+      Filters:
+        - JsonPath: $.ref
+          MatchEquals: 'refs/heads/{Branch}'
+      TargetPipeline: !Ref AppPipeline
+      TargetAction: Source
+      Name: !Sub ${ProjectName}-webhook
+      TargetPipelineVersion: !GetAtt AppPipeline.Version
+      RegisterWithThirdParty: true
+  
+  CodeBuildProject:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: !Sub ${ProjectName}-codebuild
+      Description: A description about my project
+      ServiceRole: !GetAtt CodeBuildRole.Arn
+      Artifacts:
+        Type: CODEPIPELINE
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/amazonlinux2-x86_64-standard:3.0
+        EnvironmentVariables:
+        - Name: ProjectName
+          Value: !Ref ProjectName
+        - Name: Bucket
+          Value: !Ref PipelineBucket
+      Source:
+        Type: CODEPIPELINE
+      TimeoutInMinutes: 10
+
+  AppPipeline:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      Name: !Sub ${ProjectName}-pipeline
+      RoleArn: !GetAtt PipelineRole.Arn
+      Stages:
+        - Name: Source
+          Actions:
+            - Name: Source
+              ActionTypeId:
+                Version: 1
+                Category: Source
+                Owner: ThirdParty
+                Provider: GitHub
+              OutputArtifacts:
+                - Name: SourceOutput
+              Configuration:
+                Owner: !Ref ProjectOwner
+                Repo: !Ref ProjectRepo
+                Branch: !Ref Branch
+                OAuthToken: "{{resolve:ssm:patoken:1}}"
+                PollForSourceChanges: false
+              RunOrder: 1
+        - Name: Build
+          Actions:
+            - Name: Build
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Provider: CodeBuild
+                Version: '1'
+              RunOrder: 1
+              Configuration:
+                ProjectName: !Ref CodeBuildProject
+                PrimarySource: SourceOutput
+              OutputArtifacts:
+                - Name: BuildOutput
+                - Name: S3SiteFiles
+              InputArtifacts:
+                - Name: SourceOutput
+        - Name: Deploy
+          Actions:
+            - Name: CreateChangeSet
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Provider: CloudFormation
+                Version: '1'
+              InputArtifacts:
+                - Name: BuildOutput
+              Configuration:
+                ActionMode: CHANGE_SET_REPLACE
+                Capabilities: CAPABILITY_IAM,CAPABILITY_NAMED_IAM
+                RoleArn: !GetAtt CloudFormationRole.Arn
+                StackName: !Sub ${ProjectName}-Stack
+                ChangeSetName: !Sub ${ProjectName}-ChangeSet
+                TemplateConfiguration: BuildOutput::config.json
+                TemplatePath: BuildOutput::serverless.yml
+              RunOrder: '1'
+            - Name: ExecuteChangeSet
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Provider: CloudFormation
+                Version: '1'
+              Configuration:
+                ActionMode: CHANGE_SET_EXECUTE
+                Capabilities: CAPABILITY_IAM,CAPABILITY_NAMED_IAM
+                ChangeSetName: !Sub ${ProjectName}-ChangeSet
+                RoleArn: !GetAtt CloudFormationRole.Arn
+                StackName: !Sub ${ProjectName}-Stack
+              RunOrder: '2'
+            - Name: DeployGameS3
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Provider: S3
+                Version: '1'
+              InputArtifacts:
+                - Name: S3SiteFiles
+              Configuration:
+                BucketName: game.mckayhear.es
+                Extract: true
+              RunOrder: '3'
+
+      ArtifactStore:
+        Type: S3
+        Location: !Ref PipelineBucket
+
+  ###
+  # IAM Roles
+  ###
+ 
+  CodeBuildRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - codebuild.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: CodeBuild
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Resource:
+                  - !Sub ${PipelineBucket.Arn}/*
+                  - !Sub ${PipelineBucket.Arn}/
+                Action: s3:*
+              - Effect: Allow
+                Resource: "*"
+                Action:
+                  - "logs:*"
+
+  CloudFormationRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - cloudformation.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: Cloudformation
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Resource: "*"
+                Action: "*"
+
+  PipelineRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - codepipeline.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: CodeBuild
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Resource: !Sub ${PipelineBucket.Arn}/*
+                Action: s3:*
+              - Effect: Allow
+                Resource: "*"
+                Action: 
+                  - codebuild:*
+                  - cloudformation:*
+                  - iam:*
+
+Outputs:
+  PipelineBucket:
+    Value: !Ref PipelineBucket
+    Export:
+      Name: !Sub ${ProjectName}-bucket
