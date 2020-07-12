@@ -8,11 +8,24 @@ Parameters:
   ProjectHash:
     Type: String
 
+  Environment:
+    Type: String
+    Default: dev
+    
+Mappings:
+  URLs:
+    prod:
+      domain: dev.mckayhear.es
+      zoneId: Z2BASL1172N9HA
+    dev:
+      domain: dev.mckayhear.es
+      zoneId: Z2BASL1172N9HA
+    
 Resources:
   StaticSiteBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: dev.mckayhear.es
+      BucketName: !FindInMap ["URLs", !Ref Environment, domain]
       AccessControl: PublicRead
       WebsiteConfiguration:
         IndexDocument: index.html
@@ -31,9 +44,16 @@ Resources:
               - !Sub ${StaticSiteBucket.Arn}/*
       Bucket: !Ref StaticSiteBucket
       
-    
-    
-    
+    StaticSiteRecordSets:
+      Type: AWS::Route53::RecordSetGroup
+      Properties:
+        Comment: Forward to Environment
+        HostedZoneId: !FindInMap ["URLs", !Ref Environment, zoneId]
+        RecordSets:
+          - Name: !FindInMap ["URLs", !Ref Environment, domain]
+            Type: A
+            AliasTarget:
+              DNSName: !GetAtt StaticSiteBucket.WebsiteURL
     # Static site
     # Game Code
     # Lambda API
