@@ -11,11 +11,12 @@ Parameters:
 Resources:
   StaticSiteBucket:
     Type: AWS::S3::Bucket
-    BucketName: dev.mckayhear.es
-    AccessControl: PublicRead
-    WebsiteConfiguration:
-      IndexDocument: index.html
-      ErrorDocument: error.html
+    Properties:
+      BucketName: dev.mckayhear.es
+      AccessControl: PublicRead
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: error.html
   
   StaticSitePolicy:
     Type: AWS::S3::BucketPolicy
