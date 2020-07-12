@@ -44,16 +44,16 @@ Resources:
               - !Sub ${StaticSiteBucket.Arn}/*
       Bucket: !Ref StaticSiteBucket
       
-    StaticSiteRecordSets:
-      Type: AWS::Route53::RecordSetGroup
-      Properties:
-        Comment: Forward to Environment
-        HostedZoneId: !FindInMap ["URLs", !Ref Environment, zoneId]
-        RecordSets:
-          - Name: !FindInMap ["URLs", !Ref Environment, domain]
-            Type: A
-            AliasTarget:
-              DNSName: !GetAtt StaticSiteBucket.WebsiteURL
+  StaticSiteRecordSets:
+    Type: AWS::Route53::RecordSetGroup
+    Properties:
+      Comment: Forward to Environment
+      HostedZoneId: !FindInMap ["URLs", !Ref Environment, zoneId]
+      RecordSets:
+        - Name: !FindInMap ["URLs", !Ref Environment, domain]
+          Type: A
+          AliasTarget:
+            DNSName: !GetAtt StaticSiteBucket.WebsiteURL
     # Static site
     # Game Code
     # Lambda API
