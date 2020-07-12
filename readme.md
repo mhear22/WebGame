@@ -44,3 +44,4 @@ This is a group of objects come together to create an environment.
 * Fix the issue with the hopping mouse
 * Menus and settings
 * PostProcessing (Aliasing, bloom)
+* Get a download site working to be able to download and install the game

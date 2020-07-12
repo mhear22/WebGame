@@ -9,5 +9,30 @@ Parameters:
     Type: String
 
 Resources:
-  Bucket:
+  StaticSiteBucket:
     Type: AWS::S3::Bucket
+    BucketName: dev.mckayhear.es
+    AccessControl: PublicRead
+    WebsiteConfiguration:
+      IndexDocument: index.html
+      ErrorDocument: error.html
+  
+  StaticSitePolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal: "*"
+            Action: s3:GetObject
+            Resource:
+              - !Sub "arn:aws:s3:::{StaticSiteBucket}/*"
+      Bucket: !Ref StaticSiteBucket
+      
+    
+    
+    
+    # Static site
+    # Game Code
+    # Lambda API
