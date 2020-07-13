@@ -17,10 +17,12 @@ Mappings:
     prod:
       domain: dev.mckayhear.es
       zoneId: Z2BASL1172N9HA
+      s3endpoint: s3-website-ap-southeast-2.amazonaws.com
     dev:
       domain: dev.mckayhear.es
       zoneId: Z2BASL1172N9HA
-    
+      s3endpoint: s3-website-ap-southeast-2.amazonaws.com
+
 Resources:
   StaticSiteBucket:
     Type: AWS::S3::Bucket
@@ -48,14 +50,16 @@ Resources:
     Type: AWS::Route53::RecordSetGroup
     Properties:
       Comment: Forward to Environment
-      HostedZoneId: !FindInMap ["URLs", !Ref Environment, zoneId]
+      HostedZoneName: !Sub
+        - ${bucket}.
+        - bucket: !FindInMap ["URLs", !Ref Environment, zoneId]
       RecordSets:
         - Name: !Sub
             - ${bucket}.
             - bucket: !FindInMap ["URLs", !Ref Environment, domain]
           Type: A
           AliasTarget:
-            DNSName: !GetAtt StaticSiteBucket.WebsiteURL
+            DNSName: !FindInMap ["URLs", !Ref Environment, s3endpoint]
             HostedZoneId: !FindInMap ["URLs", !Ref Environment, zoneId]
     # Static site
     # Game Code
