@@ -68,3 +68,19 @@ Resources:
     # Static site
     # Game Code
     # Lambda API
+    
+    
+  LambdaApi:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: python3.7
+      handler: handler
+      InlineCode: |
+        def handler(_, __):
+          print("Hello, world")
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /path
+            Method: get
