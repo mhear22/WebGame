@@ -69,7 +69,7 @@ Resources:
     # Game Code
     # Lambda API
     
-    
+  #Forward this from something like devapi.mckayhear.es
   LambdaApi:
     Type: AWS::Serverless::Function
     Properties:
