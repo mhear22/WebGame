@@ -18,10 +18,12 @@ Mappings:
       domain: dev.mckayhear.es
       zoneId: Z2BASL1172N9HA
       s3endpoint: s3-website-ap-southeast-2.amazonaws.com
+      s3zoneId: Z1WCIGYICN2BYD
     dev:
       domain: dev.mckayhear.es
       zoneId: Z2BASL1172N9HA
       s3endpoint: s3-website-ap-southeast-2.amazonaws.com
+      s3zoneId: Z1WCIGYICN2BYD
 
 Resources:
   StaticSiteBucket:
@@ -52,15 +54,15 @@ Resources:
       Comment: Forward to Environment
       HostedZoneName: !Sub
         - ${bucket}.
-        - bucket: !FindInMap ["URLs", !Ref Environment, zoneId]
+        - bucket: !FindInMap ["URLs", !Ref Environment, domain]
       RecordSets:
         - Name: !Sub
             - ${bucket}.
             - bucket: !FindInMap ["URLs", !Ref Environment, domain]
           Type: A
           AliasTarget:
+            HostedZoneId: !FindInMap ["URLs", !Ref Environment, s3zoneId]
             DNSName: !FindInMap ["URLs", !Ref Environment, s3endpoint]
-            HostedZoneId: !FindInMap ["URLs", !Ref Environment, zoneId]
     # Static site
     # Game Code
     # Lambda API
