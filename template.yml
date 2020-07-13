@@ -54,6 +54,7 @@ Resources:
           Type: A
           AliasTarget:
             DNSName: !GetAtt StaticSiteBucket.WebsiteURL
+            HostedZoneId: !FindInMap ["URLs", !Ref Environment, zoneId]
     # Static site
     # Game Code
     # Lambda API
