@@ -30,7 +30,7 @@ Resources:
       WebsiteConfiguration:
         IndexDocument: index.html
         ErrorDocument: error.html
-  
+
   StaticSitePolicy:
     Type: AWS::S3::BucketPolicy
     Properties:
@@ -43,14 +43,16 @@ Resources:
             Resource:
               - !Sub ${StaticSiteBucket.Arn}/*
       Bucket: !Ref StaticSiteBucket
-      
+
   StaticSiteRecordSets:
     Type: AWS::Route53::RecordSetGroup
     Properties:
       Comment: Forward to Environment
       HostedZoneId: !FindInMap ["URLs", !Ref Environment, zoneId]
       RecordSets:
-        - Name: !FindInMap ["URLs", !Ref Environment, domain]
+        - Name: !Sub
+            - ${bucket}.
+            - bucket: !FindInMap ["URLs", !Ref Environment, domain]
           Type: A
           AliasTarget:
             DNSName: !GetAtt StaticSiteBucket.WebsiteURL
