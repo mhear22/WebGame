@@ -7,20 +7,22 @@ Parameters:
     
   ProjectHash:
     Type: String
-
+    
   Environment:
     Type: String
     Default: dev
     
 Mappings:
   URLs:
-    prod:
-      domain: dev.mckayhear.es
-      zoneId: Z2BASL1172N9HA
-      s3endpoint: s3-website-ap-southeast-2.amazonaws.com
-      s3zoneId: Z1WCIGYICN2BYD
+#    prod:
+#      root: mckayhear.es
+#      domain: dev.mckayhear.es
+#      zoneId: Z2BASL1172N9HA
+#      s3endpoint: s3-website-ap-southeast-2.amazonaws.com
+#      s3zoneId: Z1WCIGYICN2BYD
     dev:
       domain: dev.mckayhear.es
+      root: mckayhear.es
       zoneId: Z2BASL1172N9HA
       s3endpoint: s3-website-ap-southeast-2.amazonaws.com
       s3zoneId: Z1WCIGYICN2BYD
@@ -54,7 +56,7 @@ Resources:
       Comment: Forward to Environment
       HostedZoneName: !Sub
         - ${bucket}.
-        - bucket: !FindInMap ["URLs", !Ref Environment, domain]
+        - bucket: !FindInMap ["URLs", !Ref Environment, root]
       RecordSets:
         - Name: !Sub
             - ${bucket}.
