@@ -73,7 +73,7 @@ Resources:
   LambdaApi:
     Type: AWS::Serverless::Function
     Properties:
-      Name: !Sub ${ProjectName}-backend-api
+      FunctionName: !Sub ${ProjectName}-backend-api
       Runtime: python3.7
       Handler: index.handler
       InlineCode: |
