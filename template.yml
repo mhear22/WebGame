@@ -73,14 +73,19 @@ Resources:
   LambdaApi:
     Type: AWS::Serverless::Function
     Properties:
+      Name: !Sub ${ProjectName}-backend-api
       Runtime: python3.7
       Handler: index.handler
       InlineCode: |
         def handler(_, __):
-          print("Hello, world")
-      Events:
-        ApiEvent:
-          Type: Api
-          Properties:
-            Path: /{proxy+}
-            Method: ANY
+          return {
+            "statusCode":200,
+            "body": "Hello, World!"
+          }
+
+  ApiGateway:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name: !Sub ${ProjectName}-api
+      ProtocolType: HTTP
+      Target: !Sub arn:aws:apigateway:ap-southeast-2:lambda:path/2015-03-31/functions/${LambdaApi.Arn}/invocations
