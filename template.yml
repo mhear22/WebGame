@@ -74,7 +74,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Runtime: python3.7
-      handler: handler
+      Handler: handler
       InlineCode: |
         def handler(_, __):
           print("Hello, world")
