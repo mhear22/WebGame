@@ -26,7 +26,8 @@ Mappings:
       root: mckayhear.es
       zoneId: Z2BASL1172N9HA
       s3endpoint: s3-website-ap-southeast-2.amazonaws.com
-      s3zoneId: Z1WCIGYICN2BYD
+      s3zoneId: Z1WCIGYICN2BYD\
+      sslcert: arn:aws:acm:us-east-1:115136208505:certificate/d2ec0f01-f114-4d0b-ac04-c6ece55d0048
 
 Resources:
   StaticSiteBucket:
