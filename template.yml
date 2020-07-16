@@ -83,6 +83,13 @@ Resources:
             "statusCode":200,
             "body": "Hello, World!"
           }
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+            RestApiId: !Ref Api
 
   Api:
     Type: AWS::Serverless::Api
