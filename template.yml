@@ -68,8 +68,8 @@ Resources:
             HostedZoneId: !FindInMap ["URLs", !Ref Environment, s3zoneId]
             DNSName: !FindInMap ["URLs", !Ref Environment, s3endpoint]
         - Name: !Sub
-            - "${Domain}."
-            - Domain: !FindInMap ["URLs", !Ref Environment, domain]
+            - ${Domain}.
+            - Domain: !FindInMap ["URLs", !Ref Environment, apidomain]
           Type: A
           AliasTarget:
             HostedZoneId: Z2FDTNDATAQYW2
