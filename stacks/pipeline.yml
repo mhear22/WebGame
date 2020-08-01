@@ -71,7 +71,7 @@ Resources:
         - Name: Environment
           Value: !Ref Branch
         - Name: DeploymentBucket
-          Value: !Ref DeploymentBucket
+          Value:  !FindInMap ["URLs", !Ref Branch, deploymentbucket]
       Source:
         Type: CODEPIPELINE
       TimeoutInMinutes: 10
