@@ -1,6 +1,7 @@
 {
 	"Parameters":{
 		"ProjectName":"webgame",
-		"ProjectHash":"123abc"
+		"ProjectHash":"123abc",
+		"Environment":""
 	}
 }

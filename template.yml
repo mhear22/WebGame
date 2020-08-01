@@ -10,13 +10,20 @@ Parameters:
     
   Environment:
     Type: String
-    Default: dev
 
 Mappings:
   URLs:
-    dev:
+    develop:
       domain: dev.mckayhear.es
       apidomain: devapi.mckayhear.es
+      root: mckayhear.es
+      zoneId: Z2BASL1172N9HA
+      s3endpoint: s3-website-ap-southeast-2.amazonaws.com
+      s3zoneId: Z1WCIGYICN2BYD
+      sslcert: arn:aws:acm:us-east-1:115136208505:certificate/d2ec0f01-f114-4d0b-ac04-c6ece55d0048
+    production:
+      domain: game.mckayhear.es
+      apidomain: gameapi.mckayhear.es
       root: mckayhear.es
       zoneId: Z2BASL1172N9HA
       s3endpoint: s3-website-ap-southeast-2.amazonaws.com
@@ -72,7 +79,7 @@ Resources:
   LambdaApi:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub ${ProjectName}-backend-api
+      FunctionName: !Sub ${ProjectName}-${Environment}-backend-api
       Runtime: python3.7
       Handler: index.handler
       InlineCode: |
@@ -92,7 +99,7 @@ Resources:
   Api:
     Type: AWS::Serverless::Api
     Properties:
-      Name: !Sub ${ProjectName}-api
+      Name: !Sub ${ProjectName}-${Environment}-api
       StageName: prod
 
   Domain:
