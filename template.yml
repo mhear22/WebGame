@@ -67,7 +67,7 @@ Resources:
             - bucket: !Ref DeploymentBucket
           Type: A
           AliasTarget:
-            HostedZoneId: !Ref BucketCloudfront
+            HostedZoneId: Z2FDTNDATAQYW2
             DNSName: !GetAtt BucketCloudfront.DomainName
         - Name: !Sub
             - ${Domain}.

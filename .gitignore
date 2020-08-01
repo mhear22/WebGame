@@ -12,7 +12,8 @@ pids
 *.seed
 app.asar
 *.package.yml
-
+test.yml
+test.*.yml
 production
 develop
 distro
