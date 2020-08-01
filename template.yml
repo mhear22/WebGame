@@ -11,10 +11,12 @@ Parameters:
   Environment:
     Type: String
 
+  DeploymentBucket:
+    Type: String
+    
 Mappings:
   URLs:
     develop:
-      domain: dev.mckayhear.es
       apidomain: devapi.mckayhear.es
       root: mckayhear.es
       zoneId: Z2BASL1172N9HA
@@ -22,7 +24,6 @@ Mappings:
       s3zoneId: Z1WCIGYICN2BYD
       sslcert: arn:aws:acm:us-east-1:115136208505:certificate/d2ec0f01-f114-4d0b-ac04-c6ece55d0048
     production:
-      domain: game.mckayhear.es
       apidomain: gameapi.mckayhear.es
       root: mckayhear.es
       zoneId: Z2BASL1172N9HA
@@ -34,7 +35,7 @@ Resources:
   StaticSiteBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !FindInMap ["URLs", !Ref Environment, domain]
+      BucketName: !Ref DeploymentBucket
       AccessControl: PublicRead
       WebsiteConfiguration:
         IndexDocument: index.html
@@ -63,7 +64,7 @@ Resources:
       RecordSets:
         - Name: !Sub
             - ${bucket}.
-            - bucket: !FindInMap ["URLs", !Ref Environment, domain]
+            - bucket: !Ref DeploymentBucket
           Type: A
           AliasTarget:
             HostedZoneId: !FindInMap ["URLs", !Ref Environment, s3zoneId]

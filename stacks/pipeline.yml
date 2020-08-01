@@ -18,6 +18,13 @@ Parameters:
     Type: String
     Default: develop
 
+Mappings:
+  URLs:
+    develop:
+      deploymentbucket: dev.mckayhear.es
+    production:
+      deploymentbucket: game.mckayhear.es
+    
 Resources:
   PipelineBucket:
     Type: AWS::S3::Bucket
@@ -135,9 +142,9 @@ Resources:
               Configuration:
                 ActionMode: CHANGE_SET_EXECUTE
                 Capabilities: CAPABILITY_IAM,CAPABILITY_NAMED_IAM
-                ChangeSetName: !Sub ${ProjectName}-ChangeSet
+                ChangeSetName: !Sub ${ProjectName}-${Branch}-ChangeSet
                 RoleArn: !GetAtt CloudFormationRole.Arn
-                StackName: !Sub ${ProjectName}-Stack
+                StackName: !Sub ${ProjectName}-${Branch}-Stack
               RunOrder: '2'
             - Name: DeployGameS3
               ActionTypeId:
@@ -148,7 +155,7 @@ Resources:
               InputArtifacts:
                 - Name: S3SiteFiles
               Configuration:
-                BucketName: dev.mckayhear.es
+                BucketName: !FindInMap ["URLs", !Ref Branch, deploymentbucket]
                 Extract: true
               RunOrder: '3'
 
