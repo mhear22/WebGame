@@ -15,5 +15,5 @@ deploy-pipeline-prod:
 	aws cloudformation deploy --template-file ./stacks/pipeline.package.yml --stack-name WebGamePipelineProd --capabilities "CAPABILITY_NAMED_IAM" "CAPABILITY_IAM" --parameter-overrides Branch=production
 
 deploy-test:
-	aws cloudformation package --s3-bucket=${bucket} --template-file ./template.yml --output-template-file ./template.dev.yml
-	aws cloudformation deploy --template-file ./template.dev.yml --stack-name webgame-standalone --capabilities "CAPABILITY_NAMED_IAM" "CAPABILITY_IAM"
+	aws cloudformation package --s3-bucket=${bucket} --template-file ./stacks/test.yml --output-template-file ./stacks/test.dev.yml
+	aws cloudformation deploy --template-file ./stacks/test.dev.yml --stack-name test-stack --capabilities "CAPABILITY_NAMED_IAM" "CAPABILITY_IAM"

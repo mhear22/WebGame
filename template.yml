@@ -67,8 +67,8 @@ Resources:
             - bucket: !Ref DeploymentBucket
           Type: A
           AliasTarget:
-            HostedZoneId: !FindInMap ["URLs", !Ref Environment, s3zoneId]
-            DNSName: !FindInMap ["URLs", !Ref Environment, s3endpoint]
+            HostedZoneId: !Ref BucketCloudfront
+            DNSName: !GetAtt BucketCloudfront.DomainName
         - Name: !Sub
             - ${Domain}.
             - Domain: !FindInMap ["URLs", !Ref Environment, apidomain]
@@ -122,7 +122,24 @@ Resources:
         Origins:
         - DomainName: !Sub ${DeploymentBucket}.s3.amazonaws.com
           Id: myS3Origin
+          CustomOriginConfig:
+            OriginProtocolPolicy: http-only
+        DefaultCacheBehavior:
+          TargetOriginId: myS3Origin
+          AllowedMethods:
+            - GET
+            - OPTIONS
+            - HEAD
+          ViewerProtocolPolicy: redirect-to-https
+          ForwardedValues:
+            QueryString: "false"
+            Cookies:
+              Forward : none
         Enabled: 'true'
         DefaultRootObject: index.html
         Aliases:
         - !Ref DeploymentBucket
+        ViewerCertificate:
+          MinimumProtocolVersion: TLSv1.2_2019
+          AcmCertificateArn: !FindInMap ["URLs", !Ref Environment, sslcert]
+          SslSupportMethod: sni-only
