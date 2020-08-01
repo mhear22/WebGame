@@ -22,8 +22,7 @@ artifacts:
     S3SiteFiles:
       discard-paths: yes
       files:
-        - production/*
-        - dist/*.exe
+        - dist/*
     BuildOutput:
       discard-paths: yes
       files:
