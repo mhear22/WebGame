@@ -146,7 +146,7 @@ Resources:
               InputArtifacts:
                 - Name: S3SiteFiles
               Configuration:
-                BucketName: game.mckayhear.es
+                BucketName: dev.mckayhear.es
                 Extract: true
               RunOrder: '3'
 
