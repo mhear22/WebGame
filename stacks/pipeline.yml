@@ -131,7 +131,7 @@ Resources:
                 Capabilities: CAPABILITY_IAM,CAPABILITY_NAMED_IAM
                 RoleArn: !GetAtt CloudFormationRole.Arn
                 StackName: !Sub ${ProjectName}-${Branch}-Stack
-                ChangeSetName: !Sub ${ProjectName}-ChangeSet
+                ChangeSetName: !Sub ${ProjectName}-${Branch}-ChangeSet
                 TemplateConfiguration: BuildOutput::config.json
                 TemplatePath: BuildOutput::serverless.yml
               RunOrder: '1'
