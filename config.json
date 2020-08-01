@@ -2,6 +2,7 @@
 	"Parameters":{
 		"ProjectName":"webgame",
 		"ProjectHash":"123abc",
-		"Environment":""
+		"Environment":"",
+		"DeploymentBucket":""
 	}
 }

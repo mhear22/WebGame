@@ -17,6 +17,7 @@ phases:
       - jq '.Parameters.ProjectName = "'$ProjectName'"' config.json | sponge config.json
       - jq '.Parameters.ProjectHash = "'$ProjectHash'"' config.json | sponge config.json
       - jq '.Parameters.Environment = "'$Environment'"' config.json | sponge config.json
+      - jq '.Parameters.DeploymentBucket = "'$DeploymentBucket'"' config.json | sponge config.json
 artifacts:
   secondary-artifacts:
     S3SiteFiles:

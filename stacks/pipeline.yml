@@ -70,6 +70,8 @@ Resources:
           Value: !Ref PipelineBucket
         - Name: Environment
           Value: !Ref Branch
+        - Name: DeploymentBucket
+          Value: !Ref DeploymentBucket
       Source:
         Type: CODEPIPELINE
       TimeoutInMinutes: 10
