@@ -5,11 +5,12 @@ phases:
     commands:
       - yum -y install moreutils
       - ProjectHash=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-      - npm install -g webpack webpack-cli
+      - npm install -g webpack webpack-cli electron-builder
       - npm install
   build:
     commands:
       - webpack --mode=production
+      - electron-builder
       - aws cloudformation package --template-file ./template.yml --s3-bucket ${Bucket} --output-template-file serverless.yml
   post_build:
     commands:
@@ -20,7 +21,8 @@ artifacts:
     S3SiteFiles:
       discard-paths: yes
       files:
-        - dist/*
+        - production/*
+        - dist/*.exe
     BuildOutput:
       discard-paths: yes
       files:
