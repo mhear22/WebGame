@@ -3,7 +3,7 @@ version: 0.2
 phases:
   install:
     commands:
-      - yum -y install moreutils
+      - yum -y install moreutils wine
       - ProjectHash=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - npm install -g webpack webpack-cli electron-builder
       - npm install
