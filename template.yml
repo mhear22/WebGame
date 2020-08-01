@@ -114,3 +114,15 @@ Resources:
     Properties:
       DomainName: !Ref Domain
       RestApiId: !Ref Api
+
+  BucketCloudfront:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Origins:
+        - DomainName: !Sub ${DeploymentBucket}.s3.amazonaws.com
+          Id: myS3Origin
+        Enabled: 'true'
+        DefaultRootObject: index.html
+        Aliases:
+        - !Ref DeploymentBucket
