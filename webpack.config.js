@@ -6,7 +6,7 @@ const fs = require("fs");
 
 module.exports = (env, argv) => {
 	var isDev = argv.mode == "development";
-	var output = argv.mode || "dev";
+	var output = "dist";
 	
 	
 	var currentTime = new Date().toISOString();

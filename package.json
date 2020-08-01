@@ -20,7 +20,7 @@
     "appId": "es.mckayhear.game",
     "files": [
       {
-        "from": "production",
+        "from": "dist",
         "to":"./",
         "filter":["**/*"]
       },
@@ -29,9 +29,10 @@
       "!node_modules/**/*"
     ],
     "directories": {
-      "buildResources": "assets"
+      "buildResources": "assets",
+      "output":"distro/"
     },
-    "asarUnpack": "production/**/*"
+    "asarUnpack": "dist/**/*"
   },
   "dependencies": {
     "@angular/animations": "8.2.9",

@@ -16,13 +16,13 @@ Parameters:
   Branch:
     Description: "The branch to use to build from"
     Type: String
-    Default: production
+    Default: develop
 
 Resources:
   PipelineBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Sub ${ProjectName}-cloudformation-bucket
+      BucketName: !Sub ${ProjectName}-${Branch}-cloudformation-bucket
 
       
   ###
@@ -40,14 +40,14 @@ Resources:
           MatchEquals: 'refs/heads/{Branch}'
       TargetPipeline: !Ref AppPipeline
       TargetAction: Source
-      Name: !Sub ${ProjectName}-webhook
+      Name: !Sub ${ProjectName}-${Branch}-Webhook
       TargetPipelineVersion: !GetAtt AppPipeline.Version
       RegisterWithThirdParty: true
   
   CodeBuildProject:
     Type: AWS::CodeBuild::Project
     Properties:
-      Name: !Sub ${ProjectName}-codebuild
+      Name: !Sub ${ProjectName}-${Branch}-codebuild
       Description: A description about my project
       ServiceRole: !GetAtt CodeBuildRole.Arn
       Artifacts:
@@ -61,6 +61,8 @@ Resources:
           Value: !Ref ProjectName
         - Name: Bucket
           Value: !Ref PipelineBucket
+        - Name: Environment
+          Value: !Ref Branch
       Source:
         Type: CODEPIPELINE
       TimeoutInMinutes: 10
@@ -68,7 +70,7 @@ Resources:
   AppPipeline:
     Type: AWS::CodePipeline::Pipeline
     Properties:
-      Name: !Sub ${ProjectName}-pipeline
+      Name: !Sub ${ProjectName}-${Branch}-pipeline
       RoleArn: !GetAtt PipelineRole.Arn
       Stages:
         - Name: Source
@@ -237,4 +239,4 @@ Outputs:
   PipelineBucket:
     Value: !Ref PipelineBucket
     Export:
-      Name: !Sub ${ProjectName}-bucket
+      Name: !Sub ${ProjectName}-${Branch}-bucket
