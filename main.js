@@ -16,7 +16,7 @@ function createWindow () {
   mainWindow.setFullScreen(true)
 
   // and load the index.html of the app.
-  mainWindow.loadFile('dist/index.html')
+  mainWindow.loadFile('index.html')
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()

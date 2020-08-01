@@ -16,6 +16,23 @@
   "scripts": {
     "test": "jest"
   },
+  "build": {
+    "appId": "es.mckayhear.game",
+    "files": [
+      {
+        "from": "production",
+        "to":"./",
+        "filter":["**/*"]
+      },
+      "./main.js",
+      "./package.json",
+      "!node_modules/**/*"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    },
+    "asarUnpack": "production/**/*"
+  },
   "dependencies": {
     "@angular/animations": "8.2.9",
     "@angular/cdk": "8.2.2",
@@ -39,8 +56,6 @@
     "clean-webpack-plugin": "0.1.17",
     "core-js": "2.5.7",
     "css-loader": "3.2.0",
-    "electron": "6.0.7",
-    "electron-packager": "^14.2.1",
     "event-stream": "3.3.4",
     "file-loader": "^1.1.5",
     "font-awesome": "4.7.0",
@@ -62,18 +77,20 @@
     "three-obj-mtl-loader": "1.0.3",
     "tslint": "5.20.0",
     "typescript": "3.6.3",
-    "uglify-loader": "3.0.0",
-    "webpack": "4.40.2",
-    "webpack-cli": "3.0.8",
-    "webpack-dev-server": "^3.11.0",
     "webpack-stream": "4.0.3",
     "zone.js": "~0.9.1"
   },
   "homepage": "https://github.com/mhear22/Angular-Playground#readme",
   "devDependencies": {
     "@types/jest": "24.0.19",
+    "uglify-loader": "3.0.0",
+    "webpack": "4.40.2",
+    "webpack-cli": "3.0.8",
+    "webpack-dev-server": "^3.11.0",
     "html-loader-jest": "0.2.1",
     "jest": "24.9.0",
-    "ts-jest": "24.1.0"
+    "ts-jest": "24.1.0",
+    "electron": "9.1.2",
+    "electron-packager": "^14.2.1"
   }
 }

@@ -6,6 +6,8 @@ const fs = require("fs");
 
 module.exports = (env, argv) => {
 	var isDev = argv.mode == "development";
+	var output = argv.mode || "dev";
+	
 	
 	var currentTime = new Date().toISOString();
 	var data = `export function getVersion() {return "${currentTime}"}`;
@@ -18,7 +20,7 @@ module.exports = (env, argv) => {
 		},
 		output: {
 			filename: './[name].[hash].js',
-			path: path.resolve(__dirname, 'dist')
+			path: path.resolve(__dirname, output)
 		},
 		resolve: {
 			extensions: ['.ts', '.js', '.sass']
@@ -92,7 +94,7 @@ module.exports = (env, argv) => {
 					context: process.cwd()
 				}
 			}),
-			new clearWebpackPlugin(['dist'], {
+			new clearWebpackPlugin([output], {
 				verbose: false
 			}),
 			new htmlWebpackPlugin({
