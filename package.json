@@ -1,6 +1,6 @@
 {
   "name": "webgame",
-  "productName":"Game",
+  "productName": "Game",
   "version": "1.0.0",
   "description": "Project to build a web based game",
   "main": "main.js",
