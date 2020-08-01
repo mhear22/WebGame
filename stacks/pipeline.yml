@@ -130,7 +130,7 @@ Resources:
                 ActionMode: CHANGE_SET_REPLACE
                 Capabilities: CAPABILITY_IAM,CAPABILITY_NAMED_IAM
                 RoleArn: !GetAtt CloudFormationRole.Arn
-                StackName: !Sub ${ProjectName}-Stack
+                StackName: !Sub ${ProjectName}-${Branch}-Stack
                 ChangeSetName: !Sub ${ProjectName}-ChangeSet
                 TemplateConfiguration: BuildOutput::config.json
                 TemplatePath: BuildOutput::serverless.yml
