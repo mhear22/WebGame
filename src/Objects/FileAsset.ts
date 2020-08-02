@@ -10,6 +10,8 @@ export abstract class FileAsset extends Asset {
 		super();
 	}
 	
+	public IsLoaded = false;
+	
 	public AddElement(scene: three.Scene) {
 		var requests = [];
 		requests.push(this.download(this.mesh));
@@ -45,6 +47,7 @@ export abstract class FileAsset extends Asset {
 			this.Element.name = this.constructor.name.toString()
 			
 			scene.add(this.element);
+			this.IsLoaded = true;
 		});
 	}
 	

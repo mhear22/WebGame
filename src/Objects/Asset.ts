@@ -8,7 +8,8 @@ export abstract class Asset {
 	get Element(): three.Object3D {
 		return this.element;
 	}
-
+	
+	public IsLoaded = true;
 	protected canCollide = true;
 	get CanCollide():boolean { return this.canCollide}
 	

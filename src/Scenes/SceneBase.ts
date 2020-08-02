@@ -20,6 +20,10 @@ export abstract class SceneBase {
 			.map(x=>x.Element);
 	}
 	
+	public IsLoaded() {
+		return this.Meshes.every(x=>x.IsLoaded);
+	}
+	
 	public abstract Iterate(keyController:KeyController, Step:number):void;
 	
 	public GetScene():three.Scene{

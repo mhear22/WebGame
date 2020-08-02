@@ -118,7 +118,23 @@ export class App implements AfterViewInit {
 			SceneLoader.LoadLevel("MainMenu")
 		}
 		
-		window.requestAnimationFrame(() => this.RunRecursive());
+		
+		window.requestAnimationFrame(() => this.LoadingLoop());
+		
+		//window.requestAnimationFrame(() => this.RunRecursive());
+	}
+	
+	private LoadingLoop() {
+		setTimeout(() => {
+			DebugService.Message("Loading")
+			var result = this.Scene.IsLoaded();
+			if(result) {
+				window.requestAnimationFrame(() => this.RunRecursive());
+			}
+			else {
+				window.requestAnimationFrame(() => this.LoadingLoop());
+			}
+		}, 10);
 	}
 
 	private RunRecursive() {

@@ -73,4 +73,10 @@ export class DebugService extends ServiceBase {
 	public static Log(message:string) {
 		DebugService.AdditionalText.push(message);
 	}
+	
+	
+	public static Message(message: string) {
+		DebugService.AdditionalText.push(message);
+		console.log(message);
+	}
 }
