@@ -107,6 +107,10 @@ export class App implements AfterViewInit {
 			try {
 				var pos = save.PlayerPosition;
 				this.Camera.camera.position.set(pos.x,pos.y,pos.z);
+				
+				var dir = save.PlayerDirection;
+				this.Camera.camera.rotation.set(dir.x,dir.y,dir.z);
+				this.Camera.ResetRot(save.CamX, save.CamY);
 			}
 			catch {}
 		}
@@ -181,6 +185,9 @@ export class App implements AfterViewInit {
 		oldSave.CurrentScene = SceneLoader.SceneName;
 		oldSave.DebugMode = DebugService.DebugMode;
 		oldSave.PlayerPosition = this.Camera.camera.position;
+		oldSave.PlayerDirection = this.Camera.camera.rotation.toVector3();
+		oldSave.CamY = this.Camera.RotationY;
+		oldSave.CamX = this.Camera.RotationX;
 		this.saveService.Save(oldSave)
 		DebugService.Log("Saved");
 	}

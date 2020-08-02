@@ -98,6 +98,11 @@ export class CameraController {
 		if (!this.mouseLocked && mouseKey > 0)
 			this.canvas.requestPointerLock();
 	}
+	
+	public ResetRot(X: number, Y: number) {
+		this.RotX = X;
+		this.RotY = Y;
+	}
 
 	get camera(): three.PerspectiveCamera {
 		return this.perspectiveCamera;
