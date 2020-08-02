@@ -2,7 +2,7 @@ import { Asset } from "./Asset";
 import { KeyController } from "../Services/KeyController";
 import * as three from "three";
 import { CameraController } from "../Services/CameraController";
-const imageSrc = require("../Assets/skybox.jpg")
+const imageSrc = require("../Assets/tim-barton-3.jpg")
 
 export class Skybox extends Asset {
 	Interval(key: KeyController, split: number) {
