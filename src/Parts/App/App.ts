@@ -182,7 +182,7 @@ export class App implements AfterViewInit {
 		oldSave.DebugMode = DebugService.DebugMode;
 		oldSave.PlayerPosition = this.Camera.camera.position;
 		this.saveService.Save(oldSave)
-		console.log("Saved")
+		DebugService.Log("Saved");
 	}
 	
 	private Logic(lastFrameSplit: number) {

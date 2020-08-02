@@ -69,5 +69,8 @@ export class DebugService extends ServiceBase {
 		DebugService.AdditionalText = []
 		return text;
 	}
-
+	
+	public static Log(message:string) {
+		DebugService.AdditionalText.push(message);
+	}
 }

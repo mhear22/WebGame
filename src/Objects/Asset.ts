@@ -75,7 +75,7 @@ export abstract class Asset {
 				if(DebugService.DebugMode) {
 					result.forEach(colided => {
 						var str = `${colided.object.name} collided with ${name}`
-						DebugService.AdditionalText.push(str)
+						DebugService.Log(str);
 					})
 				}
 				
