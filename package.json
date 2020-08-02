@@ -21,7 +21,7 @@
     "files": [
       {
         "from": "dist",
-        "to":"./",
+        "to":"./dist",
         "filter":["**/*"]
       },
       "./main.js",

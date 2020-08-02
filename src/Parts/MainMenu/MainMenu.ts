@@ -40,7 +40,8 @@ export class MainMenuDialog {
 					DebugService.DebugMode = !DebugService.DebugMode;
 					item.Name = `Debug Settings ${DebugService.DebugMode}`;
 				})
-			])
+			]),
+			new MenuItem("Quit", null, () => { window.close(); })
 		]);
 
 	private displayedMenu: MenuItem[];
