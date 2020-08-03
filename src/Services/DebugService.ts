@@ -53,14 +53,17 @@ export class DebugService extends ServiceBase {
 		this.FPSString = `${(1 / (this.runningTotal / this.times.length)).toFixed(2)}`;
 
 		var expiry = moment()
-		var messages = DebugService.Messages
+		DebugService.Messages = DebugService.Messages
 			.filter(x=> {
 				var offset = expiry.add("s", -x.Offset);
 				return x.SentDate.isAfter(offset)
-			})
-			.map(x=> {
+			});
+		
+			var messages = DebugService.Messages.map(x=> {
 				return `<div>${x.Message}</div>`;
-			}).join("")
+			})
+			.filter((val, index, self) => self.indexOf(val) == index)
+			.join("")
 		
 		var text = `<div class="screen-text">
 			${this.FPSString}
@@ -76,12 +79,24 @@ export class DebugService extends ServiceBase {
 			${messages}
 		</div>`;
 		
+		
 		return text;
 	}
 	
 	public static Message(message: string, secondsToKeepUp: number = 2) {
-		var model: DebugMessage = { Message: message, SentDate: moment(), Offset: secondsToKeepUp }
-		DebugService.Messages.push(model);
-		console.log(message);
+		// If message already exists, bump expiry
+		// If not create
+		
+		var existing = DebugService.Messages.find(x=>x.Message == message);
+		
+		if (existing) {
+			var index = DebugService.Messages.map(x=>x.Message).indexOf(message);
+			DebugService.Messages[index].SentDate = moment();
+		}
+		else {
+			var model: DebugMessage = { Message: message, SentDate: moment(), Offset: secondsToKeepUp }
+			DebugService.Messages.push(model);
+			console.log(message);
+		}
 	}
 }
