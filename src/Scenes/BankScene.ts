@@ -8,6 +8,7 @@ import { Skybox } from "../Objects/Skybox";
 import * as three from 'three';
 import { Rain } from "../Objects/Rain";
 import { CrateModel } from "../Models/Crate/Crate";
+import { DebugService } from "../Services/DebugService";
 
 
 export class BankScene extends SceneBase {
@@ -19,9 +20,9 @@ export class BankScene extends SceneBase {
 		
 		if(!this.isComplete && this.crates.every(x=>x.IsCollected)) {
 			this.isComplete = true;
-			
-			console.log("Complete")
+			DebugService.Message("Complete");
 		}
+		
 	}
 	
 	private isComplete = false;

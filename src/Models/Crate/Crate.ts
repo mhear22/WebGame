@@ -1,6 +1,7 @@
 import { FileAsset } from "../../Objects/FileAsset";
 import { KeyController } from "../../Services/KeyController";
 import { CameraController } from "../../Services/CameraController";
+import { DebugService } from "../../Services/DebugService";
 
 export class CrateModel extends FileAsset {
 	constructor(
@@ -36,6 +37,7 @@ export class CrateModel extends FileAsset {
 		
 		if(isNowClose != this.isClose) {
 			if(isNowClose) {
+				DebugService.Message("Picked up")
 				this.IsCollected = true;
 				this.element.visible = false;
 			}

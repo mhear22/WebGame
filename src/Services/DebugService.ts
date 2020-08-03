@@ -3,6 +3,8 @@ import { KeyController } from "./KeyController";
 import { CameraController } from "./CameraController";
 import { Injector } from "@angular/core";
 import { SaveService } from "./SaveService";
+import { DebugMessage } from "../Objects/DebugMessage";
+import * as moment from "moment";
 
 export class DebugService extends ServiceBase {
 	public constructor(
@@ -41,18 +43,25 @@ export class DebugService extends ServiceBase {
 		this.runningTotal += Split;
 
 	}
-	public static AdditionalText: string[] = []
-
+	public static Messages: DebugMessage[] = [];
+	
 	private FPSString = "";
 	public GetHtml() {
 		if (!DebugService.DebugMode)
 			return "";
 
 		this.FPSString = `${(1 / (this.runningTotal / this.times.length)).toFixed(2)}`;
-		DebugService.AdditionalText = DebugService.AdditionalText.filter((val, index, self) => {
-			return self.indexOf(val) === index
-		});
 
+		var expiry = moment()
+		var messages = DebugService.Messages
+			.filter(x=> {
+				var offset = expiry.add("s", -x.Offset);
+				return x.SentDate.isAfter(offset)
+			})
+			.map(x=> {
+				return `<div>${x.Message}</div>`;
+			}).join("")
+		
 		var text = `<div class="screen-text">
 			${this.FPSString}
 			X:${this.cam.rotation.x.toFixed(2)}
@@ -64,19 +73,15 @@ export class DebugService extends ServiceBase {
 				Y:${this.cam.position.y.toFixed(2)}
 				Z:${this.cam.position.z.toFixed(2)}
 			</div>
-			${DebugService.AdditionalText.map(x => "<div>" + x + "</div>").join("")}
+			${messages}
 		</div>`;
-		DebugService.AdditionalText = []
+		
 		return text;
 	}
 	
-	public static Log(message:string) {
-		DebugService.AdditionalText.push(message);
-	}
-	
-	
-	public static Message(message: string) {
-		DebugService.AdditionalText.push(message);
+	public static Message(message: string, secondsToKeepUp: number = 2) {
+		var model: DebugMessage = { Message: message, SentDate: moment(), Offset: secondsToKeepUp }
+		DebugService.Messages.push(model);
 		console.log(message);
 	}
 }

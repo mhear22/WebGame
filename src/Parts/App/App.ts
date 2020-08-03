@@ -205,7 +205,7 @@ export class App implements AfterViewInit {
 		oldSave.CamY = this.Camera.RotationY;
 		oldSave.CamX = this.Camera.RotationX;
 		this.saveService.Save(oldSave)
-		DebugService.Log("Saved");
+		DebugService.Message("Saved", 3);
 	}
 	
 	private Logic(lastFrameSplit: number) {
