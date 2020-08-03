@@ -11,10 +11,8 @@ export class CameraController {
 	private mouseLocked: boolean;
 	private FOV: number = 75;
 
-	public get RotationX(){ return this.RotX; } 
-	public get RotationY(){ return this.RotY; }
-	private RotX: number = 0;
-	private RotY: number = 0;
+	public RotX: number = 0;
+	public RotY: number = 0;
 	
 	private InvertX: boolean = true;
 	private InvertY: boolean = true;
@@ -97,11 +95,6 @@ export class CameraController {
 		}
 		if (!this.mouseLocked && mouseKey > 0)
 			this.canvas.requestPointerLock();
-	}
-	
-	public ResetRot(X: number, Y: number) {
-		this.RotX = X;
-		this.RotY = Y;
 	}
 
 	get camera(): three.PerspectiveCamera {

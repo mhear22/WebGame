@@ -110,7 +110,8 @@ export class App implements AfterViewInit {
 				
 				var dir = save.PlayerDirection;
 				this.Camera.camera.rotation.set(dir.x,dir.y,dir.z);
-				this.Camera.ResetRot(save.CamX, save.CamY);
+				this.Camera.RotX = save.CamX;
+				this.Camera.RotY = save.CamY;
 			}
 			catch {}
 		}
@@ -202,8 +203,8 @@ export class App implements AfterViewInit {
 		oldSave.DebugMode = DebugService.DebugMode;
 		oldSave.PlayerPosition = this.Camera.camera.position;
 		oldSave.PlayerDirection = this.Camera.camera.rotation.toVector3();
-		oldSave.CamY = this.Camera.RotationY;
-		oldSave.CamX = this.Camera.RotationX;
+		oldSave.CamY = this.Camera.RotY;
+		oldSave.CamX = this.Camera.RotX;
 		this.saveService.Save(oldSave)
 		DebugService.Message("Saved", 3);
 	}

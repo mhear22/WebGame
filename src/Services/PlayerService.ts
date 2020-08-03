@@ -121,7 +121,7 @@ export class PlayerService extends ServiceBase {
 			if(!isZeroed) {
 				var pos = this.Camera.camera.position.clone();
 				pos.y -= 7;
-				var normDir = movementDir.clone().normalize().applyAxisAngle(this.Camera.camera.up, this.Camera.RotationY);
+				var normDir = movementDir.clone().normalize().applyAxisAngle(this.Camera.camera.up, this.Camera.RotY);
 				var ray = this.intersection(pos, normDir);
 				if(!ray || ray.distance > 0.8) {
 					this.Move(movementDir);
@@ -135,7 +135,7 @@ export class PlayerService extends ServiceBase {
 		}
 	}
 	public Move(vector: Vector3) {
-		vector.applyAxisAngle(this.Camera.camera.up, this.Camera.RotationY);
+		vector.applyAxisAngle(this.Camera.camera.up, this.Camera.RotY);
 		this.Camera.camera.position.add(vector);
 	}
 }

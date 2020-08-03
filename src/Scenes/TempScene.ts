@@ -41,7 +41,7 @@ export class TempScene extends SceneBase {
 				this.SpaceLimiter = -100;
 				var pos = this.Camera.camera.position;
 				var vec = new Vector3(0,0,-10);
-				vec.applyAxisAngle(this.Camera.camera.up,this.Camera.RotationY);
+				vec.applyAxisAngle(this.Camera.camera.up,this.Camera.RotY);
 				var loc = new Vector3(pos.x, pos.y, pos.z).add(vec);
 				this.Add(new PhysicsCube(KeyMap,2,2,2,loc.x, 10, loc.z));
 			}
