@@ -6,6 +6,7 @@ import { CameraController } from "./CameraController";
 import { MatDialogRef, MatDialog } from "@angular/material";
 import { InventoryDialog } from "../Parts/Inventory/Inventory";
 import * as three from 'three';
+import { DebugService } from "./DebugService";
 
 
 export class PlayerService extends ServiceBase {
@@ -99,11 +100,9 @@ export class PlayerService extends ServiceBase {
 	
 	public Iterate(timeSplit: number) {
 		if(PlayerService.Gravity) {
-			var scene = this.GetScene()
-			var meshes = scene.CollideMeshes;
 			var pos = this.Camera.camera.position.clone()
 			var ray = this.intersection(pos, new three.Vector3(0,-1,0))
-			if(ray && ray.distance < 9 && ray.distance > 7) {
+			if(ray && ray.distance < 9 && ray.distance > 4) {
 				this.Camera.camera.position.y -= (ray.distance - 8);
 				this.FallingMomentum = 10;
 			}
@@ -111,25 +110,28 @@ export class PlayerService extends ServiceBase {
 				this.FallingMomentum = this.FallingMomentum * (1 + timeSplit)
 				this.Camera.camera.position.y -= this.FallingMomentum/100;
 			}
+			
+			if(this.Camera.camera.position.y < -100) {
+				this.Camera.camera.position.y = 0;
+				this.FallingMomentum = 10;
+			}
 		}
 		
 		if(PlayerService.WalkingControls) {
 			var movementDir = this.MovementDirection(timeSplit);
+			var normaled = movementDir.clone().applyAxisAngle(this.Camera.camera.up, this.Camera.RotY);
 			
-			var isZeroed = movementDir.x == 0 && movementDir.z == 0;
+			var isZeroed = normaled.x == 0 && normaled.z == 0;
 			
 			if(!isZeroed) {
 				var pos = this.Camera.camera.position.clone();
 				pos.y -= 7;
-				var normDir = movementDir.clone().normalize().applyAxisAngle(this.Camera.camera.up, this.Camera.RotY);
+				var normDir = normaled.clone().normalize().applyAxisAngle(this.Camera.camera.up, this.Camera.RotY);
 				var ray = this.intersection(pos, normDir);
-				if(!ray || ray.distance > 0.8) {
+				var maxSpeed = movementDir.length();
+				if(!ray || ray.distance > maxSpeed) {
 					this.Move(movementDir);
 				}
-			}
-			else {
-				
-				this.Move(movementDir);
 			}
 			
 		}
