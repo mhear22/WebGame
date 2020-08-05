@@ -9,6 +9,7 @@ import * as three from 'three';
 import { Rain } from "../Objects/Rain";
 import { CrateModel } from "../Models/Crate/Crate";
 import { DebugService } from "../Services/DebugService";
+import { BankWater } from "../Models/BankWater/BankWater";
 
 
 export class BankScene extends SceneBase {
@@ -22,7 +23,6 @@ export class BankScene extends SceneBase {
 			this.isComplete = true;
 			DebugService.Message("Complete");
 		}
-		
 	}
 	
 	private isComplete = false;
@@ -42,6 +42,7 @@ export class BankScene extends SceneBase {
 		this.sun = new Sun(this.Scene,0,100,0,null,null, 2);
 		
 		this.Add(new BankModel(60, new three.Vector3(0,-11,100)));
+		//this.Add(new BankWater(60, new three.Vector3(0,-11,100)));
 		
 		this.crates = [
 			new CrateModel(this.Camera,100,5,0),
