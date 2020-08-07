@@ -17,6 +17,8 @@ import { TestScene } from "../../Scenes/TestScene";
 import { SceneLoader } from "../../Scenes/SceneLoader";
 import { SaveService } from "../../Services/SaveService";
 import { SaveModel } from "../../DataModels/SaveModel";
+import "joypad.js";
+
 
 @Component({
 	selector: 'app',
@@ -34,6 +36,9 @@ export class App implements AfterViewInit {
 		//document.onmousewheel = (ev: MouseEvent) => this.MouseEvent(ev);
 		document.onmousemove = (ev: MouseEvent) => this.MouseEvent(ev);
 		document.onclick = (ev: MouseEvent) => this.MouseEvent(ev, ev.button + 1);
+		(window as any).joypad.on("button_press", (e:any) => {
+			this.keyController.ControllerPress(e);
+		});
 	}
 
 	ngAfterViewInit(): void {
@@ -47,13 +52,9 @@ export class App implements AfterViewInit {
 	}
 
 	private Iterators: any[] = []
-
 	private serviceManager: ServiceManager;
-
 	private HtmlLayers: HtmlModel[] = [new HtmlModel()]
-
 	private ShowDebug: boolean = true;
-
 	private keyController: KeyController;
 	private renderer: RenderService;
 	private Camera: CameraController;

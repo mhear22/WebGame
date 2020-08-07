@@ -21,8 +21,10 @@
     "files": [
       {
         "from": "dist",
-        "to":"./dist",
-        "filter":["**/*"]
+        "to": "./dist",
+        "filter": [
+          "**/*"
+        ]
       },
       "./main.js",
       "./package.json",
@@ -30,7 +32,7 @@
     ],
     "directories": {
       "buildResources": "assets",
-      "output":"distro/"
+      "output": "distro/"
     },
     "asarUnpack": "dist/**/*"
   },
@@ -79,7 +81,8 @@
     "tslint": "5.20.0",
     "typescript": "3.6.3",
     "webpack-stream": "4.0.3",
-    "zone.js": "~0.9.1"
+    "zone.js": "~0.9.1",
+    "joypad.js": "2.1.5"
   },
   "homepage": "https://github.com/mhear22/Angular-Playground#readme",
   "devDependencies": {
