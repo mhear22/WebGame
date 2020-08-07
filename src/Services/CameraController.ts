@@ -25,7 +25,6 @@ export class CameraController {
 	
 	constructor(private canvas: HTMLCanvasElement, private dialog:MatDialog, private keyController:KeyController) {
 		this.perspectiveCamera = new three.PerspectiveCamera(this.FOV, window.innerWidth / window.innerHeight, CameraController.Close, CameraController.Far);
-		this.perspectiveCamera.position.y = 8;
 		this.UpdateCamera();
 	}
 	

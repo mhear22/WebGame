@@ -26,7 +26,8 @@ export class TestScene extends SceneBase {
 		super(Camera, injector);
 		//this.Scene.add(new three.AmbientLight("0x404040"))
 		this.Add(new Sun(this.Scene, 0, 80, 0));
-		this.Add(new Cube(100, 1, 100, 0, -2, 0));
+		this.Add(new Cube(100, 2, 100, 0, -1, 0));
 		this.Add(new Skybox(this.Camera));
+		this.Add(new Cube(80, 20, 10, 0, 10, 20))
 	}
 }

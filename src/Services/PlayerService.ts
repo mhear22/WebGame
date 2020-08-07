@@ -7,6 +7,7 @@ import { MatDialogRef, MatDialog } from "@angular/material";
 import { InventoryDialog } from "../Parts/Inventory/Inventory";
 import * as three from 'three';
 import { DebugService } from "./DebugService";
+import * as moment from "moment";
 
 
 export class PlayerService extends ServiceBase {
@@ -14,6 +15,7 @@ export class PlayerService extends ServiceBase {
 	public Draws3D: boolean = false;
 	public Iterates: boolean = true;
 
+	private height = 8;
 	private FallingMomentum = 10;
 	
 	private MovementSpeed = 1;
@@ -30,6 +32,7 @@ export class PlayerService extends ServiceBase {
 		protected injector: Injector
 	) {
 		super(Camera, Key, injector);
+		this.Camera.camera.position.y = this.height;
 		var dialog = injector.get(MatDialog);
 		this.Key.WaitFor("e", () => {
 			if (!PlayerService.InventoryEnabled)
@@ -102,8 +105,17 @@ export class PlayerService extends ServiceBase {
 		if(PlayerService.Gravity) {
 			var pos = this.Camera.camera.position.clone()
 			var ray = this.intersection(pos, new three.Vector3(0,-1,0))
-			if(ray && ray.distance < 9 && ray.distance > 4) {
-				this.Camera.camera.position.y -= (ray.distance - 8);
+			
+			var low = this.height * 0.6
+			var high = this.height * 1.4
+			
+			if(low == 0 || high == 0){
+				low = 0
+				high = 1
+			}
+			
+			if(ray && ray.distance < high && ray.distance > low) {
+				this.Camera.camera.position.y -= (ray.distance - this.height);
 				this.FallingMomentum = 10;
 			}
 			else {
@@ -119,21 +131,35 @@ export class PlayerService extends ServiceBase {
 		
 		if(PlayerService.WalkingControls) {
 			var movementDir = this.MovementDirection(timeSplit);
-			var normaled = movementDir.clone().applyAxisAngle(this.Camera.camera.up, this.Camera.RotY);
+			var normalisedToLookDirection = movementDir.clone().applyAxisAngle(this.Camera.camera.up, this.Camera.RotY);
 			
-			var isZeroed = normaled.x == 0 && normaled.z == 0;
-			
-			if(!isZeroed) {
-				var pos = this.Camera.camera.position.clone();
-				pos.y -= 7;
-				var normDir = normaled.clone().normalize().applyAxisAngle(this.Camera.camera.up, this.Camera.RotY);
-				var ray = this.intersection(pos, normDir);
-				var maxSpeed = movementDir.length();
-				if(!ray || ray.distance > maxSpeed) {
+			var notMoving = movementDir.x == 0 && movementDir.z == 0;
+			if(!notMoving) {
+				var face = this.Camera.camera.position.clone();
+				var shin = this.Camera.camera.position.clone();
+				shin.y = shin.y - (0.6 * this.height);
+				var testPositons = [
+					{ name: "face", data:face},
+					{ name: "shin", data:shin} 
+				]
+				
+				var canMove = testPositons.every(x=> {
+					var ray = this.intersection(x.data, normalisedToLookDirection);
+					
+					if(!ray || ray.distance >= movementDir.length()) {
+						return true;
+					}
+					else if(ray.distance < movementDir.length()) {
+						DebugService.Message(`Player.${x.name} Colided with ${ray.object.name}`);
+					}
+					
+					return false;
+				});
+				
+				if(canMove) {
 					this.Move(movementDir);
 				}
 			}
-			
 		}
 	}
 	public Move(vector: Vector3) {

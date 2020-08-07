@@ -55,7 +55,7 @@ export class DebugService extends ServiceBase {
 		var expiry = moment()
 		DebugService.Messages = DebugService.Messages
 			.filter(x=> {
-				var offset = expiry.add("s", -x.Offset);
+				var offset = expiry.clone().add("s", -x.Offset);
 				return x.SentDate.isAfter(offset)
 			});
 		
