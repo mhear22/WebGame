@@ -1,13 +1,13 @@
 import { SceneBase } from "./SceneBase";
 import { CameraController } from "../Services/CameraController";
-import { Cube } from "../Objects/Cube";
+import { Cube } from "../Models/Cube";
 import * as three from "three";
-import { PhysicsCube } from "../Objects/PhysicsCube";
-import { Sun } from "../Objects/Sun";
+import { PhysicsCube } from "../Models/PhysicsCube";
+import { Sun } from "../Models/Sun";
 import { Vector3 } from "three";
 import { KeyController } from "../Services/KeyController";
 import { PathMapper } from "../Services/PathMapper";
-import { Car } from "../Objects/Car";
+import { Car } from "../Models/Car";
 import { Injector } from "@angular/core";
 
 

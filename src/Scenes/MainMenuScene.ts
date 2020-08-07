@@ -1,12 +1,12 @@
 import { SceneBase } from "./SceneBase";
 import { CameraController } from "../Services/CameraController";
 import { KeyController } from "../Services/KeyController";
-import { Skybox } from "../Objects/Skybox";
-import { Sun } from "../Objects/Sun";
+import { Skybox } from "../Models/Skybox/Skybox";
+import { Sun } from "../Models/Sun";
 import { MatDialog } from "@angular/material";
 import { Injector, inject } from "@angular/core";
 import { MainMenuDialog } from "../Parts/MainMenu/MainMenu";
-import { Rain } from "../Objects/Rain";
+import { Rain } from "../Models/Rain";
 import { PlayerService } from "../Services/PlayerService";
 
 export class MainMenuScene extends SceneBase {

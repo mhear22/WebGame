@@ -1,9 +1,9 @@
 import { SceneBase } from "./SceneBase";
 import { CameraController } from "../Services/CameraController";
 import { KeyController } from "../Services/KeyController";
-import { Sun } from "../Objects/Sun";
-import { Cube } from "../Objects/Cube";
-import { Skybox } from "../Objects/Skybox";
+import { Sun } from "../Models/Sun";
+import { Cube } from "../Models/Cube";
+import { Skybox } from "../Models/Skybox/Skybox";
 import * as three from 'three';
 import { Injector } from "@angular/core";
 

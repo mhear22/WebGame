@@ -1,6 +1,6 @@
 import { CameraController } from "../Services/CameraController";
 import * as three from "three";
-import { Asset } from "../Objects/Asset";
+import { Asset } from "../Models/Asset";
 import { KeyController } from "../Services/KeyController";
 import { Object3D } from "three";
 import { Injector } from "@angular/core";

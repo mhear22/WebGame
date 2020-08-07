@@ -1,7 +1,7 @@
 import { SceneBase } from "../src/Scenes/SceneBase"
 import { KeyController } from "../src/Services/KeyController";
 import { CameraController } from "../src/Services/CameraController";
-import { Cube } from "../src/Objects/Cube";
+import { Cube } from "../src/Models/Cube";
 
 class TestScene extends SceneBase {
 	public Iterate(keyController: KeyController, Step: number): void {

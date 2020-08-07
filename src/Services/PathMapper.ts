@@ -1,7 +1,7 @@
 import { CameraController } from "./CameraController";
-import { Asset } from "../Objects/Asset";
+import { Asset } from "../Models/Asset";
 import { Vector2 } from "three";
-import { Cube } from "../Objects/Cube";
+import { Cube } from "../Models/Cube";
 import * as three from "three";
 
 export class PathMapper {

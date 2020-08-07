@@ -1,7 +1,7 @@
 import { Component, Inject, Injector } from "@angular/core";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material";
 import { KeyController } from "../../Services/KeyController";
-import { MenuItem } from "../../Objects/MenuItem";
+import { MenuItem } from "../../DataModels/MenuItem";
 import { DebugService } from "../../Services/DebugService";
 import { SceneLoader } from "../../Scenes/SceneLoader";
 import { getVersion } from "../../version";

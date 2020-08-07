@@ -1,4 +1,4 @@
-import { FileAsset } from "../../Objects/FileAsset";
+import { FileAsset } from "../FileAsset";
 import { KeyController } from "../../Services/KeyController";
 
 export class CubeModel extends FileAsset {

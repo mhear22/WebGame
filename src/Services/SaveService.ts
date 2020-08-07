@@ -1,6 +1,6 @@
 import { Inject } from "@angular/core";
 import { SESSION_STORAGE, StorageService } from 'angular-webstorage-service';
-import { SaveModel } from "../Objects/SaveModel";
+import { SaveModel } from "../DataModels/SaveModel";
 
 
 export class SaveService {

@@ -4,7 +4,7 @@ import { Sun } from "./Sun";
 import { KeyController } from "../Services/KeyController";
 import { CameraController } from "../Services/CameraController";
 import { Vector3 } from "three";
-import { BodyItem } from "./BodyItem";
+import { BodyItem } from "../DataModels/BodyItem";
 import { PlayerService } from "../Services/PlayerService";
 
 

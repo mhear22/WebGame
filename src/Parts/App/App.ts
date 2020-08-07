@@ -5,7 +5,7 @@ import { CameraController } from "../../Services/CameraController";
 import { SceneBase } from "../../Scenes/SceneBase";
 import { TempScene } from "../../Scenes/TempScene";
 import { MatDialog } from "@angular/material/dialog";
-import { DebugInfo } from "../../Objects/DebugModel";
+import { DebugInfo } from "../../DataModels/DebugModel";
 import { KeyController } from "../../Services/KeyController";
 import { SandboxScene } from "../../Scenes/SandboxScene";
 import { DebugService } from "../../Services/DebugService";
@@ -16,7 +16,7 @@ import { RenderService } from "../../Services/RenderService";
 import { TestScene } from "../../Scenes/TestScene";
 import { SceneLoader } from "../../Scenes/SceneLoader";
 import { SaveService } from "../../Services/SaveService";
-import { SaveModel } from "../../Objects/SaveModel";
+import { SaveModel } from "../../DataModels/SaveModel";
 
 @Component({
 	selector: 'app',

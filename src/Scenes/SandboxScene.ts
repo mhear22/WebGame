@@ -1,12 +1,12 @@
 import { SceneBase } from "./SceneBase";
 import { KeyController } from "../Services/KeyController";
 import { CameraController } from "../Services/CameraController";
-import { Sun } from "../Objects/Sun";
-import { Cube } from "../Objects/Cube";
-import { Skybox } from "../Objects/Skybox";
-import { FileAsset } from "../Objects/FileAsset";
+import { Sun } from "../Models/Sun";
+import { Cube } from "../Models/Cube";
+import { Skybox } from "../Models/Skybox/Skybox";
+import { FileAsset } from "../Models/FileAsset";
 import { CarModel } from "../Models/Car/Car";
-import { CubeModel } from "../Models/Cube/Cube";
+import { CubeModel } from "../Models/CubeModel/Cube";
 import { BuildingModel } from "../Models/Building/building";
 import * as three from "three"
 import { BoxModel } from "../Models/Box/box";

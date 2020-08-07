@@ -3,7 +3,7 @@ import { KeyController } from "./KeyController";
 import { CameraController } from "./CameraController";
 import { Injector } from "@angular/core";
 import { SaveService } from "./SaveService";
-import { DebugMessage } from "../Objects/DebugMessage";
+import { DebugMessage } from "../DataModels/DebugMessage";
 import * as moment from "moment";
 
 export class DebugService extends ServiceBase {

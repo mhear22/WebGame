@@ -1,4 +1,4 @@
-import { FileAsset } from "../../Objects/FileAsset";
+import { FileAsset } from "../../Models/FileAsset";
 import { KeyController } from "../../Services/KeyController";
 import { CameraController } from "../../Services/CameraController";
 import { DebugService } from "../../Services/DebugService";
