@@ -95,6 +95,13 @@ export class CameraController {
 		if (!this.mouseLocked && mouseKey > 0)
 			this.canvas.requestPointerLock();
 	}
+	
+	public AxisEvent(axis: any) {
+		var x = axis.detail.gamepad.axes[2];
+		var y = axis.detail.gamepad.axes[3]/2;
+		var sensitivity = 0.01;
+		this.Rotate(x * sensitivity, y * sensitivity);
+	}
 
 	get camera(): three.PerspectiveCamera {
 		return this.perspectiveCamera;

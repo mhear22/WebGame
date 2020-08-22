@@ -36,8 +36,30 @@ export class App implements AfterViewInit {
 		//document.onmousewheel = (ev: MouseEvent) => this.MouseEvent(ev);
 		document.onmousemove = (ev: MouseEvent) => this.MouseEvent(ev);
 		document.onclick = (ev: MouseEvent) => this.MouseEvent(ev, ev.button + 1);
+		
+		(window as any).joypad.on("connect", (e:any) => {
+			(window as any).joypad.set({
+				axisMovementThreshold: 0.1
+			});
+			
+			var options:any = {}
+			options.duration= 200;
+			options.weakMagnitude= 1;
+			options.strongMagnitude= 1;
+			
+			(window as any).joypad.vibrate(
+				e.gamepad,
+				options
+			)
+		});
 		(window as any).joypad.on("button_press", (e:any) => {
 			this.keyController.ControllerPress(e);
+		});
+		(window as any).joypad.on("axis_move", (e: any)=> {
+			if(e.detail.stickMoved == "left_stick")
+				this.keyController.HandleController(e);
+			else
+				this.Camera.AxisEvent(e);
 		});
 	}
 
