@@ -4,7 +4,8 @@ import { KeyController } from "../../Services/KeyController";
 import { SettingItem } from "./SettingItem"
 import { SceneLoader } from "../../Scenes/SceneLoader";
 import { InventoryService } from "../../Services/InventoryService";
-import { InventoryItem } from "../../DataModels/InventoryItem";
+import { InventoryItem, II } from "../../DataModels/InventoryItem";
+import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
 
 
 @Component({
@@ -19,6 +20,10 @@ export class InventoryDialog {
 	private isClosed = false;
 	private Inventory: InventoryItem[] = []
 	
+	private menu: InventoryItem[][] = []; 
+	private x = 0;
+	private y = 0;
+	
 	constructor(
 		@Inject(MAT_DIALOG_DATA) private keyController: KeyController,
 		@Inject(MatDialogRef) private dialogRef:MatDialogRef<any>
@@ -27,13 +32,10 @@ export class InventoryDialog {
 			this.isClosed = true;
 		});
 		
-		this.Inventory = InventoryService.Inventory;
-		
-		this.Options = [
-			{
-				Name: "Do 1 thing",
-				Data: { setting: true },
-				Action: (self) => {
+		this.menu = [
+			InventoryService.Inventory,
+			[
+				new II("Do 1 Thing", {setting: true}, (self)=> {
 					var data: any = self.Data
 					data.setting = !data.setting
 					if (data.setting)
@@ -42,45 +44,57 @@ export class InventoryDialog {
 						self.Name = "Dont 1 thing"
 					self.Data = data;
 					return self;
-				}
-			},
-			{
-				Name: "Do Another thing", Action: () => {},
-			},
-			{
-				Name: "Load Sandbox World", Action: () => {
-					SceneLoader.LoadLevel("Sandbox")
-				}
-			},
-			{
-				Name:"Quit",
-				Action: () => {
-					SceneLoader.LoadLevel("MainMenu")
-					//Go to a home screen
-				}
-			}
+				})
+			],
+			[new II("Load Sandbox World",null, () => {SceneLoader.LoadLevel("Sandbox")})],
+			[new II("Quit",null, () => {SceneLoader.LoadLevel("MainMenu")})]
 		]
-
-		keyController.WaitFor("w", () => {
-			this.Selected--;
-			if (this.Selected < 0)
-				this.Selected = 0;
-		}, 100)
-
-		keyController.WaitFor("s", () => {
-			this.Selected++;
-			if (this.Selected >= this.Options.length)
-				this.Selected = this.Options.length - 1
-		}, 100)
-
+		
+		var keys = [
+			"w",
+			"a",
+			"s",
+			"d",
+		].forEach(x=> {
+			keyController.WaitFor(x, () => {
+				this.Press(x);
+			},100)
+		})
+		
 		keyController.WaitFor(" ", () => {
 			if(this.isClosed)
 				return;
-			var option = this.Options[this.Selected]
-			var response = option.Action(option)
-			if (response)
-				this.Options[this.Selected] = response
+			var item = this.menu[this.y][this.x];
+			
+			if(item.Action) {
+				var result = item.Action(item);
+				if(result)
+					this.menu[this.y][this.x] = result;
+			}
 			
 		}, 100)
+	}
+
+	private Press(key:any) {
+		var map:any = {
+			"w": {x:0,y:-1 },
+			"s": {x:0,y:1 },
+			"a": {x:-1,y:0 },
+			"d": {x:1,y:0 }
+		}
+		
+		var selected = map[key];
+		this.x += selected.x
+		this.y += selected.y
+		
+		if(this.y < 0)
+			this.y = 0;
+		if(this.y >= this.menu.length)
+			this.y = 0;
+		var xMax = this.menu[this.y].length - 1
+		if(this.x > xMax)
+			this.x = 0;
+		if(this.x < 0)
+			this.x = xMax;
 	}
 }

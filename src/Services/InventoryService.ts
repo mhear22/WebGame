@@ -12,8 +12,7 @@ export class InventoryService extends ServiceBase {
 	}
 	
 	public static AddItem(name: string) {
-		var item = new InventoryItem()
-		item.name = name;
+		var item = new InventoryItem(name);
 		this.inventoryItems.push(item);
 	}
 }

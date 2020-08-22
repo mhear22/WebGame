@@ -1,6 +1,8 @@
-.inventory-item {
-	&.image {
-		float: left;
-		padding: 5px;
+.inventoryItem {
+	float: left;
+	padding: 5px;
+	&.selected {
+		background-color: red;
+		color: white;
 	}
 }

@@ -137,7 +137,7 @@ export class App implements AfterViewInit {
 				this.Camera.RotX = save.CamX;
 				this.Camera.RotY = save.CamY;
 				save.Inventory.forEach(x=> {
-					InventoryService.AddItem(x.name);
+					InventoryService.AddItem(x.Name);
 				});
 			}
 			catch {}
