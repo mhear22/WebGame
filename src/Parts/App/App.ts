@@ -18,6 +18,7 @@ import { SceneLoader } from "../../Scenes/SceneLoader";
 import { SaveService } from "../../Services/SaveService";
 import { SaveModel } from "../../DataModels/SaveModel";
 import "joypad.js";
+import { InventoryService } from "../../Services/InventoryService";
 
 
 @Component({
@@ -33,7 +34,6 @@ export class App implements AfterViewInit {
 	) {
 		document.onkeydown = (ev: KeyboardEvent) => this.keyController.KeyPress(ev, true);
 		document.onkeyup = (ev: KeyboardEvent) => this.keyController.KeyPress(ev, false);
-		//document.onmousewheel = (ev: MouseEvent) => this.MouseEvent(ev);
 		document.onmousemove = (ev: MouseEvent) => this.MouseEvent(ev);
 		document.onclick = (ev: MouseEvent) => this.MouseEvent(ev, ev.button + 1);
 		
@@ -111,6 +111,7 @@ export class App implements AfterViewInit {
 			this.keyController,
 			this.injector
 		)
+		
 		this.HtmlLayers = this.serviceManager.Htmls();
 
 		this.isDrawing = false;
@@ -135,6 +136,9 @@ export class App implements AfterViewInit {
 				this.Camera.camera.rotation.set(dir.x,dir.y,dir.z);
 				this.Camera.RotX = save.CamX;
 				this.Camera.RotY = save.CamY;
+				save.Inventory.forEach(x=> {
+					InventoryService.AddItem(x.name);
+				});
 			}
 			catch {}
 		}
@@ -142,10 +146,7 @@ export class App implements AfterViewInit {
 			SceneLoader.LoadLevel("MainMenu")
 		}
 		
-		
 		window.requestAnimationFrame(() => this.LoadingLoop());
-		
-		//window.requestAnimationFrame(() => this.RunRecursive());
 	}
 	
 	private LoadingLoop() {
@@ -228,6 +229,7 @@ export class App implements AfterViewInit {
 		oldSave.PlayerDirection = this.Camera.camera.rotation.toVector3();
 		oldSave.CamY = this.Camera.RotY;
 		oldSave.CamX = this.Camera.RotX;
+		oldSave.Inventory = InventoryService.Inventory;
 		this.saveService.Save(oldSave)
 		DebugService.Message("Saved", 3);
 	}

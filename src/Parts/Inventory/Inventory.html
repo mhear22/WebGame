@@ -3,6 +3,12 @@
 		Inventory
 	</label>
 	<div>
+		<div *ngFor="let item of Inventory" class="inventory-item image">
+			<img src="{{item.imageUrl}}" />
+		</div>
+		<div style="clear: both;"></div>
+	</div>
+	<div>
 		<div 
 			class="inv-option"
 			[ngClass]="{'selected':i == Selected}"

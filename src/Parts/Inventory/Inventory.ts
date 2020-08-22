@@ -3,6 +3,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { KeyController } from "../../Services/KeyController";
 import { SettingItem } from "./SettingItem"
 import { SceneLoader } from "../../Scenes/SceneLoader";
+import { InventoryService } from "../../Services/InventoryService";
+import { InventoryItem } from "../../DataModels/InventoryItem";
 
 
 @Component({
@@ -15,7 +17,8 @@ export class InventoryDialog {
 	private Options: SettingItem[] = [];
 	private Selected: number = 0;
 	private isClosed = false;
-
+	private Inventory: InventoryItem[] = []
+	
 	constructor(
 		@Inject(MAT_DIALOG_DATA) private keyController: KeyController,
 		@Inject(MatDialogRef) private dialogRef:MatDialogRef<any>
@@ -24,6 +27,7 @@ export class InventoryDialog {
 			this.isClosed = true;
 		});
 		
+		this.Inventory = InventoryService.Inventory;
 		
 		this.Options = [
 			{

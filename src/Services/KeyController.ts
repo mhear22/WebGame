@@ -12,7 +12,8 @@ export class KeyController {
 		"button_12":"w",
 		"button_13":"s",
 		"button_14":"a",
-		"button_15":"d"
+		"button_15":"d",
+		"button_5":"shift"
 	}
 	
 	private TriggerObservable(key: any, isPressed: boolean) {

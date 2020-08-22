@@ -1,4 +1,5 @@
 import * as three from "three";
+import { InventoryItem } from "./InventoryItem";
 
 export class SaveModel {
 	public CurrentScene: string;
@@ -7,4 +8,5 @@ export class SaveModel {
 	public PlayerDirection: three.Vector3 = new three.Vector3(0,0,0);
 	public CamY: number = 0;
 	public CamX: number = 0;
+	public Inventory: InventoryItem[] = []
 }
