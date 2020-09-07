@@ -12,6 +12,7 @@ import { DebugService } from "../Services/DebugService";
 import { BankWater } from "../Models/BankWater/BankWater";
 import { CarModel } from "../Models/Car/Car";
 import { Tween, TweenMethod } from "../Services/TweenService";
+import { Fish } from "../Models/Fish/Fish";
 
 
 export class BankScene extends SceneBase {
@@ -21,6 +22,8 @@ export class BankScene extends SceneBase {
 	private crates:CrateModel[] = []
 	private car: CarModel;
 	private carTween: Tween;
+	private Fish: Fish[] = [];
+	
 	
 	public Iterate(keyController: KeyController, Step: number): void {
 		this.ColideIterate(keyController, Step);
@@ -37,6 +40,7 @@ export class BankScene extends SceneBase {
 		//Car ends at X50, Y31.6, Z570
 		
 		this.car.Element.position.copy(this.carTween.value);
+		this.Fish.map(x=> x.Interval(keyController, Step));
 	}
 	
 	constructor(
@@ -57,8 +61,14 @@ export class BankScene extends SceneBase {
 			new CrateModel(this.Camera,40,35,246)
 		]
 		
-		this.crates.map(x=> { this.Add(x)})
+		this.crates.map(x=>this.Add(x));
 		
+		this.Fish = [
+			new Fish(new three.Vector3(-90, -40, 175), 90),
+			new Fish(new three.Vector3(-35, -40, 125), 270),
+			new Fish(new three.Vector3(-20, -40, 175), 45)
+		]
+		this.Fish.map(x=>this.Add(x));
 		
 		
 		this.car = new CarModel(
