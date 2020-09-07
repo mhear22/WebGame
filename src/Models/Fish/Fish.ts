@@ -35,6 +35,12 @@ export class Fish extends FileAsset {
 				3,
 				false
 			)
+			
+			if(target.distanceTo(current) > 3) {
+				var rot = new three.Vector3(newX - current.x, 0, newZ - current.z);
+				var angle = rot.angleTo(new three.Vector3(1,0,0))
+				this.element.rotation.y = angle;
+			}
 		}
 		
 		this.element.position.copy(this.tween.value)
