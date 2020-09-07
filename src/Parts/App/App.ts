@@ -165,12 +165,7 @@ export class App implements AfterViewInit {
 	private RunRecursive() {
 		setTimeout(() => {
 			window.requestAnimationFrame(() => this.RunRecursive());
-			try {
-				this.Run();
-			}
-			catch (exception) {
-				console.log(exception);
-			}
+			this.Run();
 		}, 0)
 	}
 
@@ -180,18 +175,23 @@ export class App implements AfterViewInit {
 	private Run() {
 		if (!this.isDrawing && !this.isPaused) {
 			this.isDrawing = true;
-
-			this.currentFrame = Date.now();
-
-			this.LastSplit = this.getMSSplit(this.lastFrame, this.currentFrame);
-
-			this.Logic(this.LastSplit);
-
-			this.HtmlUpdate(this.LastSplit);
-
-			this.Animate();
-
-			this.lastFrame = this.currentFrame;
+			
+			try {
+				this.currentFrame = Date.now();
+	
+				this.LastSplit = this.getMSSplit(this.lastFrame, this.currentFrame);
+	
+				this.Logic(this.LastSplit);
+	
+				this.HtmlUpdate(this.LastSplit);
+	
+				this.Animate();
+	
+				this.lastFrame = this.currentFrame;
+			}
+			catch (error) {
+				console.error(error)
+			}
 
 			this.isDrawing = false;
 		}
