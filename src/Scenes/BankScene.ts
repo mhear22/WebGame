@@ -39,7 +39,9 @@ export class BankScene extends SceneBase {
 		//Car starts at X46, Y38, Z-385
 		//Car ends at X50, Y31.6, Z570
 		
-		this.car.Element.position.copy(this.carTween.value);
+		if(this.carTween) {
+			this.car.Element.position.copy(this.carTween.value);
+		}
 		this.Fish.map(x=> x.Interval(keyController, Step));
 	}
 	

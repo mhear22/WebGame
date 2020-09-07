@@ -165,7 +165,12 @@ export class App implements AfterViewInit {
 	private RunRecursive() {
 		setTimeout(() => {
 			window.requestAnimationFrame(() => this.RunRecursive());
-			this.Run();
+			try {
+				this.Run();
+			}
+			catch (exception) {
+				console.log(exception);
+			}
 		}, 0)
 	}
 
