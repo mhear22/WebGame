@@ -16,6 +16,7 @@ export class Sun extends Asset {
 	) {
 		super();
 		this.canCollide = false;
+		
 		var sunMesh = new three.MeshBasicMaterial({color:color});
 		var sunGeo = new three.SphereBufferGeometry(radius, 100, 100);
 		this.element = new three.Mesh(sunGeo, sunMesh);
@@ -24,15 +25,17 @@ export class Sun extends Asset {
 		this.element.position.y = Y;
 		this.element.position.z = Z;
 		
-		this.light = new three.PointLight(color,intensity, 1000, 2);
+		this.light = new three.PointLight(color,intensity, 0, 2);
 		this.light.position.y = Y;
 		this.light.position.x = X;
 		this.light.position.z = Z;
 		this.light.castShadow = true;
-		this.light.shadow.camera.far = 1000;
+		this.light.shadow.camera.far = 10000;
 		this.light.shadow.camera.near = 1;
-		//this.light.shadow.mapSize.height = Math.pow(64,2);
-		//this.light.shadow.mapSize.width = Math.pow(64,2);
+		
+		var size = 1024*4; //4x produces minmal
+		this.light.shadow.mapSize.height = size;
+		this.light.shadow.mapSize.width = size;
 		
 		Scene.add(this.light);
 	}

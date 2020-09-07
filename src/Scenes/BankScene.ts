@@ -10,9 +10,18 @@ import { Rain } from "../Models/Rain";
 import { CrateModel } from "../Models/Crate/Crate";
 import { DebugService } from "../Services/DebugService";
 import { BankWater } from "../Models/BankWater/BankWater";
+import { CarModel } from "../Models/Car/Car";
+import { Tween, TweenMethod } from "../Services/TweenService";
 
 
 export class BankScene extends SceneBase {
+	private isComplete = false;
+	private rain:Rain;
+	private sun:Sun;
+	private crates:CrateModel[] = []
+	private car: CarModel;
+	private carTween: Tween;
+	
 	public Iterate(keyController: KeyController, Step: number): void {
 		this.ColideIterate(keyController, Step);
 		this.rain.Element.position.copy(this.Camera.camera.position);
@@ -23,14 +32,12 @@ export class BankScene extends SceneBase {
 			this.isComplete = true;
 			DebugService.Message("Complete");
 		}
+		
+		//Car starts at X46, Y38, Z-385
+		//Car ends at X50, Y31.6, Z570
+		
+		this.car.Element.position.copy(this.carTween.value);
 	}
-	
-	private isComplete = false;
-	
-	private rain:Rain;
-	private sun:Sun;
-	
-	private crates:CrateModel[] = []
 	
 	constructor(
 		cam:CameraController,
@@ -53,6 +60,22 @@ export class BankScene extends SceneBase {
 		this.crates.map(x=> { this.Add(x)})
 		
 		
+		
+		this.car = new CarModel(
+			key,
+			cam,
+			new three.Vector3(46, 38, -385),
+			0,
+			false
+		)
+		this.carTween = new Tween(
+			new three.Vector3(46, 32, -385),
+			new three.Vector3(50, 25, 570),
+			TweenMethod.Linear,
+			5
+		)
+		
+		this.Add(this.car);
 		this.Add(this.sun)
 		this.Add(new Skybox(cam));
 		this.rain = new Rain(
