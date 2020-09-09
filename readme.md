@@ -49,4 +49,4 @@ This is a group of objects come together to create an environment.
 
 
 ## Assets to get rights for:
-* Skybox
+* Skybox: From "The Chayed" here https://opengameart.org/content/sky-box-sunny-day

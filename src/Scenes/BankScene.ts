@@ -13,6 +13,7 @@ import { BankWater } from "../Models/BankWater/BankWater";
 import { CarModel } from "../Models/Car/Car";
 import { Tween, TweenMethod } from "../Services/TweenService";
 import { Fish } from "../Models/Fish/Fish";
+import { range } from "rxjs";
 
 
 export class BankScene extends SceneBase {
@@ -35,9 +36,6 @@ export class BankScene extends SceneBase {
 			this.isComplete = true;
 			DebugService.Message("Complete");
 		}
-		
-		//Car starts at X46, Y38, Z-385
-		//Car ends at X50, Y31.6, Z570
 		
 		if(this.car.Element && this.car.Element.position) {
 			this.car.Element.position.copy(this.carTween.value);
@@ -65,11 +63,7 @@ export class BankScene extends SceneBase {
 		
 		this.crates.map(x=>this.Add(x));
 		
-		this.Fish = [
-			new Fish(new three.Vector3(-90, -40, 175), 90),
-			new Fish(new three.Vector3(-35, -40, 125), 270),
-			new Fish(new three.Vector3(-20, -40, 175), 45)
-		]
+		this.Fish = [1,2,3,4,5].map(x=> new Fish(new three.Vector3(-90, -40, 175), 0))
 		this.Fish.map(x=>this.Add(x));
 		
 		

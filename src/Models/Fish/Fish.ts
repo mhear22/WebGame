@@ -42,7 +42,11 @@ export class Fish extends FileAsset {
 				this.element.rotation.y = angle;
 			}
 		}
-		
 		this.element.position.copy(this.tween.value)
+		if(this.IsCollided) {
+			var dir = this.UnCollide();
+			dir.y = 0;
+			this.element.position.add(dir);
+		}
 	}
 }

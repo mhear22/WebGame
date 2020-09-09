@@ -13,24 +13,27 @@ export class Skybox extends Asset {
 	constructor(private camera:CameraController) {
 		super();
 		
-		this.canCollide = false;
-		var texture = new three.TextureLoader().load(imageSrc)
-		texture.magFilter = three.LinearFilter;
-		texture.minFilter = three.LinearFilter;
+		var box = [
+			require("./Daylight Box_Right.bmp"),
+			require("./Daylight Box_Left.bmp"),
+			require("./Daylight Box_Top.bmp"),
+			require("./Daylight Box_Bottom.bmp"),
+			require("./Daylight Box_Front.bmp"),
+			require("./Daylight Box_Back.bmp"),
+		];
 		
-		var shader = three.ShaderLib.equirect;
-		var material = new three.ShaderMaterial({
-			fragmentShader: shader.fragmentShader,
-			vertexShader: shader.vertexShader,
-			uniforms: shader.uniforms,
-			depthWrite: false,
-			side: three.BackSide,
+		var results = box.map(x=> {
+			var result = new three.MeshBasicMaterial({
+				map:new three.TextureLoader().load(x)
+			});
+			result.side = three.BackSide;
+			return result;
 		});
-		material.uniforms.tEquirect.value = texture;
+		
 		
 		var dist = CameraController.Far * 0.99;
 		var geo = new three.BoxBufferGeometry(dist,dist,dist)
-		this.element = new three.Mesh(geo,material)
+		this.element = new three.Mesh(geo,results)
 		
 		this.element.receiveShadow = true;
 	}
