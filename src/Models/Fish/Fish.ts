@@ -5,13 +5,18 @@ import { Tween, TweenMethod } from "../../Services/TweenService";
 
 export class Fish extends FileAsset {
 	private tween: Tween;
-	private agression = Math.random() * 50
+	private static Agressions:number[] = [];
+	private agression = Math.random() * 100
+	private get isKingFish() {
+		return Math.max(...Fish.Agressions) == this.agression;
+	}
 	
 	public constructor(
 		private position: three.Vector3,
 		private rotation: number
 	) {
 		super(require("./fish.obj"));
+		Fish.Agressions.push(this.agression);
 	}
 	
 	OnLoaded() {
@@ -21,7 +26,7 @@ export class Fish extends FileAsset {
 	
 	Interval(keyController: KeyController, timeSplit: number): void {
 		if(this.tween == null || this.tween.complete) {
-			var current = this.element.position;
+			var current = this.element.position.clone();
 			var max = this.agression;
 			var newX = current.x + ((Math.random() * max) - max/2);
 			var newZ = current.z + ((Math.random() * max) - max/2);
@@ -32,7 +37,7 @@ export class Fish extends FileAsset {
 				current, 
 				target, 
 				TweenMethod.Linear,
-				3,
+				5,
 				false
 			)
 			
@@ -42,7 +47,8 @@ export class Fish extends FileAsset {
 				this.element.rotation.y = angle;
 			}
 		}
-		this.element.position.copy(this.tween.value)
+		
+		this.element.position.copy(this.tween.value.clone())
 		if(this.IsCollided) {
 			var dir = this.UnCollide();
 			dir.y = 0;
