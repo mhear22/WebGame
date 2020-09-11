@@ -28,7 +28,7 @@ export class BankScene extends SceneBase {
 	
 	public Iterate(keyController: KeyController, Step: number): void {
 		this.ColideIterate(keyController, Step);
-		this.rain.Element.position.copy(this.Camera.camera.position);
+		//this.rain.Element.position.copy(this.Camera.camera.position);
 		this.sun.Element.position.x = this.Camera.camera.position.x;
 		this.sun.Element.position.z = this.Camera.camera.position.z;
 		
@@ -53,7 +53,7 @@ export class BankScene extends SceneBase {
 		this.sun = new Sun(this.Scene,0,100,0,null,null, 2);
 		
 		this.Add(new BankModel(60, new three.Vector3(0,-11,100)));
-		//this.Add(new BankWater(60, new three.Vector3(0,-11,100)));
+		this.Add(new BankWater(600, new three.Vector3(0,-11,100)));
 		
 		this.crates = [
 			new CrateModel(this.Camera,100,5,0),
@@ -84,10 +84,10 @@ export class BankScene extends SceneBase {
 		this.Add(this.car);
 		this.Add(this.sun)
 		this.Add(new Skybox(cam));
-		this.rain = new Rain(
-			new three.Vector3(0,30,0),
-			new three.Vector3(50,100,50),
-			200);
-		this.Add(this.rain);
+		//this.rain = new Rain(
+		//	new three.Vector3(0,30,0),
+		//	new three.Vector3(50,100,50),
+		//	200);
+		//this.Add(this.rain);
 	}
 }

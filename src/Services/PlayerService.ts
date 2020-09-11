@@ -19,6 +19,7 @@ export class PlayerService extends ServiceBase {
 	private FallingMomentum = 10;
 	
 	private MovementSpeed = 1;
+	private MaxSpeed = 5;
 	public static WalkingControls = true;
 	public static Gravity = true;
 	public static InventoryEnabled = true;
@@ -70,8 +71,8 @@ export class PlayerService extends ServiceBase {
 	private MovementDirection(timeSplit: number) {
 		if (this.Key.KeyMap["shift"]) {
 			this.MovementSpeed++;
-			if (this.MovementSpeed >= 5)
-				this.MovementSpeed = 5;
+			if (this.MovementSpeed >= this.MaxSpeed)
+				this.MovementSpeed = this.MaxSpeed;
 		}
 		else {
 			if (this.MovementSpeed > 1)
