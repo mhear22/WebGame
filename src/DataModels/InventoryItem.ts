@@ -1,7 +1,8 @@
 import { SettingItem } from "../Parts/Inventory/SettingItem";
 
 var images:any = {
-	"cube": require("../Parts/Inventory/cube.png")
+	"cube": require("../Parts/Inventory/cube.png"),
+	"default": require("../Parts/Inventory/default.png")
 }
 
 export class InventoryItem {
@@ -12,7 +13,7 @@ export class InventoryItem {
 	) { }
 	
 	public get ImageUrl():string {
-		return images[this.Name]
+		return images[this.Name];
 	}
 	
 	public get Html():string {

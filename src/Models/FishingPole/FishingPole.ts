@@ -1,38 +1,34 @@
 import { FileAsset } from "../../Models/FileAsset";
 import { KeyController } from "../../Services/KeyController";
+import { Vector3 } from "three";
 import { CameraController } from "../../Services/CameraController";
-import { DebugService } from "../../Services/DebugService";
 import { InventoryService } from "../../Services/InventoryService";
 
-export class CrateModel extends FileAsset {
+export class FishingPole extends FileAsset {
 	constructor(
 		private Camera: CameraController,
-		private x: number = 0,
-		private y: number = 5,
-		private z: number = -10
+		private scale:number = 0,
+		private pos:Vector3 = new Vector3()
 	) {
-		super(require("./crate.obj"))
+		super(require("./pole.obj"), require("./pole.mtl"))
 		this._collectable = true;
 		this.canCollide = false;
 	}
-	
 	public IsCollected = false;
 	
+	
 	OnLoaded() {
-		this.element.position.x = this.x;
-		this.element.position.y = this.y;
-		this.element.position.z = this.z;
-		this.element.rotateY(-45);
+		this.element.scale.addScalar(this.scale)
+		this.element.position.copy(this.pos)
 	}
 	
 	Interval(keyController: KeyController, timeSplit: number): void {
 		if(this.element) {
-			this.element.rotateY(timeSplit)
-			this.element.rotateX(timeSplit/2)
+			this.element.rotateY(timeSplit);
 		}
 		
-		if(!this.IsCollected && this.CanPickup(this.Camera.camera.position)) {
-			InventoryService.AddItem("cube");
+		if(!this.IsCollected && this.CanPickup(this.Camera.camera.position, 7)) {
+			InventoryService.AddItem("pole");
 			this.IsCollected = true;
 			this.element.visible = false;
 		}

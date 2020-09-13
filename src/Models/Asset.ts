@@ -9,6 +9,17 @@ export abstract class Asset {
 		return this.element;
 	}
 	
+	protected _collectable = false;
+	get IsCollectable():boolean { return this._collectable; }
+	
+	protected CanPickup(Position: three.Vector3, pickupDistance: number = 5) {
+		if(this.IsCollectable) {
+			var distance = this.element.position.distanceTo(Position);
+			return distance <= pickupDistance;
+		}
+		return false;
+	}
+	
 	public IsLoaded = true;
 	protected canCollide = true;
 	get CanCollide():boolean { return this.canCollide}
@@ -85,4 +96,6 @@ export abstract class Asset {
 
 		return this.IsCollided
 	}
+	
+	
 }

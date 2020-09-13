@@ -14,6 +14,8 @@ import { CarModel } from "../Models/Car/Car";
 import { Tween, TweenMethod } from "../Services/TweenService";
 import { Fish } from "../Models/Fish/Fish";
 import { range } from "rxjs";
+import { FishingPole } from "../Models/FishingPole/FishingPole";
+import { Vector3 } from "three";
 
 
 export class BankScene extends SceneBase {
@@ -24,11 +26,11 @@ export class BankScene extends SceneBase {
 	private car: CarModel;
 	private carTween: Tween;
 	private Fish: Fish[] = [];
-	
+	private Pole: FishingPole;
 	
 	public Iterate(keyController: KeyController, Step: number): void {
 		this.ColideIterate(keyController, Step);
-		//this.rain.Element.position.copy(this.Camera.camera.position);
+		
 		this.sun.Element.position.x = this.Camera.camera.position.x;
 		this.sun.Element.position.z = this.Camera.camera.position.z;
 		
@@ -40,7 +42,6 @@ export class BankScene extends SceneBase {
 		if(this.car.Element && this.car.Element.position) {
 			this.car.Element.position.copy(this.carTween.value);
 		}
-		this.Fish.map(x=> x.Interval(keyController, Step));
 	}
 	
 	constructor(
@@ -53,13 +54,14 @@ export class BankScene extends SceneBase {
 		this.sun = new Sun(this.Scene,0,100,0,null,null, 2);
 		
 		this.Add(new BankModel(60, new three.Vector3(0,-11,100)));
-		this.Add(new BankWater(600, new three.Vector3(0,-11,100)));
+		this.Add(new BankWater(200, new three.Vector3(0,-11,100)));
 		
 		this.crates = [
 			new CrateModel(this.Camera,100,5,0),
 			new CrateModel(this.Camera,-50,5,0),
 			new CrateModel(this.Camera,40,35,246)
 		]
+		
 		
 		this.crates.map(x=>this.Add(x));
 		
@@ -81,6 +83,8 @@ export class BankScene extends SceneBase {
 			5
 		)
 		
+		this.Pole = new FishingPole(this.Camera,1, new Vector3(-50,0,20));
+		this.Add(this.Pole);
 		this.Add(this.car);
 		this.Add(this.sun)
 		this.Add(new Skybox(cam));

@@ -1,6 +1,11 @@
 .inventoryItem {
 	float: left;
 	padding: 5px;
+	
+	img {
+		overflow: hidden;
+	}
+	
 	&.selected {
 		background-color: red;
 		color: white;

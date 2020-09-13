@@ -13,7 +13,7 @@ export class BankWater extends FileAsset {
 		this.canCollide = false;
 		
 		var mat: Material = (this.element as any).material;
-		mat.opacity = 0.2;
+		mat.opacity = 0.3;
 		mat.transparent = true;
 	}
 	
