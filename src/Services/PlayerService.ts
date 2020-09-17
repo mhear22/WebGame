@@ -8,6 +8,7 @@ import { InventoryDialog } from "../Parts/Inventory/Inventory";
 import * as three from 'three';
 import { DebugService } from "./DebugService";
 import * as moment from "moment";
+import { InventoryService } from "./InventoryService";
 
 
 export class PlayerService extends ServiceBase {
@@ -35,6 +36,15 @@ export class PlayerService extends ServiceBase {
 		super(Camera, Key, injector);
 		this.Camera.camera.position.y = this.height;
 		var dialog = injector.get(MatDialog);
+		
+		
+		this.Key.WaitFor("mouse_0",() => {
+			var item = InventoryService.EquipedItem;
+			if(item)
+				item.Interact(item, injector);
+		});
+		
+		
 		this.Key.WaitFor("e", () => {
 			if (!PlayerService.InventoryEnabled)
 				return;
@@ -163,6 +173,7 @@ export class PlayerService extends ServiceBase {
 			}
 		}
 	}
+	
 	public Move(vector: Vector3) {
 		vector.applyAxisAngle(this.Camera.camera.up, this.Camera.RotY);
 		this.Camera.camera.position.add(vector);

@@ -20,4 +20,8 @@ export class SaveService {
 	public Save(data: SaveModel) {
 		this.storage.set("SaveData", data)
 	}
+	
+	public Delete() {
+		this.storage.set("SaveData", null);
+	}
 }

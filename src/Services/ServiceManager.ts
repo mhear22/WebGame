@@ -3,6 +3,7 @@ import { CameraController } from "./CameraController";
 import { KeyController } from "./KeyController";
 import { Injector, inject } from "@angular/core";
 import { SceneBase } from "../Scenes/SceneBase";
+import { Servicer } from "./Servicer";
 
 export class HtmlModel {
 	public html: string;
@@ -45,6 +46,7 @@ export class ServiceManager {
 					this.DrawsHtml.push(obj)
 				obj.GetScene = () => this.ActiveScene;
 			}
+			Servicer.Provide(obj, x.name)
 		})
 	}
 }

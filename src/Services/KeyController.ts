@@ -117,6 +117,14 @@ export class KeyController {
 		}
 		setTimeout(debounce,100);
 	}
+	
+	public HandleMouse(event: MouseEvent, mouseKey?: number) {
+		if(event.type == "click") {
+			var key = `mouse_${event.button}`;
+			this.TriggerObservable(key, true);
+		}
+		
+	}
 }
 
 export class CallbackModel {

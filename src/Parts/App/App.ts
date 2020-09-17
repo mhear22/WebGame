@@ -19,6 +19,7 @@ import { SaveService } from "../../Services/SaveService";
 import { SaveModel } from "../../DataModels/SaveModel";
 import "joypad.js";
 import { InventoryService } from "../../Services/InventoryService";
+import { Servicer } from "../../Services/Servicer";
 
 
 @Component({
@@ -61,6 +62,7 @@ export class App implements AfterViewInit {
 			else
 				this.Camera.AxisEvent(e);
 		});
+
 	}
 
 	ngAfterViewInit(): void {
@@ -92,6 +94,9 @@ export class App implements AfterViewInit {
 		this.keyController = new KeyController();
 		this.Camera = new CameraController(this.canvas, this.dialog, this.keyController);
 		this.renderer = new RenderService(this.canvas);
+		Servicer.Provide(this.keyController, "KeyController");
+		Servicer.Provide(this.Camera, "CameraController");
+		
 		SceneLoader.OnLevelChange = (scene) => {
 			this.dialog.closeAll();
 			PlayerService.WalkingControls = true;
@@ -102,6 +107,7 @@ export class App implements AfterViewInit {
 			this.Camera.camera.rotation.set(0,0,0);
 			this.Scene = new scene(this.Camera, this.keyController, this.injector)
 			this.serviceManager.ActiveScene = this.Scene;
+			Servicer.Provide(this.Scene, "Scene");
 		}
 		this.serviceManager = new ServiceManager([
 			DebugService,
@@ -122,6 +128,7 @@ export class App implements AfterViewInit {
 		}, 100)
 		
 		this.keyController.WaitFor('*',() => {this.Save()},1000)
+		this.keyController.WaitFor('0',() => {this.saveService.Delete()},1000)
 		
 		
 		if(this.saveService.HasSave()) {
@@ -203,6 +210,7 @@ export class App implements AfterViewInit {
 
 	private MouseEvent(mouse: MouseEvent, mouseKey: number = 0) {
 		this.Camera.MouseEvent(mouse, mouseKey);
+		this.keyController.HandleMouse(mouse);
 	}
 
 	private LastHtmlUpdate = 0;

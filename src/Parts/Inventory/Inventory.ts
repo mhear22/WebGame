@@ -5,7 +5,7 @@ import { SettingItem } from "./SettingItem"
 import { SceneLoader } from "../../Scenes/SceneLoader";
 import { InventoryService } from "../../Services/InventoryService";
 import { InventoryItem, II } from "../../DataModels/InventoryItem";
-import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
+import { SaveService } from "../../Services/SaveService";
 
 
 @Component({
@@ -15,10 +15,7 @@ import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
 
 
 export class InventoryDialog {
-	private Options: SettingItem[] = [];
-	private Selected: number = 0;
 	private isClosed = false;
-	private Inventory: InventoryItem[] = []
 	
 	private menu: InventoryItem[][] = []; 
 	private x = 0;
@@ -28,7 +25,7 @@ export class InventoryDialog {
 		@Inject(MAT_DIALOG_DATA) private keyController: KeyController,
 		@Inject(MatDialogRef) private dialogRef:MatDialogRef<any>
 	) {
-		dialogRef.beforeClose().subscribe(() => {
+		dialogRef.beforeClosed().subscribe(() => {
 			this.isClosed = true;
 		});
 		
@@ -70,6 +67,9 @@ export class InventoryDialog {
 				var result = item.Action(item);
 				if(result)
 					this.menu[this.y][this.x] = result;
+			}
+			if(item.Interact) {
+				InventoryService.SetEquipedItem(item);
 			}
 			
 		}, 100)
