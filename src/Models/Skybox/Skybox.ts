@@ -40,7 +40,7 @@ export class Skybox extends Asset {
 			this.element.receiveShadow = true;
 		}
 		else {
-			//this.canCollide = false;
+			this.canCollide = false;
 			var texture = new three.TextureLoader().load(imageSrc)
 			texture.magFilter = three.LinearFilter;
 			texture.minFilter = three.LinearFilter;

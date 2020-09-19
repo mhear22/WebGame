@@ -9,7 +9,8 @@ export class Cube extends Asset {
 		public depth: number = 1,
 		x:number = 0,
 		y:number = 0,
-		z:number = 0
+		z:number = 0,
+		collide:boolean = true
 	) {
 		super();
 		var geo = new three.BoxBufferGeometry(width, height, depth);
@@ -17,7 +18,7 @@ export class Cube extends Asset {
 			'#BBBBBB',
 			'#BEEEEF'
 		];
-		this.canCollide = true;
+		this.canCollide = collide;
 		
 		var random = Math.floor(Math.random()*colors.length)+1;
 		var mat = new three.MeshPhongMaterial({ color: colors[random-1] });
@@ -29,7 +30,5 @@ export class Cube extends Asset {
 		this.element.receiveShadow = true;
 	}
 
-	public Interval(keyMap: any,timeSplit:number) {
-		
-	}
+	public Interval(keyMap: any,timeSplit:number) { }
 }
