@@ -50,3 +50,12 @@ This is a group of objects come together to create an environment.
 
 ## Assets to get rights for:
 * Skybox: From "The Chayed" here https://opengameart.org/content/sky-box-sunny-day
+
+
+## Project Features:
+* able to be exported or run in a server
+* automatic deployment
+* full scene changing including unloading and loading
+* Tweening between locations
+* FPS style camera
+* Controller support

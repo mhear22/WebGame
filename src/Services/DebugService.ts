@@ -32,11 +32,26 @@ export class DebugService extends ServiceBase {
 
 	private times: number[] = [];
 	private runningTotal = 0;
-
+	private timeSinceLastClear = 0;
+	
 	public Iterate(Split: number) {
 		if (this.runningTotal > 10) {
 			this.times = [];
 			this.runningTotal = 0;
+		}
+		
+		if(this.timeSinceLastClear > 1) {
+			this.timeSinceLastClear = 0;
+			
+			var expiry = moment()
+			DebugService.Messages = DebugService.Messages
+			.filter(x=> {
+				var offset = expiry.clone().add(-x.Offset, "s");
+				return x.SentDate.isAfter(offset)
+			});
+		}
+		else {
+			this.timeSinceLastClear += Split
 		}
 
 		this.times.push(Split);
@@ -52,18 +67,11 @@ export class DebugService extends ServiceBase {
 
 		this.FPSString = `${(1 / (this.runningTotal / this.times.length)).toFixed(2)}`;
 
-		var expiry = moment()
-		DebugService.Messages = DebugService.Messages
-			.filter(x=> {
-				var offset = expiry.clone().add("s", -x.Offset);
-				return x.SentDate.isAfter(offset)
-			});
-		
-			var messages = DebugService.Messages.map(x=> {
-				return `<div>${x.Message}</div>`;
-			})
-			.filter((val, index, self) => self.indexOf(val) == index)
-			.join("")
+		var messages = DebugService.Messages.map(x=> {
+			return `<div>${x.Message}</div>`;
+		})
+		.filter((val, index, self) => self.indexOf(val) == index)
+		.join("")
 		
 		var text = `<div class="screen-text">
 			${this.FPSString}
@@ -96,7 +104,7 @@ export class DebugService extends ServiceBase {
 		else {
 			var model: DebugMessage = { Message: message, SentDate: moment(), Offset: secondsToKeepUp }
 			DebugService.Messages.push(model);
-			console.log(message);
 		}
+		console.log(message);
 	}
 }

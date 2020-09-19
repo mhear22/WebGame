@@ -11,8 +11,12 @@ export class InventoryItem {
 		public Name:string,
 		public Data?:object,
 		public Action?: (self?:InventoryItem) => InventoryItem|void,
-		public Interact?: (self?:InventoryItem, injector?: Injector) => InventoryItem|void
-	) { }
+		public Interact?: (self?:InventoryItem) => InventoryItem|void
+	) {
+		this.BaseClass = this.constructor.name;
+	}
+	
+	public BaseClass: string;
 	
 	public get ImageUrl():string {
 		return images[this.Name];

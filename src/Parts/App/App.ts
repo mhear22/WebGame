@@ -144,7 +144,7 @@ export class App implements AfterViewInit {
 				this.Camera.RotX = save.CamX;
 				this.Camera.RotY = save.CamY;
 				save.Inventory.forEach(x=> {
-					InventoryService.AddItem(x.Name);
+					InventoryService.AddInventoryItem(x);
 				});
 			}
 			catch {}
@@ -208,6 +208,8 @@ export class App implements AfterViewInit {
 		return (secondDate - initalDate) / 1000.0;
 	}
 
+	private lastEvent: string = "";
+	
 	private MouseEvent(mouse: MouseEvent, mouseKey: number = 0) {
 		this.Camera.MouseEvent(mouse, mouseKey);
 		this.keyController.HandleMouse(mouse);

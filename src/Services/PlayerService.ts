@@ -41,7 +41,7 @@ export class PlayerService extends ServiceBase {
 		this.Key.WaitFor("mouse_0",() => {
 			var item = InventoryService.EquipedItem;
 			if(item)
-				item.Interact(item, injector);
+				item.Interact(item);
 		});
 		
 		
