@@ -59,3 +59,11 @@ This is a group of objects come together to create an environment.
 * Tweening between locations
 * FPS style camera
 * Controller support
+
+
+## Comfy mode
+* Fish -> Sell -> buy more stuff -> Fish more -> Sell more
+* Train between Waterfront and Shopfront to sell stuff to be comfy
+
+## Suffering Mode
+* How do I make it compelling to play and a fun experience?

@@ -3,7 +3,7 @@ import { KeyController } from "../../Services/KeyController";
 import { Vector3, Color, Material, Texture } from "three";
 
 export class BankWater extends FileAsset {
-	constructor(private scale:number = 0, private pos:Vector3 = new Vector3()) {
+	constructor(private scale:number = 0, private pos:Vector3 = new Vector3(), private opacity: number = 0.3) {
 		super(require("./bankwater.obj"), require("./bankwater.mtl"), require("./watertexture.png"))
 	}
 	
@@ -13,7 +13,7 @@ export class BankWater extends FileAsset {
 		this.canCollide = false;
 		
 		var mat: Material = (this.element as any).material;
-		mat.opacity = 0.3;
+		mat.opacity = this.opacity;
 		mat.transparent = true;
 	}
 	

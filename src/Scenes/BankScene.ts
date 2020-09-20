@@ -54,7 +54,9 @@ export class BankScene extends SceneBase {
 		this.sun = new Sun(this.Scene,0,100,0,null,null, 2);
 		
 		this.Add(new BankModel(60, new three.Vector3(0,-11,100)));
-		this.Add(new BankWater(200, new three.Vector3(0,-11,100)));
+		this.Add(new BankWater(200, new three.Vector3(0,-10,100)));
+		this.Add(new BankWater(200, new three.Vector3(0,-15,100)));
+		this.Add(new BankWater(200, new three.Vector3(0,-25,100),1));
 		
 		this.crates = [
 			new CrateModel(this.Camera,100,5,0),
@@ -65,7 +67,7 @@ export class BankScene extends SceneBase {
 		
 		this.crates.map(x=>this.Add(x));
 		
-		this.Fish = [1,2,3,4,5].map(x=> new Fish(new three.Vector3(-90, -40, 175), 0))
+		this.Fish = [1,2,3,4,5].map(x=> new Fish(new three.Vector3(-90, -20, 175), 0))
 		this.Fish.map(x=>this.Add(x));
 		
 		
@@ -77,8 +79,8 @@ export class BankScene extends SceneBase {
 			false
 		)
 		this.carTween = new Tween(
-			new three.Vector3(46, 32, -385),
-			new three.Vector3(50, 25, 570),
+			new three.Vector3(46, 36, -385),
+			new three.Vector3(50, 30, 570),
 			TweenMethod.Linear,
 			5
 		)

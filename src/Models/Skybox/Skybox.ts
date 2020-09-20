@@ -12,7 +12,7 @@ export class Skybox extends Asset {
 	}
 	constructor(private camera:CameraController) {
 		super();
-		var daytime = false;
+		var daytime = true;
 		
 		if(daytime) {
 			var box = [
