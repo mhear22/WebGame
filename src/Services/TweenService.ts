@@ -12,8 +12,8 @@ export class Tween {
 	private _currentTime: moment.Moment;
 	
 	public constructor(
-		private InitalValue: three.Vector3,
-		private TargetValue: three.Vector3,
+		private initalValue: three.Vector3,
+		private targetValue: three.Vector3,
 		private Method: TweenMethod,
 		private Duration: number,
 		private Loop= true
@@ -22,6 +22,9 @@ export class Tween {
 		this.endTime = moment();
 		this.endTime.add(Duration, "s");
 	}
+	
+	public get InitalValue() { return this.initalValue; }
+	public get TargetValue() { return this.targetValue; }
 	
 	public set currentTime(value: moment.Moment) {
 		this._currentTime = value;

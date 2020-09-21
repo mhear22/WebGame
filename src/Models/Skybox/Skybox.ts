@@ -14,6 +14,7 @@ export class Skybox extends Asset {
 		super();
 		var daytime = true;
 		
+		this.canCollide = false;
 		if(daytime) {
 			var box = [
 				require("./Daylight Box_Right.bmp"),
@@ -40,7 +41,6 @@ export class Skybox extends Asset {
 			this.element.receiveShadow = true;
 		}
 		else {
-			this.canCollide = false;
 			var texture = new three.TextureLoader().load(imageSrc)
 			texture.magFilter = three.LinearFilter;
 			texture.minFilter = three.LinearFilter;

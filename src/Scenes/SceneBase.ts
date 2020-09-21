@@ -14,6 +14,12 @@ export abstract class SceneBase {
 	protected Scene:three.Scene;
 	protected Meshes:Asset[] = [];
 	
+	public get SceneMeshes() {
+		return this.Meshes
+			.filter(x=>x.Element)
+			.map(x=>x.Element);
+	}
+	
 	public get CollideMeshes() {
 		return this.Meshes
 			.filter(x=> x.Element && x.CanCollide)

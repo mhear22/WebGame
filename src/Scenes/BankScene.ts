@@ -55,7 +55,9 @@ export class BankScene extends SceneBase {
 		
 		this.Add(new BankModel(60, new three.Vector3(0,-11,100)));
 		this.Add(new BankWater(200, new three.Vector3(0,-10,100)));
-		this.Add(new BankWater(200, new three.Vector3(0,-15,100)));
+		var surface = new BankWater(200, new three.Vector3(0,-15,100));
+		surface.canCollide = true;
+		this.Add(surface);
 		this.Add(new BankWater(200, new three.Vector3(0,-25,100),1));
 		
 		this.crates = [

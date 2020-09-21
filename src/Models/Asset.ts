@@ -21,7 +21,7 @@ export abstract class Asset {
 	}
 	
 	public IsLoaded = true;
-	protected canCollide = true;
+	public canCollide = true;
 	get CanCollide():boolean { return this.canCollide}
 	
 	protected geo: three.Geometry;

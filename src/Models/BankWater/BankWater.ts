@@ -10,7 +10,7 @@ export class BankWater extends FileAsset {
 	OnLoaded() {
 		this.element.scale.addScalar(this.scale)
 		this.element.position.copy(this.pos)
-		this.canCollide = false;
+		this.canCollide = true;
 		
 		var mat: Material = (this.element as any).material;
 		mat.opacity = this.opacity;
