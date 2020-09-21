@@ -2,6 +2,8 @@ import { KeyController } from "../../Services/KeyController";
 import * as three from "three";
 import { FileAsset } from "../FileAsset";
 import { Tween, TweenMethod } from "../../Services/TweenService";
+import { Servicer } from "../../Services/Servicer";
+import { SceneBase } from "../../Scenes/SceneBase";
 
 export class Fish extends FileAsset {
 	private tween: Tween;
@@ -28,10 +30,20 @@ export class Fish extends FileAsset {
 		if(this.tween == null || this.tween.complete) {
 			var current = this.element.position.clone();
 			var max = this.agression;
-			var newX = current.x + ((Math.random() * max) - max/2);
-			var newZ = current.z + ((Math.random() * max) - max/2);
 			
-			var target = new three.Vector3(newX, current.y, newZ);
+			var target: three.Vector3 = null
+			
+			target = this.ClosestFood()
+			if(target == null) {
+				var newX = current.x + ((Math.random() * max) - max/2);
+				var newZ = current.z + ((Math.random() * max) - max/2);
+				target = new three.Vector3(newX, current.y, newZ);
+			}
+			else {
+				var offset = Math.random()
+				target = target.multiplyScalar(offset);
+			}
+			
 			
 			this.tween = new Tween(
 				current, 
@@ -42,7 +54,7 @@ export class Fish extends FileAsset {
 			)
 			
 			if(target.distanceTo(current) > 3) {
-				var rot = new three.Vector3(newX - current.x, 0, newZ - current.z);
+				var rot = new three.Vector3(target.x - current.x, 0, target.z - current.z);
 				var angle = rot.angleTo(new three.Vector3(1,0,0))
 				this.element.rotation.y = angle;
 			}
@@ -53,6 +65,29 @@ export class Fish extends FileAsset {
 			var dir = this.UnCollide();
 			dir.y = 0;
 			this.element.position.add(dir);
+		}
+	}
+	
+	private ClosestFood():any {
+		var scene: SceneBase = Servicer.Get(Servicer.Scene);
+		var currentPos = this.element.position;
+
+		var baits = scene.SceneMeshes.filter(x=>x.name.startsWith("Bait"));
+		if(baits.length > 0) {
+			var targets = baits.map(x=> {
+				return {
+					"distance": x.position.distanceTo(currentPos),
+					"point": x.position
+				}
+			});
+			var closest = targets.sort(x=>x.distance)[0];
+			
+			var directionOfFood = closest.point.sub(currentPos)
+			directionOfFood.y = 0;
+			return directionOfFood
+		}
+		else {
+			return null;
 		}
 	}
 }

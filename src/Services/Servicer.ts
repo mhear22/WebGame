@@ -8,4 +8,9 @@ export class Servicer {
 	public static Get(Name:any) {
 		return this.services[Name]
 	}
+	
+	static KeyController = "KeyController";
+	static CameraController = "CameraController";
+	static Scene = "Scene";
 }
+
