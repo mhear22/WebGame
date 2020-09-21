@@ -60,7 +60,7 @@ export abstract class Asset {
 	}
 	
 	public Collide(elements: three.Object3D[]) {
-		if(!this.element || !this.canCollide)
+		if(!this.element)
 			return;
 		var elementMesh = (this.Element as three.Mesh)
 		

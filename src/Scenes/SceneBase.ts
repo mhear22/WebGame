@@ -39,7 +39,9 @@ export abstract class SceneBase {
 	public ColideIterate(key:KeyController, step: number):void {
 		this.Meshes.forEach(element => {
 			try {
-				element.Collide(this.CollideMeshes)
+				if(element.canCollide) {
+					element.Collide(this.CollideMeshes)
+				}
 				element.Interval(key, step);
 			}
 			catch {}
@@ -49,5 +51,11 @@ export abstract class SceneBase {
 	public Add(asset:Asset) {
 		asset.AddElement(this.Scene);
 		this.Meshes.push(asset);
+	}
+	
+	public Remove(asset: Asset) {
+		var index = this.Meshes.indexOf(asset);
+		this.Meshes = this.Meshes.filter(x=>x.Element.name != asset.Element.name)
+		this.Scene.remove(asset.Element);
 	}
 }
