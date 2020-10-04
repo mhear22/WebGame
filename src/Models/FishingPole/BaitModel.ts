@@ -16,11 +16,21 @@ export class Bait extends Asset {
 		this.element.receiveShadow = true;
 		this.canCollide = false;
 	}
+	private lifespan = 100;
 	
 	Interval(keyController: KeyController, timeSplit: number): void {
-		this.Element.position.copy(this.tween.value);
-		
 		var scene: SceneBase = Servicer.Get(Servicer.Scene);
+		
+		this.lifespan -= timeSplit;
+		if(this.lifespan < 0)
+			scene.Remove(this)
+		
+		if(this.tween) {
+			this.Element.position.copy(this.tween.value);
+			if(this.tween.complete) {
+				this.tween = null;
+			}
+		}
 		
 		var fish = scene.SceneMeshes.filter(x=>x.name.startsWith("Fish"))
 		

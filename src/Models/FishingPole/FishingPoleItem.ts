@@ -26,25 +26,17 @@ export class FishingPoleItem extends InventoryItem {
 		
 		var pos = cam.camera.position.clone();
 		var target = this.getTarget(cam, pos, scene);
+		if(target != null) {
+			this.ThrowBait(target, pos, scene);
+		}
 		
-		if(this.isCast) {
-			this.ClearReal();
-		}
-		else {
-			this.CastReel(target, pos, scene);
-		}
 	}
 	
-	private CastReel(target: three.Vector3, position: three.Vector3, scene: SceneBase) {
+	private ThrowBait(target: three.Vector3, position: three.Vector3, scene: SceneBase) {
 		var tween = new Tween(position, target, TweenMethod.Linear, 5, false);
 		var model = new Bait(tween);
 		this.createdItems.push(model);
 		scene.Add(model);
-	}
-	
-	private ClearReal() {
-		this.createdItems.forEach(x=>x.Element.visible = false);
-		this.createdItems = []
 	}
 	
 	private getTarget(cam: CameraController, position: three.Vector3, scene: SceneBase) {
@@ -55,7 +47,10 @@ export class FishingPoleItem extends InventoryItem {
 		var rays = ray.intersectObjects(scene.SceneMeshes).filter(x=>x.distance > 0).sort(x=>x.distance);
 		
 		if(rays.length > 0) {
-			return rays[0].point;
+			if(rays[0].object.name.startsWith("BankWater")) {
+				return rays[0].point;
+			}
+			
 		}
 		return null;
 

@@ -74,3 +74,21 @@ export class Tween {
 		return result;
 	}
 }
+
+export class ConfTween extends Tween {
+	constructor(private config: {
+		initalValue:three.Vector3;
+		targetValue:three.Vector3;
+		method?: TweenMethod;
+		duration?: number,
+		loop?: boolean
+	}) {
+		
+		super(
+			config.initalValue,
+			config.targetValue,
+			config.method || TweenMethod.Linear,
+			config.duration || 1,
+			config.loop);
+	}
+}
