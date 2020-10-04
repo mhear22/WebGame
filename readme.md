@@ -67,3 +67,11 @@ This is a group of objects come together to create an environment.
 
 ## Suffering Mode
 * How do I make it compelling to play and a fun experience?
+
+## Short Term tasks
+* get the bait bag working to attract fish
+* fishing rod to collect fish
+* fun little minigame to reel the fish in
+* bus/train/teleport to shop
+* extend shops/fishing rods
+* tools to make fish more profitable
