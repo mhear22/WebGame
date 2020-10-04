@@ -69,7 +69,7 @@ export class BankScene extends SceneBase {
 		
 		this.crates.map(x=>this.Add(x));
 		
-		this.Fish = [1,2,3,4,5].map(x=> new Fish(new three.Vector3(-90, -20, 175), 0))
+		this.Fish = [1].map(x=> new Fish(new three.Vector3(-90, -20, 175), 0))
 		this.Fish.map(x=>this.Add(x));
 		
 		

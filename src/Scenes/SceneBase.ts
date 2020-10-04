@@ -44,7 +44,9 @@ export abstract class SceneBase {
 				}
 				element.Interval(key, step);
 			}
-			catch {}
+			catch (exception) {
+				console.error(exception);
+			}
 		});
 	}
 

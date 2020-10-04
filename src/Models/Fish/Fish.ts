@@ -6,6 +6,7 @@ import { Servicer } from "../../Services/Servicer";
 import { SceneBase } from "../../Scenes/SceneBase";
 import { Scene } from "three";
 import { MathService } from "../../Services/MathService";
+import { DebugService } from "../../Services/DebugService";
 
 export class Fish extends FileAsset {
 	private tween: Tween;
@@ -13,8 +14,9 @@ export class Fish extends FileAsset {
 	private static Agressions:number[] = [];
 	private agression = Math.random() * 100;
 	private quality = Math.random() * 100;
-	private hunger = Math.random() * 100;
-	private thinkingFrequency = Math.random() + 5;
+	//private hunger = Math.random() * 100;
+	private hunger = 0;
+	private thinkingFrequency = Math.random() + 1;
 	private nextThought = this.thinkingFrequency;
 	private Task: string;
 	
@@ -49,12 +51,6 @@ export class Fish extends FileAsset {
 		}
 		
 		this.ExecuteTween(timeSplit);
-		
-		//if(this.IsCollided) {
-		//	var dir = this.UnCollide();
-		//	dir.y = 0;
-		//	this.element.position.add(dir);
-		//}
 	}
 	
 	private ExecuteTween(timeSplit: number) {
@@ -77,35 +73,37 @@ export class Fish extends FileAsset {
 		}
 		
 		//Am I hungry, if so, respond to bait
-		if(this.hunger < 80) {
+		if(!target && this.hunger < 80) {
 			this.Task = "Food";
-			target = this.ClosestFood();
+			var food = this.ClosestFood(this.agression * 10);
+			if(food) {
+				var steps = current.distanceTo(food) / this.agression;
+				if(steps > 1) {
+					var delta = current.clone().sub(food.clone());
+					
+					target = current.clone()
+					target.x -= (delta.x/steps)
+					target.z -= (delta.z/steps)
+				}
+				else {
+					target = food
+				}
+			}
 		}
 		
 		//No plans, random point and move
 		if(!target) {
 			this.Task = "Wander";
 			target = this.RandomLocation(current);
-			var dir = MathService.DirectionTo(current, target)
-			var scene: SceneBase = Servicer.Get(Servicer.Scene);
-			var distance = current.distanceTo(target);
-			
-			var objectsToIntersect = scene.SceneMeshes.filter(x=>
-				x.name.startsWith("Bank") ||
-				x.name.startsWith("Fish")
-			);
-			
-			var intersections = MathService.RayCast({
-				point: current,
-				direction: dir,
-				objects: objectsToIntersect})
-			
-			if(intersections.some((x: any)=>x.distance < distance)) {
-				target = current
-				//Lost in the sauce, wait til next thonk before moving again
-			}
 		}
 		
+		
+		if(this.IntersectsWithWorld(current, target)) {
+			target = null;
+		}
+
+		if(!target)
+			target = current;
 		
 		this.tween = new ConfTween({
 			initalValue: current,
@@ -114,6 +112,28 @@ export class Fish extends FileAsset {
 			loop: false
 		});
 		this.RotateToDirection(current, target)
+		DebugService.Message(`${this.element.name} is ${this.Task}ing`);
+	}
+	
+	private IntersectsWithWorld(current: three.Vector3, target: three.Vector3):boolean {
+		
+		var dir = MathService.DirectionTo(current, target)
+		var scene: SceneBase = Servicer.Get(Servicer.Scene);
+		var distance = current.distanceTo(target);
+		
+		var objectsToIntersect = scene.SceneMeshes.filter(x=>
+			x.name.startsWith("Bank") ||
+			x.name.startsWith("Fish")
+		);
+		
+		var intersections = MathService.RayCast({
+			point: current,
+			direction: dir,
+			objects: objectsToIntersect})
+		
+		
+			
+		return intersections.some((x)=>x.distance < distance)
 	}
 	
 	private RotateToDirection(current: three.Vector3, target: three.Vector3) {
@@ -151,7 +171,7 @@ export class Fish extends FileAsset {
 		};
 	}
 	
-	private ClosestFood():three.Vector3 {
+	private ClosestFood(MaximumDistance: number):three.Vector3 {
 		var scene: SceneBase = Servicer.Get(Servicer.Scene);
 		var currentPos = this.element.position;
 
@@ -160,14 +180,15 @@ export class Fish extends FileAsset {
 			var targets = baits.map(x=> {
 				return {
 					"distance": x.position.distanceTo(currentPos),
-					"point": x.position
+					"point": x.position.clone()
 				}
-			});
+			}).filter(x=>x.distance<MaximumDistance);
+			if(targets.length == 0)
+				return null;
+			
 			var closest = targets.sort(x=>x.distance)[0];
 			
-			var directionOfFood = closest.point.sub(currentPos)
-			directionOfFood.y = 0;
-			return directionOfFood
+			return closest.point;
 		}
 		else {
 			return null;

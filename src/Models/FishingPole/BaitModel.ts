@@ -4,6 +4,7 @@ import { Asset } from "../Asset";
 import * as three from "three";
 import { Servicer } from "../../Services/Servicer";
 import { SceneBase } from "../../Scenes/SceneBase";
+import { MathService } from "../../Services/MathService";
 
 export class Bait extends Asset {
 	constructor(private tween: Tween) {
@@ -32,9 +33,12 @@ export class Bait extends Asset {
 			}
 		}
 		
+		
 		var fish = scene.SceneMeshes.filter(x=>x.name.startsWith("Fish"))
 		
-		var isEaten = this.Collide(fish);
+		var isEaten = fish
+			.map(x=> x.position.distanceTo(this.element.position))
+			.some(x=>x < 15)
 		if(isEaten) {
 			scene.Remove(this);
 		}
