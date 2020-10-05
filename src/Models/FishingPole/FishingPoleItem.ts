@@ -40,6 +40,11 @@ export class FishingPoleItem extends InventoryItem {
 	
 	private RecallCast(scene: SceneBase) {
 		this.createdItems.forEach(x=> {
+			var model = x as Hook;
+			if(model.isHooked) {
+				var targetFish = scene.Assets.filter(x=>x.Element.uuid == model.HookedFish)[0];
+				scene.Remove(targetFish);
+			}
 			scene.Remove(x);
 		});
 		this.createdItems = [];

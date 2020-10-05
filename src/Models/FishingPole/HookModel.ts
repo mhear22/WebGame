@@ -7,24 +7,22 @@ import { SceneBase } from "../../Scenes/SceneBase";
 import { MathService } from "../../Services/MathService";
 
 export class Hook extends Asset {
+	public isHooked = false;
+	public HookedFish:string = null;
+	
 	constructor(private tween: Tween) {
 		super();
 		var geo = new three.BoxBufferGeometry(1, 1, 1);
-		var mat = new three.MeshPhongMaterial({ color: "#000000"});
+		var mat = new three.MeshPhongMaterial({ color: "#FFFFFF"});
 		this.element = new three.Mesh(geo, mat);
 		this.element.position.copy(tween.InitalValue);
 		this.element.castShadow = true;
 		this.element.receiveShadow = true;
 		this.canCollide = false;
 	}
-	private lifespan = 100;
 	
 	Interval(keyController: KeyController, timeSplit: number): void {
 		var scene: SceneBase = Servicer.Get(Servicer.Scene);
-		
-		this.lifespan -= timeSplit;
-		if(this.lifespan < 0)
-			scene.Remove(this)
 		
 		if(this.tween) {
 			this.Element.position.copy(this.tween.value);
@@ -33,15 +31,25 @@ export class Hook extends Asset {
 			}
 		}
 		
-		
 		var fish = scene.SceneMeshes.filter(x=>x.name.startsWith("Fish"))
 		
-		var isEaten = fish
-			.map(x=> x.position.distanceTo(this.element.position))
-			.some(x=>x < 15)
-		if(isEaten) {
-			//Hooked
-			scene.Remove(this);
+		var localFish = fish
+			.map(x=> { 
+				return {
+					distance: x.position.distanceTo(this.element.position),
+					fish: x
+				}
+			})
+			
+		this.isHooked = localFish
+			.some(x=>x.distance < 15);
+		
+		if(this.isHooked) {
+			var closest = localFish.sort(x=>x.distance)[0]
+			this.HookedFish = closest.fish.uuid;
+		}
+		else {
+			this.HookedFish = null;
 		}
 	}
 }

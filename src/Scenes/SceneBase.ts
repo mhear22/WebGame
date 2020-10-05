@@ -14,6 +14,11 @@ export abstract class SceneBase {
 	protected Scene:three.Scene;
 	protected Meshes:Asset[] = [];
 	
+	public get Assets() {
+		return this.Meshes
+			.filter(x=>x.Element);
+	}
+	
 	public get SceneMeshes() {
 		return this.Meshes
 			.filter(x=>x.Element)
