@@ -74,7 +74,7 @@ export class Fish extends FileAsset {
 		//Am I hungry, if so, respond to bait
 		if(!target && this.hunger < 80) {
 			this.Task = "Food";
-			var food = this.ClosestFood(this.agression * 10);
+			var food = this.ClosestFood(this.agression * 100);
 			if(food) {
 				var steps = current.distanceTo(food) / this.agression;
 				if(steps > 1) {
@@ -87,11 +87,12 @@ export class Fish extends FileAsset {
 				else {
 					target = food
 				}
+				
+				if(this.IntersectsWithWorld(current, target)) {
+					target = null;
+				}
 			}
 			
-			if(this.IntersectsWithWorld(current, target)) {
-				target = null;
-			}
 		}
 		
 		//No plans, random point and move
@@ -177,7 +178,11 @@ export class Fish extends FileAsset {
 		var scene: SceneBase = Servicer.Get(Servicer.Scene);
 		var currentPos = this.element.position;
 
-		var baits = scene.SceneMeshes.filter(x=>x.name.startsWith("Bait"));
+		var allowed = [ "Bait", "Hook" ];
+		var ignore = [ "BaitBag" ]
+		
+		var baits = scene.SceneMeshes.filter(x=> allowed.some(z=>x.name.startsWith(z)) && !ignore.some(z=>x.name.startsWith(z)));
+			
 		if(baits.length > 0) {
 			var targets = baits.map(x=> {
 				return {
