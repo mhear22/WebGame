@@ -1,3 +1,5 @@
+import { SceneBase } from "../Scenes/SceneBase";
+
 export class Servicer {
 	private static services:any[] = []
 	
@@ -12,5 +14,11 @@ export class Servicer {
 	static KeyController = "KeyController";
 	static CameraController = "CameraController";
 	static Scene = "Scene";
+	
+	
+	public static GetScene(): SceneBase {
+		var scene = this.services[this.Scene as any];
+		return scene as SceneBase;
+	}
 }
 

@@ -14,9 +14,8 @@ export class Fish extends FileAsset {
 	private static Agressions:number[] = [];
 	private agression = Math.random() * 100;
 	private quality = Math.random() * 100;
-	//private hunger = Math.random() * 100;
 	private hunger = 0;
-	private thinkingFrequency = Math.random() + 1;
+	private thinkingFrequency = Math.random() + 5;
 	private nextThought = this.thinkingFrequency;
 	private Task: string;
 	
@@ -89,6 +88,10 @@ export class Fish extends FileAsset {
 					target = food
 				}
 			}
+			
+			if(this.IntersectsWithWorld(current, target)) {
+				target = null;
+			}
 		}
 		
 		//No plans, random point and move
@@ -111,8 +114,7 @@ export class Fish extends FileAsset {
 			duration: this.thinkingFrequency,
 			loop: false
 		});
-		this.RotateToDirection(current, target)
-		DebugService.Message(`${this.element.name} is ${this.Task}ing`);
+		this.RotateToDirection(current, target);
 	}
 	
 	private IntersectsWithWorld(current: three.Vector3, target: three.Vector3):boolean {
@@ -122,8 +124,8 @@ export class Fish extends FileAsset {
 		var distance = current.distanceTo(target);
 		
 		var objectsToIntersect = scene.SceneMeshes.filter(x=>
-			x.name.startsWith("Bank") ||
-			x.name.startsWith("Fish")
+			x.name.startsWith("Bank")
+			//|| x.name.startsWith("Fish")
 		);
 		
 		var intersections = MathService.RayCast({

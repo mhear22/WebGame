@@ -1,12 +1,14 @@
 import { ThrowStmt } from "@angular/compiler";
 import { InventoryItem } from "../DataModels/InventoryItem";
+import { BaitBagItem } from "../Models/BaitBag/BaitBagItem";
 import { FishingPoleItem } from "../Models/FishingPole/FishingPoleItem";
 import { DebugService } from "./DebugService";
 import { ServiceBase } from "./ServiceBase";
 
 export class InventoryService extends ServiceBase {
 	private static ExampleItems =  [
-		() => new FishingPoleItem({})
+		() => new FishingPoleItem({}),
+		() => new BaitBagItem({})
 	].map(x=> {
 		var inst = x();
 		return {

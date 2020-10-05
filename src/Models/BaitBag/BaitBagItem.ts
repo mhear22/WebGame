@@ -8,48 +8,30 @@ import * as three from "three";
 import { Cube } from "../Cube";
 import { Tween, TweenMethod } from "../../Services/TweenService";
 import { Asset } from "../Asset";
-import { Hook } from "./HookModel";
+import { Bait } from "./BaitModel";
 
-export class FishingPoleItem extends InventoryItem {
+export class BaitBagItem extends InventoryItem {
 	constructor(Data?:object) {
-		super("Fishing Pole", Data, null, (obj:FishingPoleItem) => {this.UseRod(obj)})
+		super("Bait Bag", Data, null, (obj:BaitBagItem) => {this.ThrowBait(obj)})
 	}
 	
 	private isCast = false;
 	private tween: Tween = null;
 	private createdItems: Asset[] = [];
 	
-	UseRod(item:FishingPoleItem) {
-		var scene = Servicer.GetScene();
+	ThrowBait(item:BaitBagItem) {
+		var scene: SceneBase = Servicer.Get("Scene");
 		var player: PlayerService = Servicer.Get("PlayerService");
 		var cam: CameraController = Servicer.Get("CameraController");
 		
-		if(this.isCast) {
-			this.RecallCast(scene);
-			this.isCast = false;
+		var pos = cam.camera.position.clone();
+		var target = this.getTarget(cam, pos, scene);
+		if(target != null) {
+			var tween = new Tween(pos, target, TweenMethod.Linear, 2, false);
+			var model = new Bait(tween);
+			this.createdItems.push(model);
+			scene.Add(model);
 		}
-		else {
-			var pos = cam.camera.position.clone();
-			var target = this.getTarget(cam, pos, scene);
-			if(target != null) {
-				this.CastRod(target, pos, scene);
-				this.isCast = true
-			}
-		}
-	}
-	
-	private RecallCast(scene: SceneBase) {
-		this.createdItems.forEach(x=> {
-			scene.Remove(x);
-		});
-		this.createdItems = [];
-	}
-	
-	private CastRod(target: three.Vector3, position: three.Vector3, scene: SceneBase) {
-		var tween = new Tween(position, target, TweenMethod.Linear, 1, false);
-		var model = new Hook(tween);
-		this.createdItems.push(model);
-		scene.Add(model);
 	}
 	
 	private getTarget(cam: CameraController, position: three.Vector3, scene: SceneBase) {

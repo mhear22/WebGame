@@ -16,6 +16,7 @@ import { Fish } from "../Models/Fish/Fish";
 import { range } from "rxjs";
 import { FishingPole } from "../Models/FishingPole/FishingPole";
 import { Vector3 } from "three";
+import { BaitBag } from "../Models/BaitBag/FishingPole";
 
 
 export class BankScene extends SceneBase {
@@ -27,6 +28,7 @@ export class BankScene extends SceneBase {
 	private carTween: Tween;
 	private Fish: Fish[] = [];
 	private Pole: FishingPole;
+	private Bait: BaitBag;
 	
 	public Iterate(keyController: KeyController, Step: number): void {
 		this.ColideIterate(keyController, Step);
@@ -88,7 +90,9 @@ export class BankScene extends SceneBase {
 		)
 		
 		this.Pole = new FishingPole(this.Camera,1, new Vector3(-50,0,20));
+		this.Bait = new BaitBag(this.Camera, 1, new Vector3(-70, 0, 20));
 		this.Add(this.Pole);
+		this.Add(this.Bait);
 		this.Add(this.car);
 		this.Add(this.sun)
 		this.Add(new Skybox(cam));
