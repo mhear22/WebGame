@@ -8,7 +8,27 @@ import { MathService } from "../../Services/MathService";
 
 export class Hook extends Asset {
 	public isHooked = false;
-	public HookedFish:string = null;
+	//public HookedFish:string = null;
+	
+	public get HookedFish() {
+		if(!this.isHooked)
+			return null;
+		
+		var scene: SceneBase = Servicer.Get(Servicer.Scene);
+		var hookPosition = this.Element.position;
+		var localFish = scene.Assets
+			.filter(x=>x.Element.name == "Fish")
+			.map(x=> {
+				return {
+					fish: x,
+					distance: x.Element.position.distanceTo(hookPosition)
+				};
+			})
+			.sort(x=>x.distance);
+		
+		var closest = localFish[0];
+		return closest.fish.Element.uuid;
+	}
 	
 	constructor(private tween: Tween) {
 		super();
@@ -43,13 +63,5 @@ export class Hook extends Asset {
 			
 		this.isHooked = localFish
 			.some(x=>x.distance < 15);
-		
-		if(this.isHooked) {
-			var closest = localFish.sort(x=>x.distance)[0]
-			this.HookedFish = closest.fish.uuid;
-		}
-		else {
-			this.HookedFish = null;
-		}
 	}
 }
