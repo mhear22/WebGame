@@ -62,7 +62,7 @@ export abstract class SceneBase {
 	
 	public Remove(asset: Asset) {
 		var index = this.Meshes.indexOf(asset);
-		this.Meshes = this.Meshes.filter(x=>x.Element.name != asset.Element.name)
+		this.Meshes = this.Meshes.filter(x=>x.Element.uuid != asset.Element.uuid)
 		this.Scene.remove(asset.Element);
 	}
 }
