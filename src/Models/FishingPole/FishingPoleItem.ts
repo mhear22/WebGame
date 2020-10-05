@@ -9,6 +9,9 @@ import { Cube } from "../Cube";
 import { Tween, TweenMethod } from "../../Services/TweenService";
 import { Asset } from "../Asset";
 import { Hook } from "./HookModel";
+import { InventoryService } from "../../Services/InventoryService";
+import { FishItem } from "../Fish/FishItem";
+import { Fish } from "../Fish/Fish";
 
 export class FishingPoleItem extends InventoryItem {
 	constructor(Data?:object) {
@@ -42,7 +45,8 @@ export class FishingPoleItem extends InventoryItem {
 		this.createdItems.forEach(x=> {
 			var model = x as Hook;
 			if(model.isHooked) {
-				var targetFish = scene.Assets.filter(x=>x.Element.uuid == model.HookedFish)[0];
+				var targetFish = scene.Assets.filter(x=>x.Element.uuid == model.HookedFish)[0] as Fish;
+				InventoryService.AddInventoryItem(new FishItem(targetFish))
 				scene.Remove(targetFish);
 			}
 			scene.Remove(x);
