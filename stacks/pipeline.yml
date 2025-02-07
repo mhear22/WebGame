@@ -21,9 +21,9 @@ Parameters:
 Mappings:
   URLs:
     develop:
-      deploymentbucket: dev.mckayhear.es
+      deploymentbucket: dev.mikahear.es
     production:
-      deploymentbucket: game.mckayhear.es
+      deploymentbucket: game.mikahear.es
     
 Resources:
   PipelineBucket:
@@ -36,20 +36,20 @@ Resources:
   # Code Build and pipeline info
   ###
   
-  CodePipelineWebhook:
-    Type: AWS::CodePipeline::Webhook
-    Properties:
-      Authentication: GITHUB_HMAC
-      AuthenticationConfiguration:
-        SecretToken: "{{resolve:ssm:patoken:1}}"
-      Filters:
-        - JsonPath: $.ref
-          MatchEquals: 'refs/heads/{Branch}'
-      TargetPipeline: !Ref AppPipeline
-      TargetAction: Source
-      Name: !Sub ${ProjectName}-${Branch}-Webhook
-      TargetPipelineVersion: !GetAtt AppPipeline.Version
-      RegisterWithThirdParty: true
+  #CodePipelineWebhook:
+  #  Type: AWS::CodePipeline::Webhook
+  #  Properties:
+  #    Authentication: GITHUB_HMAC
+  #    AuthenticationConfiguration:
+  #      SecretToken: "{{resolve:ssm:patoken:1}}"
+  #    Filters:
+  #      - JsonPath: $.ref
+  #        MatchEquals: 'refs/heads/{Branch}'
+  #    TargetPipeline: !Ref AppPipeline
+  #    TargetAction: Source
+  #    Name: !Sub ${ProjectName}-${Branch}-Webhook
+  #    TargetPipelineVersion: !GetAtt AppPipeline.Version
+  #    RegisterWithThirdParty: true
   
   CodeBuildProject:
     Type: AWS::CodeBuild::Project
