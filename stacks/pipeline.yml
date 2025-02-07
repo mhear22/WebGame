@@ -243,6 +243,9 @@ Resources:
                   - codebuild:*
                   - cloudformation:*
                   - iam:*
+                  - codeconnections:*
+                  - codestar-connections:*
+                  - codestar:*
 
 Outputs:
   PipelineBucket:
