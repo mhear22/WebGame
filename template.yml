@@ -17,13 +17,13 @@ Parameters:
 Mappings:
   URLs:
     develop:
-      apidomain: devapi.mckayhear.es
-      root: mckayhear.es
-      sslcert: arn:aws:acm:us-east-1:115136208505:certificate/d2ec0f01-f114-4d0b-ac04-c6ece55d0048
+      apidomain: devapi.mikahear.es
+      root: mikahear.es
+      sslcert: aarn:aws:acm:ap-southeast-2:115136208505:certificate/67fd3846-7536-4396-af1c-75abc3a14d56
     production:
-      apidomain: gameapi.mckayhear.es
-      root: mckayhear.es
-      sslcert: arn:aws:acm:us-east-1:115136208505:certificate/d2ec0f01-f114-4d0b-ac04-c6ece55d0048
+      apidomain: gameapi.mikahear.es
+      root: mikahear.es
+      sslcert: arn:aws:acm:ap-southeast-2:115136208505:certificate/67fd3846-7536-4396-af1c-75abc3a14d56
 
 Resources:
   StaticSiteBucket:
