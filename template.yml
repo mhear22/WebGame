@@ -19,11 +19,11 @@ Mappings:
     develop:
       apidomain: devapi.mikahear.es
       root: mikahear.es
-      sslcert: aarn:aws:acm:ap-southeast-2:115136208505:certificate/67fd3846-7536-4396-af1c-75abc3a14d56
+      sslcert: arn:aws:acm:ap-southeast-2:115136208505:certificate/0d21abd1-5edc-41ed-bc8c-48a2b518db5e
     production:
       apidomain: gameapi.mikahear.es
       root: mikahear.es
-      sslcert: arn:aws:acm:ap-southeast-2:115136208505:certificate/67fd3846-7536-4396-af1c-75abc3a14d56
+      sslcert: arn:aws:acm:ap-southeast-2:115136208505:certificate/0d21abd1-5edc-41ed-bc8c-48a2b518db5e
 
 Resources:
   StaticSiteBucket:
