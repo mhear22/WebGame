@@ -30,7 +30,6 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Ref DeploymentBucket
-      AccessControl: PublicRead
       PublicAccessBlockConfiguration:
         BlockPublicAcls: false
         BlockPublicPolicy: false
