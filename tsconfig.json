@@ -14,6 +14,7 @@
 		"experimentalDecorators": true,
 		"noImplicitAny": true,
 		"target": "es2015",
+		"skipLibCheck": true,
 		"watch": false,
 		"module": "esnext",
 		"sourceMap": false,

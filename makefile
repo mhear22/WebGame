@@ -6,6 +6,12 @@ electron:
 pack: electron
 	electron-builder -w
 	
+install:
+	npm i --legacy-peer-deps
+
+build: install
+	npm run build
+
 deploy-pipeline:
 	aws cloudformation package --s3-bucket=${bucket} --template-file ./stacks/pipeline.yml --output-template-file ./stacks/pipeline.package.yml
 	aws cloudformation deploy --template-file ./stacks/pipeline.package.yml --stack-name WebGamePipeline --capabilities "CAPABILITY_NAMED_IAM" "CAPABILITY_IAM" --parameter-overrides Branch=develop
