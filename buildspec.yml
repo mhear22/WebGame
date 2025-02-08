@@ -5,7 +5,8 @@ phases:
     runtime-versions:
       nodejs: 18
     commands:
-      - yum --enablerepo epel install moreutils
+      - yum -y install epel-release
+      - yum -y install moreutils
       - ProjectHash=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - npm install -g webpack webpack-cli #electron-builder
       - npm ci --legacy-peer-deps
