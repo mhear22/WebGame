@@ -14,10 +14,11 @@
     "url": "https://github.com/mhear22/Angular-Playground/issues"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "webpack --mode=development"
   },
   "build": {
-    "appId": "es.mckayhear.game",
+    "appId": "es.mikahear.game",
     "files": [
       {
         "from": "dist",
