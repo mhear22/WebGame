@@ -5,8 +5,6 @@ phases:
     runtime-versions:
       nodejs: 18
     commands:
-      - yum -y install epel-release
-      - yum -y install moreutils
       - ProjectHash=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - npm install -g webpack webpack-cli #electron-builder
       - npm ci --legacy-peer-deps
@@ -15,12 +13,12 @@ phases:
       - NODE_OPTIONS=--openssl-legacy-provider webpack --mode=production
       #- electron-builder -w
       - aws cloudformation package --template-file ./template.yml --s3-bucket ${Bucket} --output-template-file serverless.yml
-  post_build:
-    commands:
-      - jq '.Parameters.ProjectName = "'$ProjectName'"' config.json | sponge config.json
-      - jq '.Parameters.ProjectHash = "'$ProjectHash'"' config.json | sponge config.json
-      - jq '.Parameters.Environment = "'$Environment'"' config.json | sponge config.json
-      - jq '.Parameters.DeploymentBucket = "'$DeploymentBucket'"' config.json | sponge config.json
+  #post_build:
+  #  commands:
+  #    - jq '.Parameters.ProjectName = "'$ProjectName'"' config.json | sponge config.json
+  #    - jq '.Parameters.ProjectHash = "'$ProjectHash'"' config.json | sponge config.json
+  #    - jq '.Parameters.Environment = "'$Environment'"' config.json | sponge config.json
+  #    - jq '.Parameters.DeploymentBucket = "'$DeploymentBucket'"' config.json | sponge config.json
 artifacts:
   secondary-artifacts:
     S3SiteFiles:
