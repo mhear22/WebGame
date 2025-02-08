@@ -32,8 +32,10 @@ Resources:
       BucketName: !Ref DeploymentBucket
       AccessControl: PublicRead
       PublicAccessBlockConfiguration:
-           BlockPublicAcls: false
-           BlockPublicPolicy: false
+        BlockPublicAcls: false
+        BlockPublicPolicy: false
+        IgnorePublicAcls: false
+        RestrictPublicBuckets: false
       WebsiteConfiguration:
         IndexDocument: index.html
         ErrorDocument: error.html
