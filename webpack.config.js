@@ -19,7 +19,7 @@ module.exports = (env, argv) => {
 			main: ['./src/main.ts', './src/main.scss'],
 		},
 		output: {
-			filename: './[name].[hash].js',
+			filename: '[name].[hash].js',
 			path: path.resolve(__dirname, output)
 		},
 		resolve: {
