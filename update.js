@@ -21,4 +21,4 @@ var data =  {
 
 var blob = JSON.stringify(data)
 
-fs.writeFile("tconfig.json",blob, err => { });
+fs.writeFile("config.json",blob, err => { });
